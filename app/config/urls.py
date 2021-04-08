@@ -18,9 +18,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+from rest_framework import routers
+
+from party.api.v1.routers import router as v1_party_router
+
+v1router = routers.DefaultRouter() if settings.DEBUG else routers.SimpleRouter()
+
+v1router.registry.extend(v1_party_router.registry)
+
 urlpatterns = [
     path('autocomplete/', include('autocomplete_contrib.urls')),
     path('admin/', admin.site.urls),
+    path('api/v1/', include(v1router.urls)),
     path('', include('party.urls')),
     path('account/sceneid/', include('authentication.urls')),
 ]
