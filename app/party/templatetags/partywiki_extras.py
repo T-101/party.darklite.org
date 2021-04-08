@@ -20,3 +20,10 @@ def get_destination_country(s):
 
 COUNTRY_CODES = [x.lower() for x in countries.countries]
 COUNTRY_CODE_REGEX = r'(.*),\s(%s)$' % '|'.join(COUNTRY_CODES)
+
+
+@register.filter
+def get_display_name(obj):
+    if obj.display_name:
+        return obj.display_name
+    return obj

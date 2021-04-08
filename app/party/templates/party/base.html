@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{% load static %}{% load partywiki_extras %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,12 +34,13 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" href="{% url 'party:about' %}"><i
                     class="fa fa-info-circle"></i> About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-pie"></i> Stats</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'authentication:create' %}" class="nav-link">
                         <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
                         {% if request.user %}
-                            {{ request.user }}
+                            {{ request.user|get_display_name }}
                         {% else %}
                             Service Account ({{ request.user }})
                         {% endif %}
