@@ -1,0 +1,11 @@
+{% extends 'party/base.html' %}
+
+{% block title %}
+    <title>List of parties | Darklite Partywiki</title>
+{% endblock %}
+
+{% block content %}
+    {% for party in object_list %}
+        {{ party }}
+    {% endfor %}
+{% endblock %}

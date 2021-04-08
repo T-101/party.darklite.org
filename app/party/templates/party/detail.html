@@ -1,0 +1,217 @@
+{% extends 'party/base.html' %}
+{% load partywiki_extras %}
+
+{% block title %}
+    <title>{{ object }} | Darklite Partywiki</title>
+{% endblock %}
+
+{% block content %}
+    <div class="py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="">{{ object }} <a
+                                    href="{% url 'party:update' object.slug %}" title="Modify this party">
+                                {% if not object.has_ended or user.is_superuser %}
+                                    <span style="font-size: 1rem;">
+                                        <i class="far fa-edit"></i>
+                                    </span>
+                                {% endif %}
+                            </a>
+                            </h1>
+                        </div>
+                        <div class="text-right col">
+                            <ul class="list-unstyled">
+                                <li>{{ object.date_range }}</li>
+                                <li>
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country|lower }}.svg"
+                                         alt="flag of {{ object.country }}"
+                                         height="11" onerror="this.style.display='none'">&nbsp;{{ object.location }}
+                                </li>
+                                {% if object.www %}
+                                    <li><a href="{{ object.www }}">{{ object.www }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p class="lead">Towards party</p>
+                </div>
+                <div class="col text-right">
+                    {% if user.is_authenticated %}
+                        {% if not object.has_ended or user.is_superuser %}
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownPartyButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;COME PARTY WITH US
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownPartyButton">
+                                    <a class="dropdown-item"
+                                       href="{% url 'party:create-flight' object.slug %}">Flight</a>
+                                    <a class="dropdown-item"
+                                       href="{% url 'party:create-travel' object.slug %}">Car, train, etc</a>
+                                    {% comment %}<a class="dropdown-item"
+                                       href="{% url 'partywiki:hotel-create' object.slug %}">Hotel</a>{% endcomment %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <a href="" class="btn btn-success">LOGIN TO SEE FURTHER DETAILS</a>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-responsive-sm table-sm">
+                        <thead class="thead">
+                        <tr>
+                            <th>Nick/Group</th>
+                            <th>From</th>
+                            {% if user.is_authenticated %}
+                                <th>Datetime</th>
+                            {% endif %}
+                            <th>To</th>
+                            {% if user.is_authenticated %}
+                                <th>Datetime</th>
+                                <th>Using</th>
+                                <th class="text-nowrap">Details</th>
+                                {% if not object.has_ended or user.is_superuser %}
+                                    <th></th>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for trip in inbound %}
+                            {% include 'party/detail_trip_row.html' %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="lead">Towards home</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-responsive-sm table-sm">
+                        <thead class="thead">
+                        <tr>
+                            <th>Nick/Group</th>
+                            <th>From</th>
+                            {% if user.is_authenticated %}
+                                <th>Datetime</th>
+                            {% endif %}
+                            <th>To</th>
+                            {% if user.is_authenticated %}
+                                <th>Datetime</th>
+                                <th>Using</th>
+                                <th class="text-nowrap">Details</th>
+                                {% if not object.has_ended or user.is_superuser %}
+                                    <th></th>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for trip in outbound %}
+                            {% include 'party/detail_trip_row.html' %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% comment %}    <div class="py-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="lead">Hotels</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-responsive-sm table-sm">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Nick/Group</th>
+                            <th>Hotel</th>
+                            {% if user.is_authenticated %}
+                                <th>Checkin</th>
+                                <th>Checkout</th>
+                                {% if not object.has_ended or user.is_superuser %}
+                                    <th></th>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for hotel in object.hotels.all %}
+                            <tr>
+                                <td>{{ hotel.handle }}</td>
+                                <td>{{ hotel.hotel }}</td>
+                                {% if user.is_authenticated %}
+                                    <td>{{ hotel.date_start|date:"D, d M Y" }}</td>
+                                    <td>{{ hotel.date_end|date:"D, d M Y" }}</td>
+                                    {% if not object.has_ended or user.is_superuser %}
+                                        <td class="text-right">
+                                            <a href="{% url 'partywiki:hotel-create' object.slug hotel.pk %}">
+                                                <i class="fa fa-clone icon-help"
+                                                   data-help-text="Clone this hotel"></i>
+                                            </a>&nbsp;
+                                            <a href="{% url 'partywiki:hotel-update' object.slug hotel.pk %}">
+                                                <i class="fa fa-pencil icon-help"
+                                                   data-help-text="Edit this hotel"></i>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>{% endcomment %}
+
+
+
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'party:list' %}">Parties</a></li>
+                        {% comment %}                        <li class="breadcrumb-item"><a
+                                href="{% url 'party:list' year %}">{{ year }}</a>
+                        </li>{% endcomment %}
+                        <li class="breadcrumb-item active">{{ object.name }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

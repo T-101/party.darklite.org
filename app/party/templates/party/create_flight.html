@@ -1,0 +1,58 @@
+{% extends 'party/base.html' %}{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Create flight | Darklite Partywiki</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>UA {{ request.user_agent }}</h1>
+                {% if request.user_agent.is_mobile %}
+                    <h1>Mobile</h1>
+                {% else %}
+                    <h1>Not Mobile</h1>
+                {% endif %}
+                <h3>Create a flight</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <p class="lead bg-info text-white col-md-11">TO PARTY</p>
+                    {% crispy inbound %}
+                    <p class="lead bg-info text-white col-md-11">FROM PARTY</p>
+                    {% crispy outbound %}
+                    <button type="submit">JOO</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'party:list' %}">Parties</a></li>
+                    <li class="breadcrumb-item active"><a href="{% url 'party:detail' party.slug %}">{{ party }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block formmedia %}
+    {{ inbound.media }}
+
+    <style>
+        .select2-selection, .select2-selection__arrow {
+            height: 35px !important;
+        }
+
+        .select2-selection__arrow {
+            display: none !important;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  app:
+    container_name: partywiki_app
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    # command: gunicorn config.wsgi --pid partyman.pid --log-level debug --graceful-timeout 3600 --timeout 3600 --keep-alive 3600 -w 8 -b 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - db:/db
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    env_file: app/.env
+#    depends_on:
+#      - mysql
+#
+#  mysql:
+#    image: mysql:5.7
+#    volumes:
+#    - db-data:/var/lib/mysql
+#    restart: unless-stopped
+#    environment:
+#      MYSQL_ROOT_PASSWORD: partywiki
+#      MYSQL_DATABASE: partywiki
+
+volumes:
+  db:
+  db-data:

@@ -1,0 +1,136 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>Darklite Partywiki</title>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <!-- favicon downloaded from https://favicon.io/emoji-favicons/pig/
+         Created by John Sorrentino -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/lumen/bootstrap.min.css"
+          integrity="sha512-k7f744z7yElaeTu/FuqJGQ9G3YJ2VVN7r00mkreJCg7t0mera+rLuCd+uBuarIdTNfrI8xq/fFE9mOIbG9jeXA=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+          crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'party/style.css' %}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-expand-md">
+    <a class="navbar-brand" href="{% url 'party:landing_page' %}">Darklite PartyWiki</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="{% url 'party:about' %}"><i
+                    class="fa fa-info-circle"></i> About</a></li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'authentication:create' %}" class="nav-link">
+                        <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
+                        {% if request.user %}
+                            {{ request.user }}
+                        {% else %}
+                            Service Account ({{ request.user }})
+                        {% endif %}
+                    </a>
+                <li class="nav-item"><a class="nav-link"
+                                        href="{% url 'authentication:logout' %}?next={{ request.path }}"><i
+                        class="fa fa-sign-out"></i> Logout </a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'authentication:auth' %}"><i
+                        class="fa fa-user-circle"></i> Login</a>
+                </li>
+            {% endif %}
+        </ul>
+        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'party:search' %}">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<noscript>
+    <style>
+        div, .navbar {
+            display: none;
+        }
+    </style>
+    <h1>NO JAVASCRIPT?!</h1>
+    <h3>Why not Zoidberg?</h3>
+    <h5>We use JS as follows:</h5>
+    <ul>
+        <li>jQuery.js to make our autocompletes work</li>
+        <li>Puppet.js to make our dropboxes work</li>
+    </ul>
+    <p>
+        Feel free to block out analytics, but before mentioned scripts are needed for this webapp to work
+    </p>
+</noscript>
+
+{% block content %}
+{% endblock %}
+<p></p>
+<div class="bg-primary text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-3 py-1">
+                <a href="https://www.darklite.org"><i class="fa fa-fw fa-home text-white fa-2x"></i></a>
+            </div>
+            <div class="col-3 py-1">
+                <a href="https://www.facebook.com/groups/darklite/"><i
+                        class="fab fa-facebook-square text-white fa-2x"></i></a>
+            </div>
+            <div class="col-3 py-1">
+                <a href="https://twitter.com/darkliters"><i class="fab fa-twitter text-white fa-2x"></i></a>
+            </div>
+            <div class="col-3 py-1"><a><i class="fab fa-github text-white fa-2x"></i></a></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"
+        integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg=="
+        crossorigin="anonymous"></script>
+<script src="{% static 'party/js/partywiki.js' %}"></script>
+</body>
+
+{% block formmedia %}
+{% endblock %}
+
+{% if ga_tag %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_tag }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', '{{ ga_tag }}');
+    </script>
+{% endif %}
+
+</html>
