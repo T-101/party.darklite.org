@@ -47,8 +47,8 @@ class FlightForm(forms.ModelForm):
     departure_country = forms.CharField(widget=autocomplete.ListSelect2(url='dal-countries'))
     arrival_country = forms.CharField(widget=autocomplete.ListSelect2(url='dal-countries'))
 
-    departure_datetime = forms.DateTimeField(widget=LocaleDateTimePicker(attrs={"class": "col-md-12"}))
-    arrival_datetime = forms.DateTimeField(widget=LocaleDateTimePicker(attrs={"class": "col-md-12"}))
+    departure_datetime = forms.DateTimeField(widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))
+    arrival_datetime = forms.DateTimeField(widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))
     towards_home = forms.BooleanField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
