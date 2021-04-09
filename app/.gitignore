@@ -2,4 +2,5 @@
 .idea/
 db.sqlite3
 *.xml
+*.json
 .env

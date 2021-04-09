@@ -1,9 +1,8 @@
-from rest_framework.serializers import ModelSerializer
-
 from authentication.models import User
+from common.serializers import BaseModelSerializer
 
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(BaseModelSerializer):
     class Meta:
         model = User
         exclude = ['password', 'user_permissions', 'groups', 'first_name', 'last_name', 'id']
