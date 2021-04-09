@@ -13,6 +13,7 @@ start:
 
 stop:
 	@docker stop partywiki
+	@docker rm partywiki
 
 up:
 	@docker run \
