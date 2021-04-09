@@ -1,3 +1,4 @@
+{% load partywiki_extras %}
 <tr>
     <td class="text-truncate handle-ellipsis"
         style="max-width: 150px" title="{{ trip.handle }}">{{ trip.handle }}
@@ -35,27 +36,17 @@
 
         {% if not object.has_ended or user.is_superuser %}
             <td class="text-right">
-                {% if trip.type == 'plane' %}
-                    {% if trip.created_by == user or user.is_superuser %}
-                        <a href="{% url 'party:update-flight' object.slug trip.pk %}" title="Modify this flight">
-                            <i class="far fa-edit icon-help"></i>
-                        </a>&nbsp;
-                    {% endif %}
-                    <a href="{% url 'party:create-flight' object.slug trip.pk %}" title="Clone this flight">
-                        <i class="far fa-clone icon-help"></i>
-                    </a>
 
-                {% else %}
-                    {% if trip.created_by == user or user.is_superuser %}
-                        <a href="{% url 'party:update-travel' object.slug trip.pk %}" title="Modify this trip">
-                            <i class="far fa-edit icon-help"></i>
-                        </a>&nbsp;
-                    {% endif %}
-                    <a href="{% url 'party:create-travel' object.slug trip.pk %}" title="Clone this trip">
-                        <i class="far fa-clone icon-help"></i>
-                    </a>
-
+                {% if trip.created_by == user or user.is_superuser %}
+                    <a href="{% url 'party:update-trip' object.slug trip.pk %}" title="Modify this trip">
+                        <i class="far fa-edit icon-help"></i>
+                    </a>&nbsp;
                 {% endif %}
+                <a href="{% url 'party:create-trip' object.slug trip.pk %}" title="Clone this trip">
+                    <i class="far fa-clone icon-help"></i>
+                </a>
+
+
             </td>
         {% endif %}
 

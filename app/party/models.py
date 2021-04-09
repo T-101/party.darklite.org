@@ -56,19 +56,6 @@ class Party(models.Model):
         return re.sub(r'(\s\d\d\d\d)', r',\1', range_str)
 
 
-class Airport(models.Model):
-    name = models.CharField(max_length=128)
-    iata_code = models.CharField(max_length=3)
-    country = CountryField()
-
-    def __repr__(self):
-        return f"{self.iata_code}, {str(self.country)}"
-
-    def __str__(self):
-        name = re.sub(r'airport', '', str(self.name), flags=re.IGNORECASE).strip()
-        return '%s [%s]' % (name, str(self.iata_code).upper())
-
-
 class Trip(models.Model):
     BUS = 'bus'
     CAR = 'car'
@@ -91,7 +78,7 @@ class Trip(models.Model):
     ]
 
     party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name="trips")
-    handle = models.CharField(max_length=64)
+    handle = models.CharField(max_length=255)
     type = models.CharField(max_length=13, choices=TYPES, default=PLANE)
     departure_town = models.CharField(max_length=64)
     departure_country = CountryField(blank=True)

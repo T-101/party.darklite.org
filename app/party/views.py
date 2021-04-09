@@ -7,7 +7,7 @@ from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
 
-from party.forms import PartyForm, FlightForm, TravelForm, TripFormNative
+from party.forms import PartyForm, TripForm, TripFormNative
 from party.models import Party, Trip
 
 
@@ -109,9 +109,9 @@ class DemopartyNetCreateView(generic.RedirectView):
         return HttpResponse(demopartynet_slug)
 
 
-class FlightCreateView(generic.CreateView):
+class TripCreateView(generic.CreateView):
     template_name = 'party/create_flight.html'
-    form_class = FlightForm
+    form_class = TripForm
     model = Trip
 
     def get_context_data(self, **kwargs):
@@ -121,8 +121,8 @@ class FlightCreateView(generic.CreateView):
             ctx["inbound"] = TripFormNative(prefix="inbound", initial={"towards_home": "False"})
             ctx["outbound"] = TripFormNative(prefix="outbound", initial={"towards_home": "True"})
         else:
-            ctx["inbound"] = FlightForm(prefix="inbound", initial={"towards_home": "False"})
-            ctx["outbound"] = FlightForm(prefix="outbound", initial={"towards_home": "True"})
+            ctx["inbound"] = TripForm(prefix="inbound", initial={"towards_home": "False"})
+            ctx["outbound"] = TripForm(prefix="outbound", initial={"towards_home": "True"})
 
         return ctx
 
@@ -133,9 +133,9 @@ class FlightCreateView(generic.CreateView):
             "handle": "WWW PIER WWW",
             "party": Party.objects.get(slug=self.kwargs.get("slug"))
         }
-        inbound_form = FlightForm(self.request.POST, prefix="inbound", is_required=True)
-        outbound_form = FlightForm(self.request.POST, prefix="outbound", is_required=True,
-                                   initial={"towards_home": "True"})
+        inbound_form = TripForm(self.request.POST, prefix="inbound", is_required=True)
+        outbound_form = TripForm(self.request.POST, prefix="outbound", is_required=True,
+                                 initial={"towards_home": "True"})
         errors = []
 
         if inbound_form.changed_data and inbound_form.is_valid():
@@ -156,17 +156,17 @@ class FlightCreateView(generic.CreateView):
             print("FORM INSTANCE", inbound_form.instance.departure_country)
             return render(self.request, self.template_name, {
                 'party': Party.objects.get(slug=self.kwargs.get("slug")),
-                'inbound': FlightForm(self.request.POST, prefix="inbound",
-                                      is_required="inbound" in errors),
-                'outbound': FlightForm(self.request.POST, prefix="outbound",
-                                       is_required="outbound" in errors)
+                'inbound': TripForm(self.request.POST, prefix="inbound",
+                                    is_required="inbound" in errors),
+                'outbound': TripForm(self.request.POST, prefix="outbound",
+                                     is_required="outbound" in errors)
             })
         return redirect("party:detail", self.kwargs.get("slug"))
 
 
-class FlightUpdateView(generic.UpdateView):
+class TripUpdateView(generic.UpdateView):
     template_name = 'party/update_flight.html'
-    form_class = FlightForm
+    form_class = TripForm
     model = Trip
 
     def get_form(self, form_class=None):
@@ -178,12 +178,3 @@ class FlightUpdateView(generic.UpdateView):
     def get_success_url(self):
         return reverse("party:detail", args=[self.kwargs.get("slug")])
 
-
-class TravelCreateView(generic.CreateView):
-    template_name = 'party/create_flight.html'
-    model = Trip
-    form_class = TravelForm
-
-
-class TravelUpdateView(generic.CreateView):
-    pass

@@ -1,10 +1,9 @@
-from rest_framework.serializers import ModelSerializer
-
 from authentication.api.v1.serializers import UserSerializer
+from common.serializers import BaseModelSerializer
 from party.models import Party
 
 
-class PartySerializer(ModelSerializer):
+class PartySerializer(BaseModelSerializer):
 
     created_by = UserSerializer(fields=["display_name"])
 

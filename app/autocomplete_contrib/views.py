@@ -1,11 +1,8 @@
 from dal import autocomplete
 from django.db.models import Q
-from django.utils.html import format_html
 from django_countries import countries
-from django_countries.fields import Country
 
 from common.mixins import AuthenticatedOr403Mixin
-from party.models import Airport
 
 
 class BaseAutoComplete(AuthenticatedOr403Mixin, autocomplete.Select2QuerySetView):
@@ -28,15 +25,3 @@ class CountryAutoComplete(AuthenticatedOr403Mixin, autocomplete.Select2ListView)
 
     def get_list(self):
         return countries
-
-
-class Airports(AuthenticatedOr403Mixin, autocomplete.Select2QuerySetView):
-    queryset = Airport.objects.all()
-
-    def get_queryset(self):
-        qs = self.queryset
-        if self.q:
-            iata = qs.filter(iata_code__istartswith=self.q)
-            airport = qs.filter(name__icontains=self.q)
-            return list(iata) + list(airport)
-        return qs

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from party.views import LandingPageView, AboutView, SearchView, PartyListView, PartyCreateView, PartyDetailView, \
-    PartyUpdateView, FlightCreateView, FlightUpdateView, TravelCreateView, TravelUpdateView, DemopartyNetCreateView
+    PartyUpdateView, TripCreateView, TripUpdateView, DemopartyNetCreateView
 
 app_name = "party"
 
@@ -13,11 +13,8 @@ urlpatterns = [
     path('create/', PartyCreateView.as_view(), name="create"),
     path('create/demopartynet/', DemopartyNetCreateView.as_view(), name="demopartynet-create"),
     path('<slug:slug>/update/', PartyUpdateView.as_view(), name="update"),
-    path('<slug:slug>/create-flight/', FlightCreateView.as_view(), name="create-flight"),
-    path('<slug:slug>/create-flight/<int:pk>/', FlightCreateView.as_view(), name="create-flight"),
-    path('<slug:slug>/update-flight/<int:pk>/', FlightUpdateView.as_view(), name="update-flight"),
-    path('<slug:slug>/create-travel/', TravelCreateView.as_view(), name="create-travel"),
-    path('<slug:slug>/create-travel/<int:pk>/', TravelCreateView.as_view(), name="create-travel"),
-    path('<slug:slug>/update-travel/<int:pk>/', TravelUpdateView.as_view(), name="update-travel"),
+    path('<slug:slug>/create-trip/', TripCreateView.as_view(), name="create-trip"),
+    path('<slug:slug>/create-trip/<int:pk>/', TripCreateView.as_view(), name="create-trip"),
+    path('<slug:slug>/update-trip/<int:pk>/', TripUpdateView.as_view(), name="update-trip"),
     path('<slug:slug>/', PartyDetailView.as_view(), name="detail")
 ]
