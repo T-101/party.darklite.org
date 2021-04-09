@@ -33,6 +33,7 @@ class TripAdmin(admin.ModelAdmin):
         'towards_home',
         'created_by',
     )
-    search_fields = ['party__name', 'user__email', 'user__display_name', 'display_name', 'departure_town', 'arrival_town', 'detail1', 'detail2']
+    search_fields = ['party__name', 'display_name', 'departure_town', 'arrival_town',
+                     'detail1', 'detail2', 'created_by__email', 'created_by__display_name']
     list_filter = ('departure_datetime', 'arrival_datetime', 'towards_home')
     autocomplete_fields = ['party']

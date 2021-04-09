@@ -61,10 +61,9 @@ class Trip(models.Model):
     CAR = 'car'
     MOTORCYCLE = 'motorcycle'
     PLANE = 'plane'
-    ROCKET = 'rocket'
     SHIP = 'ship'
-    SPACE_SHUTTLE = 'space-shuttle'
     TRAIN = 'train'
+    OTHER = 'other'
 
     TYPES = [
         (SHIP, 'Boat'),
@@ -72,13 +71,11 @@ class Trip(models.Model):
         (CAR, 'Car'),
         (MOTORCYCLE, 'Motorcycle'),
         (PLANE, 'Plane'),
-        (ROCKET, 'Rocket'),
-        (SPACE_SHUTTLE, 'Space Shuttle'),
-        (TRAIN, 'Train')
+        (TRAIN, 'Train'),
+        (OTHER, 'Other')
     ]
 
     party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name="trips")
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="trips", blank=True, null=True)
     display_name = models.CharField(max_length=255)
     type = models.CharField(max_length=13, choices=TYPES, default=PLANE)
     departure_town = models.CharField(max_length=64)
@@ -90,7 +87,7 @@ class Trip(models.Model):
     detail1 = models.CharField(max_length=32, blank=True, null=True)
     detail2 = models.CharField(max_length=32, blank=True, null=True)
     towards_home = models.BooleanField(default=False)
-    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, blank=True, null=True)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name="trips", blank=True, null=True)
 
     def __str__(self):
         return '%s -> %s' % (self.departure_town, self.arrival_town)
