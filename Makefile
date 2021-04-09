@@ -5,7 +5,7 @@ CONTAINER_PORT := $(shell grep CONTAINER_PORT .env | cut -d '=' -f2)
 
 build:
 	@docker-compose build
-	@docker-compose run partywiki python ./manage.py collectstatic --no-input
+	@docker-compose run --rm app python ./manage.py collectstatic --no-input
 	@docker build -t partywiki .
 
 start:
