@@ -78,7 +78,8 @@ class Trip(models.Model):
     ]
 
     party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name="trips")
-    handle = models.CharField(max_length=255)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="trips", blank=True, null=True)
+    display_name = models.CharField(max_length=255)
     type = models.CharField(max_length=13, choices=TYPES, default=PLANE)
     departure_town = models.CharField(max_length=64)
     departure_country = CountryField(blank=True)

@@ -26,13 +26,13 @@ class PartyAdmin(admin.ModelAdmin):
 @admin.register(Trip)
 class TripAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'party', 'handle', 'type',
+        'id', 'party', 'display_name', 'type',
         'departure_town', 'departure_country', 'departure_datetime',
         'arrival_town', 'arrival_country', 'arrival_datetime',
         'detail1', 'detail2',
         'towards_home',
         'created_by',
     )
-    search_fields = ['party__name', 'handle', 'departure_town', 'arrival_town', 'detail1', 'detail2']
-    list_filter = ('party', 'departure_datetime', 'arrival_datetime', 'towards_home', 'created_by',)
+    search_fields = ['party__name', 'user__email', 'user__display_name', 'display_name', 'departure_town', 'arrival_town', 'detail1', 'detail2']
+    list_filter = ('departure_datetime', 'arrival_datetime', 'towards_home')
     autocomplete_fields = ['party']
