@@ -1,5 +1,7 @@
 import feedparser
 from datetime import datetime
+
+from django.db.models.functions import Lower
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -65,7 +67,7 @@ class PartyDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        trips = self.object.trips.select_related("created_by")
+        trips = self.object.trips.select_related("created_by").order_by(Lower("display_name"))
         ctx["inbound"] = trips.filter(towards_home=False)
         ctx["outbound"] = trips.filter(towards_home=True)
         return ctx

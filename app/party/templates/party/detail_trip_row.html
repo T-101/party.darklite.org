@@ -1,29 +1,29 @@
 {% load partywiki_extras %}
 <tr>
     <td class="text-truncate handle-ellipsis"
-        style="max-width: 150px" title="{{ trip.handle }}">{{ trip.handle }}
+        style="max-width: 150px" title="{{ trip.display_name }}">{{ trip.display_name }}
     </td>
-    <td>
+    <td class="text-truncate handle-ellipsis" style="max-width: 150px">
         <img src="/static/flags/{{ trip.departure_country|lower }}.gif"
-             height="10"
+             height="10" title="{{ trip.departure_country.name }}"
+             alt="{{ trip.departure_country.name }}"
              onerror="this.style.display='none'">
-        {{ trip.departure_town|get_destination_text }}
-
+        <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
     </td>
     {% if user.is_authenticated %}
         <td>{{ trip.departure_datetime|date:"D, d M Y H:i" }}</td>
     {% endif %}
-    <td>
+    <td class="text-truncate handle-ellipsis" style="max-width: 150px">
         <img src="/static/flags/{{ trip.arrival_country|lower }}.gif"
-             height="10"
+             height="10" title="{{ trip.arrival_country.name }}"
+             alt="{{ trip.arrival_country.name }}"
              onerror="this.style.display='none'">
-        {{ trip.arrival_town|get_destination_text }}
-
+        <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
     </td>
     {% if user.is_authenticated %}
         <td>{{ trip.arrival_datetime|date:"D, d M Y H:i" }}</td>
         <td>
-            <i class="fa fa-{{ trip.type }}"></i>
+            <i class="fa fa-{{ trip.type }}" title="{{ trip.type }}"></i>
             {% if trip.detail1 %}
                 {{ trip.detail1 }}
             {% endif %}
@@ -35,7 +35,7 @@
         </td>
 
         {% if not object.has_ended or user.is_superuser %}
-            <td class="text-right">
+            <td class="text-right" nowrap="">
 
                 {% if trip.created_by == user or user.is_superuser %}
                     <a href="{% url 'party:update-trip' object.slug trip.pk %}" title="Modify this trip">
