@@ -45,6 +45,10 @@
                             Service Account ({{ request.user }})
                         {% endif %}
                     </a>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item"><a class="nav-link"
+                                                href="{% url 'admin:index' %}">DjangoAdmin</a></li>
+                    {% endif %}
                 <li class="nav-item"><a class="nav-link"
                                         href="{% url 'authentication:logout' %}?next={{ request.path }}"><i
                         class="fa fa-sign-out"></i> Logout </a></li>

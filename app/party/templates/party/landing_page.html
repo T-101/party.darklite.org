@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}
+{% extends 'party/base.html' %}{% load partywiki_extras %}
 
 {% block content %}
     <div class="py-2">
@@ -22,8 +22,8 @@
                 <div class="col-md-3">
                     <p class="lead bg-info text-center text-white">Past parties</p>
                     <ul class="list-unstyled bg-faded">
-                        {% for party in past_parties %}
-                            <li><a href="{% url 'party:detail' party.slug %}">{{ party }}</a></li>
+                        {% for party in past_parties|slice:"10" %}
+                            <li><a href="{% url 'party:detail' party.slug %}">{{ party|small_year }}</a></li>
                         {% endfor %}
                     </ul>
                     <!-- <p><a href="#">More</a></p> -->

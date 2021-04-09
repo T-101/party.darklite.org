@@ -25,7 +25,7 @@ class Party(models.Model):
     past_parties = PastPartyManager()
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.date_start.year})"
 
     def save(self, *args, **kwargs):
         slug = slugify('%s %s' % (self.name, self.date_start.year))

@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col">
-                            <h1 class="">{{ object }} <a
+                            <h1 class="">{{ object|small_year }} <a
                                     href="{% url 'party:update' object.slug %}" title="Modify this party">
                                 {% if not object.has_ended or user.is_superuser %}
                                     <span style="font-size: 1rem;">
@@ -21,6 +21,7 @@
                                 {% endif %}
                             </a>
                             </h1>
+                        <small>Added by {{ object.created_by|get_display_name }} on {{ object.created_dt }}</small>
                         </div>
                         <div class="text-right col">
                             <ul class="list-unstyled">

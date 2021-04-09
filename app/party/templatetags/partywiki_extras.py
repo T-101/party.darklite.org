@@ -1,6 +1,7 @@
 import re
 
 from django.template.defaulttags import register
+from django.utils.safestring import mark_safe
 from django_countries import countries
 
 
@@ -27,3 +28,8 @@ def get_display_name(obj):
     if obj.display_name:
         return obj.display_name
     return obj
+
+
+@register.filter
+def small_year(obj):
+    return mark_safe(f"{obj.name} <small>{obj.date_start.year}</small>")
