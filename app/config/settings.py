@@ -151,6 +151,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'common.permissions.IsSuperUserOrReadOnly',
+    ]
+}
+
+
 TEMPUS_DOMINUS_LOCALIZE = True
 
 GOOGLE_ANALYTICS = env.str("GOOGLE_ANALYTICS")
