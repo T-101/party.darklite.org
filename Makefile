@@ -20,3 +20,4 @@ up:
 	-p 127.0.0.1:${CONTAINER_PORT}:${CONTAINER_PORT} \
 	-v ${BASE_DIR}/app:/code/app \
 	--name partywiki \
+	-d partywiki
