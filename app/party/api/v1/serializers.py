@@ -1,3 +1,5 @@
+from django_countries.serializers import CountryFieldMixin
+
 from authentication.api.v1.serializers import UserSerializer
 from common.serializers import BaseModelSerializer
 from party.models import Party, Trip
@@ -19,7 +21,7 @@ class PartySerializer(BaseModelSerializer):
         # exclude_fields = ["created_by", "id"]
 
 
-class TripSerializer(BaseModelSerializer):
+class TripSerializer(CountryFieldMixin, BaseModelSerializer):
     class Meta:
         model = Trip
         fields = '__all__'

@@ -1,14 +1,10 @@
 from django.contrib.auth import get_user_model
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.pagination import PageNumberPagination as BasePageNumberPagination
 
+from common.paginations import PageNumberPagination
 from party.api.v1.serializers import PartySerializer, TripSerializer
 
 from party.models import Party, Trip
-
-
-class PageNumberPagination(BasePageNumberPagination):
-    page_size = 10
 
 
 class PartyViewSet(ModelViewSet):
@@ -27,3 +23,4 @@ class PartyViewSet(ModelViewSet):
 class TripViewSet(ModelViewSet):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
+    pagination_class = PageNumberPagination
