@@ -32,7 +32,12 @@ class AboutView(generic.TemplateView):
 
 
 class SearchView(generic.TemplateView):
-    template_name = 'party/base.html'
+    template_name = 'party/search.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["results"] = Party.objects.filter(name__icontains=self.request.GET.get("search", None)).order_by("date_start")
+        return ctx
 
 
 class PartyListView(generic.ListView):
@@ -96,17 +101,17 @@ class DemopartyNetCreateView(generic.RedirectView):
         if len(party_feed) != 1:
             return HttpResponse("Multiple party slug error. Contact someone")
         Party.objects.update_or_create(slug=slugify(demopartynet_slug),
-                                    defaults={
-                                        "name": party_feed[0].title,
-                                        "www": party_feed[0].demopartynet_url,
-                                        "date_start": datetime.strptime(party_feed[0].demopartynet_startdate,
-                                                                        '%a, %d %b %Y %X %z'),
-                                        "date_end": datetime.strptime(party_feed[0].demopartynet_enddate,
-                                                                      '%a, %d %b %Y %X %z'),
-                                        "location": "Unknown",
-                                        "country": str(party_feed[0].demopartynet_country).upper()
-                                    }
-                                    )
+                                       defaults={
+                                           "name": party_feed[0].title,
+                                           "www": party_feed[0].demopartynet_url,
+                                           "date_start": datetime.strptime(party_feed[0].demopartynet_startdate,
+                                                                           '%a, %d %b %Y %X %z'),
+                                           "date_end": datetime.strptime(party_feed[0].demopartynet_enddate,
+                                                                         '%a, %d %b %Y %X %z'),
+                                           "location": "Unknown",
+                                           "country": str(party_feed[0].demopartynet_country).upper()
+                                       }
+                                       )
         return HttpResponse(party_feed[0])
         return HttpResponse(demopartynet_slug)
 
@@ -179,4 +184,3 @@ class TripUpdateView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse("party:detail", args=[self.kwargs.get("slug")])
-

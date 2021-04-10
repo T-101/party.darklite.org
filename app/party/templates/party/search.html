@@ -1,0 +1,12 @@
+{% extends 'party/base.html' %}{% load partywiki_extras %}
+
+{% block content %}
+    <div class="py-2">
+        <div class="container">
+            <h3>Search</h3>
+            {% for result in results %}
+                <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
