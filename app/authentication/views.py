@@ -28,14 +28,11 @@ class SceneIDAuthRedirect(RedirectView):
         self.request.session['sceneid_state'] = get_random_string(length=32)
         params = {
             'client_id': settings.SCENEID_CLIENT_ID,
-            # The trailing slash was throwing id.scene.org off... so we clip it out with [:-1]
-            'redirect_uri': settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return')[:-1],
+            'redirect_uri': settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return'),
             'response_type': 'code',
             'state': self.request.session['sceneid_state']
         }
         url = settings.SCENEID_HOST + '/oauth/authorize/?' + urllib.parse.urlencode(params)
-        print("REDIRECT URL", url)
-        print("PAYLOAD REDIRECT URL", params.get("redirect_uri"))
         return url
 
 
@@ -47,8 +44,6 @@ class SceneIDAuthReturn(View):
         session_state = request.session['sceneid_state']
         del request.session['sceneid_state']
 
-        print("PIERPIERPIERPEIRPIEPRIEPIR", settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return')[:-1])
-
         if state != session_state:
             raise SuspiciousOperation("State mismatch!")
 
@@ -56,7 +51,7 @@ class SceneIDAuthReturn(View):
             'grant_type': 'authorization_code',
             'code': code,
             # Again we strip the trailing slash from the url with [:-1]
-            'redirect_uri': settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return')[:-1],
+            'redirect_uri': settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return'),
         }
 
         headers = {
@@ -71,14 +66,14 @@ class SceneIDAuthReturn(View):
         payload = response_data.get('user')
 
         try:
-            user = get_user_model().objects.get(visitor__sceneid_user_id=payload["id"])
+            user = get_user_model().objects.get(scene_id=payload["id"])
         except get_user_model().DoesNotExist:
             user = None
 
         error_msg = "Your account has been disabled. If you feel that this is wrong, contact the administrator"
         if user is not None and not user.is_active:
             messages.error(request, error_msg)
-            return redirect('www:landingpage')
+            return redirect('party:landing_page')
 
         if user is not None and user.is_active:
             # we have a known active local user linked to this sceneid
@@ -89,4 +84,4 @@ class SceneIDAuthReturn(View):
             login(request, visitor.user)
             messages.add_message(self.request, messages.INFO, "Account created successfully!")
 
-        return redirect('www:landingpage')
+        return redirect('party:landing_page')
