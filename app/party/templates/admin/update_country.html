@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% for object in queryset %}
+            <input type="hidden" name="_selected_action" value="{{ object.pk }}"/>
+        {% endfor %}
+
+
+        <select name="direction">
+            <option value="departure">Departure</option>
+            <option value="arrival">Arrival</option>
+        </select>
+
+        <select name="country">
+            {% for country in country_list %}
+                <option value="{{ country.code }}">{{ country.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="hidden" name="action" value="update_country"/>
+        <input type="submit" name="apply" value="Update countries"/>
+    </form>
+{% endblock %}

@@ -4,7 +4,12 @@ import json
 
 from django.contrib import admin
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db.models.functions import Lower
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.utils.dateparse import parse_datetime
+from django_countries import countries
 
 from django_object_actions import DjangoObjectActions
 
@@ -39,12 +44,14 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
         'arrival_town', 'arrival_country', 'arrival_datetime',
         'detail1', 'detail2',
         'towards_home',
-        'created_by',
+        # 'created_by',
     )
-    search_fields = ['party__name', 'display_name', 'departure_town', 'arrival_town',
+    search_fields = ['party__name', 'display_name', 'departure_town', 'departure_country', 'arrival_town',
+                     'arrival_country',
                      'detail1', 'detail2', 'created_by__email', 'created_by__display_name']
-    list_filter = ('departure_datetime', 'arrival_datetime', 'towards_home')
+    list_filter = ('departure_datetime', 'arrival_datetime', 'towards_home', "type")
     autocomplete_fields = ['party']
+    date_hierarchy = "departure_datetime"
 
     def import_trips(self, request, obj):
         file_name = os.path.join(settings.BASE_DIR, "tdump.json")
@@ -67,7 +74,8 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
             else:
                 trip.departure_country = item.get("departure_country")
             trip.departure_datetime = parse_datetime(item.get("departure_datetime"))
-            trip.party = Party.objects.get(name__exact=item.get("party").get("name"), date_start__year=item.get("party").get("start_year"))
+            trip.party = Party.objects.get(name__exact=item.get("party").get("name"),
+                                           date_start__year=item.get("party").get("start_year"))
             trip.arrival_town = item.get("arrival_town")
             r = regex.search(trip.arrival_town)
             if r:
@@ -98,7 +106,8 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
             trip.departure_town = item.get("departure_town")
             trip.departure_country = item.get("departure_country")
             trip.departure_datetime = parse_datetime(item.get("departure_datetime"))
-            trip.party = Party.objects.get(name__exact=item.get("party").get("name"), date_start__year=item.get("party").get("start_year"))
+            trip.party = Party.objects.get(name__exact=item.get("party").get("name"),
+                                           date_start__year=item.get("party").get("start_year"))
             trip.arrival_town = item.get("arrival_town")
             trip.arrival_country = item.get("arrival_country")
             trip.arrival_datetime = parse_datetime(item.get("arrival_datetime"))
@@ -110,3 +119,37 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
         Trip.objects.bulk_create(ret_arr)
 
     changelist_actions = ["import_trips", "import_flights"]
+
+    def update_country(self, request, queryset):
+        if 'apply' in request.POST:
+            queryset.update(**{f"{request.POST.get('direction')}_country": request.POST.get("country")})
+            self.message_user(request, "Changed status on {} trips".format(queryset.count()))
+            return HttpResponseRedirect(request.get_full_path())
+        return render(request, 'admin/update_country.html',
+                      context={"queryset": queryset, "country_list": list(countries)})
+
+    def update_trip_type(self, request, queryset):
+        if 'apply' in request.POST:
+            queryset.update(type=request.POST.get("trip_type"))
+            self.message_user(request, "Changed status on {} trips".format(queryset.count()))
+            return HttpResponseRedirect(request.get_full_path())
+        return render(request, 'admin/update_trip_type.html',
+                      context={"queryset": queryset, "trip_type_list": Trip.TYPES})
+
+    def set_toward_home_true(self, request, queryset):
+        queryset.update(towards_home=True)
+        return HttpResponseRedirect(request.get_full_path())
+
+    def update_trip_created_by(self, request, queryset):
+        if 'apply' in request.POST:
+            created_by = get_user_model().objects.get(pk=request.POST.get('created_by'))
+            queryset.update(created_by=created_by)
+            self.message_user(request, f"Trips set to {created_by}")
+            return HttpResponseRedirect(request.get_full_path())
+        user_list = get_user_model().objects.order_by(Lower("display_name")).values_list("id", "display_name")
+        return render(request, 'admin/update_trip_create_by.html',
+                      context={"queryset": queryset,
+                               "created_by_list": user_list})
+
+    actions = ['update_country', 'update_trip_type', 'set_toward_home_true',
+               'update_trip_created_by']

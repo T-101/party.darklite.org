@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% for object in queryset %}
+            <input type="hidden" name="_selected_action" value="{{ object.pk }}"/>
+        {% endfor %}
+
+        <select name="created_by">
+            {% for created_by in created_by_list %}
+                <option value="{{ created_by.0 }}">{{ created_by.1 }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="hidden" name="action" value="update_trip_created_by"/>
+        <input type="submit" name="apply" value="Update trip created by"/>
+    </form>
+{% endblock %}
