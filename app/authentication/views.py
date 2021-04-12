@@ -82,7 +82,8 @@ class SceneIDAuthReturn(View):
             username = slugify(payload['display_name'], allow_unicode=False)
             user = get_user_model().objects.create_user(
                 email=f"{username}@sceneid.{payload['id']}",
-                display_name=payload['display_name']
+                display_name=payload['display_name'],
+                scene_id=payload["id"]
             )
             login(request, user)
             messages.add_message(self.request, messages.INFO, "Account created successfully!")
