@@ -1,10 +1,8 @@
-import base64
-
 import requests
+from requests.auth import HTTPBasicAuth
 import urllib.parse
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
-from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
@@ -40,25 +38,28 @@ class SceneIDAuthReturn(View):
     def get(self, request, *args, **kwargs):
         state, code = map(self.request.GET.get, ['state', 'code'])
 
-        # This maybe helps with the occational "State mismatch" errors
-        session_state = request.session['sceneid_state']
+        try:
+            session_state = request.session['sceneid_state']
+        except KeyError:
+            messages.info(request, "Something went wrong, please try again (Error 1)")
+            return redirect("party:landing_page")
         del request.session['sceneid_state']
 
         if state != session_state:
-            raise SuspiciousOperation("State mismatch!")
+            messages.info(request, "Something went wrong, please try again (Error 2)")
+            return redirect("party:landing_page")
 
         data = {
             'grant_type': 'authorization_code',
             'code': code,
-            # Again we strip the trailing slash from the url with [:-1]
             'redirect_uri': settings.SCENEID_RETURN_BASE_URL + reverse('authentication:sceneid_return'),
         }
 
-        headers = {
-            'Authorization': "Basic " + base64.b64encode(
-                bytes(settings.SCENEID_CLIENT_ID + ":" + settings.SCENEID_SECRET, encoding='utf-8')).decode('utf-8'),
-        }
-        response_data = requests.post(url=settings.SCENEID_HOST + '/oauth/token/', data=data, headers=headers).json()
+        response_data = requests.post(
+            url=settings.SCENEID_HOST + '/oauth/token/',
+            data=data,
+            auth=HTTPBasicAuth(settings.SCENEID_CLIENT_ID, settings.SCENEID_SECRET)
+        ).json()
 
         headers = {'Authorization': f'Bearer {response_data.get("access_token")}'}
 
