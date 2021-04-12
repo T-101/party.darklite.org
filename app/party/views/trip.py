@@ -10,6 +10,29 @@ from party.models import Party, Trip
 
 class TripCreateView(generic.CreateView):
     template_name = 'party/trip_create.html'
+    model = Trip
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['is_required'] = True
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.display_name = self.request.user.display_name
+        form.instance.party = Party.objects.get(slug=self.kwargs.get("slug"))
+        return super().form_valid(form)
+
+    def get_form_class(self):
+        if self.request.user_agent.is_mobile:
+            return TripFormNative
+        return TripForm
+
+    def get_success_url(self):
+        return reverse("party:detail", args=[self.kwargs.get("slug")])
+
+
+class JourneyCreateView(generic.CreateView):
+    template_name = 'party/journey_create.html'
     form_class = TripForm
     model = Trip
 

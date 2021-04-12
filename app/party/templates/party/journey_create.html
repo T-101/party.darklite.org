@@ -8,17 +8,26 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h3>Create a Trip</h3>
-                <p class="lead bg-info text-white col-md-11">TO PARTY</p>
+                <h1>UA {{ request.user_agent }}</h1>
+                {% if request.user_agent.is_mobile %}
+                    <h1>Mobile</h1>
+                {% else %}
+                    <h1>Not Mobile</h1>
+                {% endif %}
+                <h3>Create a flight</h3>
                 <form method="post">
                     {% csrf_token %}
-                    {% crispy form %}
+                    <p class="lead bg-info text-white col-md-11">TO PARTY</p>
+                    {% crispy inbound %}
+                    <p class="lead bg-info text-white col-md-11">FROM PARTY</p>
+                    {% crispy outbound %}
+                    <button type="submit">JOO</button>
                 </form>
             </div>
         </div>
     </div>
-    <p>&nbsp;</p>
-{% comment %}    <div class="container">
+
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <ul class="breadcrumb">
@@ -29,7 +38,7 @@
                 </ul>
             </div>
         </div>
-    </div>{% endcomment %}
+    </div>
 
 {% endblock %}
 

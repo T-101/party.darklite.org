@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
 
 from common.classes import LocaleDateTimePicker, LocaleDatePicker
 from party.models import Party, Trip
@@ -53,14 +53,14 @@ class TripForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         is_required = kwargs.pop("is_required", False)
+        towards_home = kwargs.pop("towards_home", False)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False  # Do not render <form> tags for each FormClass
-        for field in ["departure_town", "arrival_town",
-                      "departure_datetime", "arrival_datetime",
-                      "departure_country", "arrival_country"]:
+        for field in ["departure_town", "arrival_town", "departure_datetime",
+                      "arrival_datetime", "departure_country", "arrival_country"]:
             setattr(self.fields[field], "required", is_required)
-        self.fields["towards_home"].required = False
+        self.fields["towards_home"].required = towards_home
 
         # self.fields["departure_country"].selected = ("PIER", "PIER")
 
@@ -76,20 +76,22 @@ class TripForm(forms.ModelForm):
                 Column('arrival_datetime', css_class="col-md-3"),
             ),
             Row(
+                Column('type', css_class="col-md-3"),
                 Column('detail1', css_class="col-md-4"),
                 Column('detail2', css_class="col-md-4"),
             ),
-            # Row(
-            #     Column(
-            #         Submit('submit', 'Save'),
-            #         Reset('reset', 'Cancel')
-            #     )
-            # )
+            ButtonHolder(
+                Submit('submit', 'Submit')
+            )
         )
 
     class Meta:
         model = Trip
-        exclude = ['party', 'handle', 'created_by', 'type']
+        exclude = ['party', 'created_by', 'display_name']
+        help_texts = {
+            "detail1": "Optional. Can be airline, car make, whatever",
+            "detail2": "Optional. Can be flight number, car registration plate, whatever"
+        }
 
 
 class TripFormNative(TripForm):
