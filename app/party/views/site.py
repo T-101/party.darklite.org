@@ -15,7 +15,7 @@ class LandingPageView(generic.TemplateView):
 
 
 class AboutView(generic.TemplateView):
-    template_name = 'party/base.html'
+    template_name = 'party/about.html'
 
 
 class SearchView(generic.TemplateView):

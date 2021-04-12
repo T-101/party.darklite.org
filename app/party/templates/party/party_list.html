@@ -6,6 +6,7 @@
 
 {% block content %}
     <div class="container">
+        <h3>Some parties</h3>
         {% regroup object_list by name as parties %}
         <ul class="list-group">
             {% for party in parties %}
