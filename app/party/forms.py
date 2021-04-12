@@ -3,13 +3,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
-from common.classes import LocaleDateTimePicker
+from common.classes import LocaleDateTimePicker, LocaleDatePicker
 from party.models import Party, Trip
 
 
 class PartyForm(forms.ModelForm):
-    date_start = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    date_end = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    date_start = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
+    date_end = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -95,3 +95,8 @@ class TripForm(forms.ModelForm):
 class TripFormNative(TripForm):
     departure_datetime = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"type": "datetime-local"}))
     arrival_datetime = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"type": "datetime-local"}))
+
+
+class PartyFormNative(PartyForm):
+    date_start = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    date_end = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
