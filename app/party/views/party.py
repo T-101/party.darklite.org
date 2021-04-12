@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from django.views import generic
 from django.conf import settings
 
+from common.mixins import LoginRequiredMixin
 from party.forms import PartyForm, PartyFormNative
 from party.models import Party
 
@@ -24,7 +25,7 @@ class PartyListView(generic.ListView):
     queryset = Party.objects.order_by(Lower("name"), "date_start")
 
 
-class PartyCreateView(generic.CreateView):
+class PartyCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'party/party_create.html'
     model = Party
     queryset = Party.objects.all()
@@ -48,7 +49,7 @@ class PartyCreateView(generic.CreateView):
         return reverse("party:landing_page")
 
 
-class PartyUpdateView(generic.UpdateView):
+class PartyUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'party/party_create.html'
     model = Party
     form_class = PartyForm
@@ -69,7 +70,7 @@ class PartyDetailView(generic.DetailView):
         return ctx
 
 
-class DemopartyNetCreateView(generic.RedirectView):
+class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
         demopartynet_slug = request.GET.get("slug", None)
         if not demopartynet_slug:

@@ -1,5 +1,4 @@
 import requests
-from django.contrib.auth.mixins import LoginRequiredMixin
 from requests.auth import HTTPBasicAuth
 import urllib.parse
 from django.contrib import messages
@@ -13,6 +12,7 @@ from django.conf import settings
 from django.views.generic import RedirectView
 
 from authentication.forms import DisplayNameForm
+from common.mixins import LoginRequiredMixin
 from party.models import Party
 
 
@@ -20,9 +20,6 @@ class ProfileView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'authentication/profile.html'
     form_class = DisplayNameForm
     model = get_user_model()
-
-    def get_login_url(self):
-        return reverse('party:landing_page')
 
     def get_object(self, queryset=None):
         return self.request.user
