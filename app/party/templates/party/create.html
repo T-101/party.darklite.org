@@ -13,13 +13,16 @@
                 {% crispy form %}
                 <p>Fields with (*) are mandatory</p>
             </div>
-            <div class="col-sm-6">
-                <h3>Or select from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
-                {% for party in parties %}
-                    <li><a href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a></li>
-                {% endfor %}
-                <!-- https://www.demoparty.net/unique-event/hashembly-winter-2021.jsonld -->
-            </div>
+            {% if parties %}
+                <div class="col-sm-6">
+                    <h3>Or select from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                    {% for party in parties %}
+                        <li><a href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
+                        </li>
+                    {% endfor %}
+                    <!-- https://www.demoparty.net/unique-event/hashembly-winter-2021.jsonld -->
+                </div>
+            {% endif %}
         </div>
     </div>
 
