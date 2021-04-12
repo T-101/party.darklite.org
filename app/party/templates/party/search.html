@@ -9,4 +9,22 @@
             {% endfor %}
         </div>
     </div>
+
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'party:list' %}">Parties</a></li>
+                        {% comment %}                        <li class="breadcrumb-item"><a
+                                href="{% url 'party:list' year %}">{{ year }}</a>
+                        </li>{% endcomment %}
+                        <li class="breadcrumb-item active">{{ object.name }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 import feedparser
 from datetime import datetime
 
+from django.db.models import Q
 from django.db.models.functions import Lower
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
@@ -36,14 +37,18 @@ class SearchView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["results"] = Party.objects.filter(name__icontains=self.request.GET.get("search", None)).order_by("date_start")
+        query = self.request.GET.get("search", None)
+        if query:
+            ctx["results"] = Party.objects.filter(
+                Q(name__icontains=query) | Q(trips__display_name__icontains=query)
+            ).order_by("date_start").distinct()
         return ctx
 
 
 class PartyListView(generic.ListView):
     template_name = 'party/list.html'
     model = Party
-    queryset = Party.objects.all()
+    queryset = Party.objects.order_by(Lower("name"), "date_start")
 
 
 class PartyCreateView(generic.CreateView):

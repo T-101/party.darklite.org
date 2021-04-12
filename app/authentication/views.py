@@ -72,7 +72,7 @@ class SceneIDAuthReturn(View):
 
         error_msg = "Your account has been disabled. If you feel that this is wrong, contact the administrator"
         if user is not None and not user.is_active:
-            messages.error(request, error_msg)
+            messages.warning(self.request, error_msg)
             return redirect('party:landing_page')
 
         if user is not None and user.is_active:

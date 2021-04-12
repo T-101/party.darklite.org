@@ -30,7 +30,7 @@ class PartyAdmin(admin.ModelAdmin):
         'created_dt',
         'created_by',
     )
-    list_filter = ('date_start', 'date_end', 'created_dt', 'created_by')
+    list_filter = ('date_start', 'date_end', 'created_dt')
     search_fields = ('name', 'slug', 'created_by__email')
     prepopulated_fields = {'slug': ['name']}
     list_select_related = ["created_by"]
