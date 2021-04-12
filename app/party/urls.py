@@ -1,7 +1,8 @@
 from django.urls import path
 
-from party.views import LandingPageView, AboutView, SearchView, PartyListView, PartyCreateView, PartyDetailView, \
-    PartyUpdateView, TripCreateView, TripUpdateView, DemopartyNetCreateView
+from party.views.site import LandingPageView, AboutView, SearchView
+from party.views.party import PartyListView, PartyCreateView, PartyDetailView, PartyUpdateView, DemopartyNetCreateView
+from party.views.trip import TripCreateView, TripUpdateView
 
 app_name = "party"
 

@@ -56,7 +56,7 @@
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="" class="btn btn-success">LOGIN TO SEE FURTHER DETAILS</a>
+                        <a href="" class="btn btn-success">LOGIN TO SEE DETAILS</a>
                     {% endif %}
                 </div>
 
@@ -84,7 +84,7 @@
                         </thead>
                         <tbody>
                         {% for trip in inbound %}
-                            {% include 'party/detail_trip_row.html' %}
+                            {% include 'party/trip_detail_row.html' %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -122,7 +122,7 @@
                         </thead>
                         <tbody>
                         {% for trip in outbound %}
-                            {% include 'party/detail_trip_row.html' %}
+                            {% include 'party/trip_detail_row.html' %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -130,62 +130,6 @@
             </div>
         </div>
     </div>
-
-
-    {% comment %}    <div class="py-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="lead">Hotels</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-hover table-responsive-sm table-sm">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th>Nick/Group</th>
-                            <th>Hotel</th>
-                            {% if user.is_authenticated %}
-                                <th>Checkin</th>
-                                <th>Checkout</th>
-                                {% if not object.has_ended or user.is_superuser %}
-                                    <th></th>
-                                {% endif %}
-                            {% endif %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for hotel in object.hotels.all %}
-                            <tr>
-                                <td>{{ hotel.handle }}</td>
-                                <td>{{ hotel.hotel }}</td>
-                                {% if user.is_authenticated %}
-                                    <td>{{ hotel.date_start|date:"D, d M Y" }}</td>
-                                    <td>{{ hotel.date_end|date:"D, d M Y" }}</td>
-                                    {% if not object.has_ended or user.is_superuser %}
-                                        <td class="text-right">
-                                            <a href="{% url 'partywiki:hotel-create' object.slug hotel.pk %}">
-                                                <i class="fa fa-clone icon-help"
-                                                   data-help-text="Clone this hotel"></i>
-                                            </a>&nbsp;
-                                            <a href="{% url 'partywiki:hotel-update' object.slug hotel.pk %}">
-                                                <i class="fa fa-pencil icon-help"
-                                                   data-help-text="Edit this hotel"></i>
-                                            </a>
-                                        </td>
-                                    {% endif %}
-                                {% endif %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>{% endcomment %}
-
-
 
     <div class="py-5">
         <div class="container">
