@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth.mixins import LoginRequiredMixin
 from requests.auth import HTTPBasicAuth
 import urllib.parse
 from django.contrib import messages
@@ -11,13 +12,31 @@ from django.views import generic, View
 from django.conf import settings
 from django.views.generic import RedirectView
 
+from authentication.forms import DisplayNameForm
+from party.models import Party
 
-class DisplayNameView(generic.TemplateView):
-    template_name = 'authentication/display_name.html'
 
+class ProfileView(LoginRequiredMixin, generic.UpdateView):
+    template_name = 'authentication/profile.html'
+    form_class = DisplayNameForm
+    model = get_user_model()
 
-class AuthView(generic.TemplateView):
-    template_name = 'authentication/display_name.html'
+    def get_login_url(self):
+        return reverse('party:landing_page')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        messages.info(self.request, "Default display name successfully changed")
+        return reverse("authentication:profile")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["user_parties"] = Party.objects.filter(
+            trips__in=self.request.user.trips.all()
+        ).order_by("name", "date_start").distinct()
+        return ctx
 
 
 class SceneIDAuthRedirect(RedirectView):

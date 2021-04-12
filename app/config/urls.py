@@ -34,7 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1router.urls)),
     path('', include('party.urls')),
-    path('account/sceneid/', include('authentication.urls')),
+    path('account/', include('authentication.urls')),
 ]
 
 if settings.DEBUG:

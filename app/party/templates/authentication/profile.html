@@ -1,0 +1,29 @@
+{% extends 'party/base.html' %}{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Profile | Darklite Partywiki</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3>Profile</h3>
+        <div class="row">
+            <div class="col">
+                {% crispy form %}
+            </div>
+            <div class="col">
+                {% regroup user_parties by name as parties %}
+                <ul class="list-group list-group-flush">
+                    {% for party in parties %}
+                        <li class="list-group-item" style="padding: .35rem 1.25rem;">{{ party.grouper }}
+                            {% for party_instance in party.list %}
+                                <a href="{% url 'party:detail' party_instance.slug %}">{{ party_instance.date_start.year }}</a>
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -37,13 +37,10 @@
             <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-pie"></i> Stats</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a href="{% url 'authentication:create' %}" class="nav-link">
+                    <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis"
+                       style="max-width: 150px;" title="{{ request.user|get_display_name }}">
                         <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
-                        {% if request.user %}
-                            {{ request.user|get_display_name }}
-                        {% else %}
-                            Service Account ({{ request.user }})
-                        {% endif %}
+                        {{ request.user|get_display_name }}
                     </a>
                     {% if request.user.is_superuser %}
                         <li class="nav-item"><a class="nav-link"
