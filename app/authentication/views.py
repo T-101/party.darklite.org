@@ -86,6 +86,6 @@ class SceneIDAuthReturn(View):
                 scene_id=payload["id"]
             )
             login(request, user)
-            messages.add_message(self.request, messages.INFO, "Account created successfully!")
+            messages.success(self.request, "Account created successfully!")
 
         return redirect('party:landing_page')
