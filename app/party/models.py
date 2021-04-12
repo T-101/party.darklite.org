@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.text import slugify
 from django_countries.fields import CountryField
 
+from common.parsers import strip_trailing_year
 from party.managers import UpcomingPartyManager, PastPartyManager
 
 
@@ -28,6 +29,8 @@ class Party(models.Model):
         return f"{self.name} ({self.date_start.year})"
 
     def save(self, *args, **kwargs):
+        if self.name.endswith(str(self.date_start.year)):
+            self.name = strip_trailing_year(self.name)
         slug = slugify('%s %s' % (self.name, self.date_start.year))
         self.slug = re.sub(r'-(\d{4})(?=.+\1)', '', slug)
         super().save(*args, **kwargs)
