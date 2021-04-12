@@ -21,7 +21,7 @@
                                 {% endif %}
                             </a>
                             </h1>
-                        <small>Added by {{ object.created_by|get_display_name }} on {{ object.created_dt }}</small>
+                            <small>Added by {{ object.created_by|get_display_name }} on {{ object.created_dt }}</small>
                         </div>
                         <div class="text-right col">
                             <ul class="list-unstyled">
@@ -56,7 +56,7 @@
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="" class="btn btn-success">LOGIN TO SEE DETAILS</a>
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-success">LOGIN TO SEE DETAILS</a>
                     {% endif %}
                 </div>
 
