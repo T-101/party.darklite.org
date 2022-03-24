@@ -18,8 +18,10 @@
                     <tbody>
                     {% for party in parties %}
                         <tr>
-                        <td>{{ party.trips__count }}</td>
-                        <td>{{ party }}</td>
+                            <td>{{ party.trips__count }}</td>
+                            <td>
+                                <a href="{% url 'party:detail' party.slug %}">{{ party }}</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
