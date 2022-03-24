@@ -2,7 +2,7 @@
 
 {% block title %}
     <title>Create a new party | Darklite Partywiki</title>
-    <meta property="og:title" content="Create a new party | Darklite Partywiki" />
+    <meta property="og:title" content="Create a new party | Darklite Partywiki"/>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
             </div>
             {% if parties %}
                 <div class="col-sm-6">
-                    <h3>Or select from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                    <h3>Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
                     {% for party in parties %}
                         {% get_country party.2 as country %}
                         <li>

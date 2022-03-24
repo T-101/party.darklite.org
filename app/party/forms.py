@@ -11,6 +11,7 @@ from party.models import Party, Trip
 class PartyForm(forms.ModelForm):
     date_start = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
     date_end = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
+    country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,8 +27,8 @@ class PartyForm(forms.ModelForm):
                 Column('date_end')
             ),
             Row(
-                Column('location'),
-                Column('country')
+                Column('location', css_class="col-md-6"),
+                Column('country', css_class="col-md-6")
             ),
             Row(
                 Column(
@@ -97,8 +98,6 @@ class TripForm(forms.ModelForm):
         self.fields["departure_country"].choices = list(countries)
         self.fields["arrival_country"].initial = trip.arrival_country
         self.fields["arrival_country"].choices = list(countries)
-
-        print("TRIP INSTANCE", trip_instance)
 
         self.helper.layout = _trip_layout()
 

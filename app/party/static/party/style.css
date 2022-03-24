@@ -1,26 +1,32 @@
-@media (min-width: 810px){
+@media (min-width: 810px) {
     .navbar-expand-custom {
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: flex-start;
     }
+
     .navbar-expand-custom .navbar-nav {
         flex-direction: row;
     }
+
     .navbar-expand-custom .dropdown-menu {
         position: absolute;
     }
+
     .navbar-expand-custom .nav-link {
         padding-right: .5rem;
         padding-left: .5rem;
     }
+
     .navbar-expand-custom > .container {
         flex-wrap: nowrap;
     }
+
     .navbar-expand-custom .navbar-collapse {
-        display: flex!important;
+        display: flex !important;
         flex-basis: auto;
     }
+
     .navbar-expand-custom .navbar-toggler {
         display: none;
     }
@@ -28,16 +34,12 @@
 
 
 @font-face {
-  font-family: "Roboto";
-  src: url("/static/party/fonts/Roboto/Roboto-Light.ttf") format("truetype")
+    font-family: "Roboto";
+    src: url("/static/party/fonts/Roboto/Roboto-Light.ttf") format("truetype")
 }
 
 body {
     font-family: "Roboto", sans-serif;
-}
-
-nav {
-    margin-bottom: 1em;
 }
 
 .footer {
@@ -46,4 +48,19 @@ nav {
 
 .square {
     border-radius: 0;
+}
+
+/* fixing issues with django-autocomplete-light input rendering */
+
+.select2-selection {
+    height: 35px !important;
+}
+
+.select2-selection__arrow {
+    display: none !important;
+}
+
+.select2-container {
+    width: 100% !important;
+    min-width: 0 !important;
 }
