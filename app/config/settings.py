@@ -103,7 +103,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'common.context_processors.google_analytics',
             ],
         },
     },
@@ -165,8 +164,6 @@ REST_FRAMEWORK = {
 
 
 TEMPUS_DOMINUS_LOCALIZE = True
-
-GOOGLE_ANALYTICS = env.str("GOOGLE_ANALYTICS")
 
 STATIC_ROOT = env('STATIC_ROOT')
 STATIC_URL = env('STATIC_URL')
