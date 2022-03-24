@@ -1,0 +1,30 @@
+{% extends 'party/base.html' %}
+
+{% block title %}
+    <title>Stats | Darklite Partywiki</title>
+    <meta property="og:title" content="Stats | Darklite Partywiki"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>Top parties</h3>
+                <table>
+                    <thead>
+                    <th style="padding-right: 1em;">Trips towards</th>
+                    <th>Party</th>
+                    </thead>
+                    <tbody>
+                    {% for party in parties %}
+                        <tr>
+                        <td>{{ party.trips__count }}</td>
+                        <td>{{ party }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
