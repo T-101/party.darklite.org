@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
 from django_countries.fields import CountryField
+from django_extensions.db.fields import AutoSlugField
 
 from common.parsers import strip_trailing_year
 from party.managers import UpcomingPartyManager, PastPartyManager
@@ -16,10 +17,14 @@ class Party(models.Model):
     location = models.CharField(max_length=64)
     country = CountryField(multiple=False, null=True, blank=True)
     www = models.URLField(blank=True, null=True)
-    slug = models.SlugField(blank=True)
+    slug = AutoSlugField(populate_from=["name", "date_start__year"])
 
     created_dt = models.DateTimeField(auto_now_add=True, blank=True, null=True, verbose_name='Created datetime')
-    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, blank=True, null=True)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, blank=True, null=True,
+                                   related_name="created_parties")
+    modified_dt = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name='Modified datetime')
+    modified_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, blank=True, null=True,
+                                    related_name="modified_parties")
 
     objects = models.Manager()
     upcoming_parties = UpcomingPartyManager()
@@ -31,8 +36,6 @@ class Party(models.Model):
     def save(self, *args, **kwargs):
         if self.name.endswith(str(self.date_start.year)):
             self.name = strip_trailing_year(self.name)
-        slug = slugify('%s %s' % (self.name, self.date_start.year))
-        self.slug = re.sub(r'-(\d{4})(?=.+\1)', '', slug)
         super().save(*args, **kwargs)
 
     @property
@@ -89,8 +92,9 @@ class Trip(models.Model):
     arrival_datetime = models.DateTimeField()
     detail1 = models.CharField(max_length=32, blank=True, null=True)
     detail2 = models.CharField(max_length=32, blank=True, null=True)
-    towards_home = models.BooleanField(default=False)
-    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name="trips", blank=True, null=True)
+    towards_party = models.BooleanField(default=True)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name="trips", blank=True,
+                                   null=True)
 
     def __str__(self):
         return '%s -> %s' % (self.departure_town, self.arrival_town)

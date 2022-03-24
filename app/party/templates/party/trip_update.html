@@ -14,10 +14,10 @@
                     {{ formset.management_form|crispy }}
                     <div class="row">
                         <div class="col-sm-6">
-                            {% if objects.towards_home %}
-                                <h4>Towards home</h4>
-                            {% else %}
+                            {% if objects.towards_party %}
                                 <h4>Towards party</h4>
+                            {% else %}
+                                <h4>From party</h4>
                             {% endif %}
                             {{ form|crispy }}
                         </div>

@@ -9,16 +9,25 @@
         <div class="row">
             <div class="col">
                 <h3>Create a Trip</h3>
-                <p class="lead bg-info text-white col-md-11">TO PARTY</p>
+
                 <form method="post">
                     {% csrf_token %}
-                    {% crispy form %}
+                    {% crispy trip_formset helper %}
+{% comment %}                    {% for f in form %}
+                        {% if forloop.counter0 == 0 %}
+                            <p class="lead bg-info text-white col-md-11">TO PARTY</p>
+                        {% else %}
+                            <p class="lead bg-info text-white col-md-11">TO HOME</p>
+                        {% endif %}
+                        {% crispy f %}
+                    {% endfor %}{% endcomment %}
+                    <button class="btn btn-primary" type="submit">Save</button>
                 </form>
             </div>
         </div>
     </div>
     <p>&nbsp;</p>
-{% comment %}    <div class="container">
+    {% comment %}    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <ul class="breadcrumb">

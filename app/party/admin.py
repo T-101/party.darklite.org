@@ -13,6 +13,7 @@ from django_countries import countries
 
 from django_object_actions import DjangoObjectActions
 
+from autocomplete_contrib.forms import UsersForm
 from party.models import Party, Trip
 
 
@@ -43,15 +44,16 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
         'departure_town', 'departure_country', 'departure_datetime',
         'arrival_town', 'arrival_country', 'arrival_datetime',
         'detail1', 'detail2',
-        'towards_home',
+        'towards_party',
         # 'created_by',
     )
     search_fields = ['party__name', 'display_name', 'departure_town', 'departure_country', 'arrival_town',
                      'arrival_country',
                      'detail1', 'detail2', 'created_by__email', 'created_by__display_name']
-    list_filter = ('departure_datetime', 'arrival_datetime', 'towards_home', "type")
-    autocomplete_fields = ['party']
+    list_filter = ('departure_datetime', 'arrival_datetime', 'towards_party', "type")
+    autocomplete_fields = ['party', 'created_by']
     date_hierarchy = "departure_datetime"
+    # form = UsersForm
 
     def import_trips(self, request, obj):
         file_name = os.path.join(settings.BASE_DIR, "tdump.json")
@@ -90,7 +92,7 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
             trip.type = item.get("type")
             trip.detail1 = item.get("detail1")
             trip.detail2 = item.get("detail2")
-            trip.towards_home = item.get("towards_home")
+            trip.towards_party = item.get("towards_party")
             ret_arr.append(trip)
         Trip.objects.bulk_create(ret_arr)
 
@@ -114,7 +116,7 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
             trip.type = item.get("type")
             trip.detail1 = item.get("detail1")
             trip.detail2 = item.get("detail2")
-            trip.towards_home = item.get("towards_home")
+            trip.towards_party = item.get("towards_party")
             ret_arr.append(trip)
         Trip.objects.bulk_create(ret_arr)
 
@@ -136,8 +138,12 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
         return render(request, 'admin/update_trip_type.html',
                       context={"queryset": queryset, "trip_type_list": Trip.TYPES})
 
-    def set_toward_home_true(self, request, queryset):
-        queryset.update(towards_home=True)
+    def set_toward_party_true(self, request, queryset):
+        queryset.update(towards_party=True)
+        return HttpResponseRedirect(request.get_full_path())
+
+    def set_toward_party_false(self, request, queryset):
+        queryset.update(towards_party=False)
         return HttpResponseRedirect(request.get_full_path())
 
     def update_trip_created_by(self, request, queryset):
@@ -151,5 +157,5 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
                       context={"queryset": queryset,
                                "created_by_list": user_list})
 
-    actions = ['update_country', 'update_trip_type', 'set_toward_home_true',
+    actions = ['update_country', 'update_trip_type', 'set_toward_party_true', 'set_toward_party_false',
                'update_trip_created_by']

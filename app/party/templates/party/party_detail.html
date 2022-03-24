@@ -22,6 +22,11 @@
                             </a>
                             </h1>
                             <small>Added by {{ object.created_by|get_display_name }} on {{ object.created_dt }}</small>
+                            {% if object.modified_by %}
+                                <br/>
+                                <small>Modified by {{ object.modified_by|get_display_name }}
+                                    on {{ object.modified_dt }}</small>
+                            {% endif %}
                         </div>
                         <div class="text-right col">
                             <ul class="list-unstyled">
@@ -51,8 +56,8 @@
                     {% if user.is_authenticated %}
                         {% if not object.has_ended or user.is_superuser %}
                             <a class="btn btn-success" type="button" id="dropdownPartyButton"
-                               href="{% url 'party:create-trip' object.slug %}">
-                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;COME PARTY WITH US
+                               href="{% url 'party:create-trip-to' object.slug %}">
+                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP TOWARDS PARTY
                             </a>
                         {% endif %}
                     {% else %}
@@ -84,7 +89,7 @@
                         </thead>
                         <tbody>
                         {% for trip in inbound %}
-                            {% include 'party/trip_detail_row.html' %}
+                            {% include 'party/trip_detail_row.html' with direction="to" %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -95,8 +100,20 @@
     <div class="py-2">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <p class="lead">Towards home</p>
+                <div class="col">
+                    <p class="lead">From party</p>
+                </div>
+                <div class="col text-right">
+                    {% if user.is_authenticated %}
+                        {% if not object.has_ended or user.is_superuser %}
+                            <a class="btn btn-success" type="button" id="dropdownPartyButton"
+                               href="{% url 'party:create-trip-from' object.slug %}">
+                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP FROM PARTY
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-success">LOGIN TO SEE DETAILS</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="row">
@@ -122,7 +139,7 @@
                         </thead>
                         <tbody>
                         {% for trip in outbound %}
-                            {% include 'party/trip_detail_row.html' %}
+                            {% include 'party/trip_detail_row.html' with direction="from" %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -139,9 +156,9 @@
                         <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
                         <li class="breadcrumb-item"><a
                                 href="{% url 'party:list' %}">Parties</a></li>
-                        {% comment %}                        <li class="breadcrumb-item"><a
-                                href="{% url 'party:list' year %}">{{ year }}</a>
-                        </li>{% endcomment %}
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'party:list-by-year' object.date_start.year %}">{{ object.date_start.year }}</a>
+                        </li>
                         <li class="breadcrumb-item active">{{ object.name }}</li>
                     </ul>
                 </div>

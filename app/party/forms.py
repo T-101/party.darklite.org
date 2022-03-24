@@ -2,6 +2,7 @@ from dal import autocomplete
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
+from django_countries import countries
 
 from common.classes import LocaleDateTimePicker, LocaleDatePicker
 from party.models import Party, Trip
@@ -41,54 +42,71 @@ class PartyForm(forms.ModelForm):
         exclude = ['slug', 'created_by']
 
 
+def _trip_layout():
+    return Layout(
+        Row(
+            Column('display_name', css_class="col-md-4"),
+        ),
+        Row(
+            Column('departure_town', css_class="col-md-4"),
+            Column('departure_country', css_class="col-md-4"),
+            Column('departure_datetime', css_class="col-md-3")
+        ),
+        Row(
+            Column('arrival_town', css_class="col-md-4"),
+            Column('arrival_country', css_class="col-md-4"),
+            Column('arrival_datetime', css_class="col-md-3"),
+        ),
+        Row(
+            Column('type', css_class="col-md-3"),
+            Column('detail1', css_class="col-md-4"),
+            Column('detail2', css_class="col-md-4"),
+        ),
+    )
+
+
 class TripForm(forms.ModelForm):
-    departure_country = forms.CharField(widget=autocomplete.ListSelect2(url='dal-countries'))
-    arrival_country = forms.CharField(widget=autocomplete.ListSelect2(url='dal-countries'))
+    departure_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
+    arrival_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
 
     departure_datetime = forms.DateTimeField(
         widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))
     arrival_datetime = forms.DateTimeField(
         widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))
-    towards_home = forms.BooleanField(widget=forms.HiddenInput())
+    towards_party = forms.BooleanField(widget=forms.HiddenInput())
 
     def __init__(self, *args, **kwargs):
         is_required = kwargs.pop("is_required", False)
-        towards_home = kwargs.pop("towards_home", False)
+        display_name = kwargs.pop("display_name", None)
+        trip_instance = kwargs.pop("trip_instance", None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False  # Do not render <form> tags for each FormClass
-        for field in ["departure_town", "arrival_town", "departure_datetime",
+        for field in ["display_name", "departure_town", "arrival_town", "departure_datetime",
                       "arrival_datetime", "departure_country", "arrival_country"]:
             setattr(self.fields[field], "required", is_required)
-        self.fields["towards_home"].required = towards_home
+        self.fields["towards_party"].required = False
+        if display_name is not None:
+            self.fields["display_name"].initial = display_name
 
-        # self.fields["departure_country"].selected = ("PIER", "PIER")
+        if trip_instance is not None:
+            trip = trip_instance
+        else:
+            trip = self.instance
+        self.fields["departure_country"].initial = trip.departure_country
+        self.fields["departure_country"].choices = list(countries)
+        self.fields["arrival_country"].initial = trip.arrival_country
+        self.fields["arrival_country"].choices = list(countries)
 
-        self.helper.layout = Layout(
-            Row(
-                Column('departure_town', css_class="col-md-4"),
-                Column('departure_country', css_class="col-md-4"),
-                Column('departure_datetime', css_class="col-md-3")
-            ),
-            Row(
-                Column('arrival_town', css_class="col-md-4"),
-                Column('arrival_country', css_class="col-md-4"),
-                Column('arrival_datetime', css_class="col-md-3"),
-            ),
-            Row(
-                Column('type', css_class="col-md-3"),
-                Column('detail1', css_class="col-md-4"),
-                Column('detail2', css_class="col-md-4"),
-            ),
-            ButtonHolder(
-                Submit('submit', 'Submit')
-            )
-        )
+        print("TRIP INSTANCE", trip_instance)
+
+        self.helper.layout = _trip_layout()
 
     class Meta:
         model = Trip
-        exclude = ['party', 'created_by', 'display_name']
+        exclude = ['party', 'created_by']
         help_texts = {
+            "display_name": "You can change this default value by clicking your name in the nav bar",
             "detail1": "Optional. Can be airline, car make, whatever",
             "detail2": "Optional. Can be flight number, car registration plate, whatever"
         }

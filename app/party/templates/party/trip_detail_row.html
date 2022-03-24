@@ -36,16 +36,25 @@
 
         {% if not object.has_ended or user.is_superuser %}
             <td class="text-right" nowrap="">
-
-                {% if trip.created_by == user or user.is_superuser %}
-                    <a href="{% url 'party:update-trip' object.slug trip.pk %}" title="Modify this trip">
-                        <i class="far fa-edit icon-help"></i>
-                    </a>&nbsp;
+                {% if direction == "to" %}
+                    {% if trip.created_by == user or user.is_superuser %}
+                        <a href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
+                            <i class="far fa-edit icon-help"></i>
+                        </a>&nbsp;
+                    {% endif %}
+                    <a href="{% url 'party:clone-trip-to' object.slug trip.pk %}" title="Clone this trip">
+                        <i class="far fa-clone icon-help"></i>
+                    </a>
+                {% else %}
+                    {% if trip.created_by == user or user.is_superuser %}
+                        <a href="{% url 'party:update-trip-from' object.slug trip.pk %}" title="Modify this trip">
+                            <i class="far fa-edit icon-help"></i>
+                        </a>&nbsp;
+                    {% endif %}
+                    <a href="{% url 'party:clone-trip-from' object.slug trip.pk %}" title="Clone this trip">
+                        <i class="far fa-clone icon-help"></i>
+                    </a>
                 {% endif %}
-                <a href="{% url 'party:create-trip' object.slug trip.pk %}" title="Clone this trip">
-                    <i class="far fa-clone icon-help"></i>
-                </a>
-
 
             </td>
         {% endif %}

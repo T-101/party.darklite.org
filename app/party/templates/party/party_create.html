@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}{% load crispy_forms_tags %}
+{% extends 'party/base.html' %}{% load crispy_forms_tags %}{% load countries %}
 
 {% block title %}
     <title>Create a new party | Darklite Partywiki</title>
@@ -9,7 +9,6 @@
         <div class="row">
             <div class="col-sm-6">
                 <h3>Add a party</h3>
-                {% comment %}{% crispy form %}{% endcomment %}
                 {% crispy form %}
                 <p>Fields with (*) are mandatory</p>
             </div>
@@ -17,18 +16,17 @@
                 <div class="col-sm-6">
                     <h3>Or select from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
                     {% for party in parties %}
-                        <li><a href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
+                        {% get_country party.2 as country %}
+                        <li>
+                            <img src="/static/flags/{{ party.2|lower }}.gif"
+                                 height="10" title="{{ country.name }}"
+                                 alt="Flag: {{ country.name }}"
+                                 onerror="this.style.display='none'">&nbsp;
+                            <a href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
                         </li>
                     {% endfor %}
-                    <!-- https://www.demoparty.net/unique-event/hashembly-winter-2021.jsonld -->
                 </div>
             {% endif %}
         </div>
     </div>
-
-    {% comment %}    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/en-gb.min.js"
-            integrity="sha512-w+tDY4gx49+DNVlN7Nmc9ldOkh6nP3w4txBTEatSx3XrZdfYtX9+oylJjQ7RqeeDzDebG3u1VAg/gM5Td2Bd5Q=="
-            crossorigin="anonymous"></script>{% endcomment %}
-
 {% endblock %}

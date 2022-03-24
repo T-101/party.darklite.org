@@ -22,7 +22,12 @@ def fetch_demopartynet_parties():
 class PartyListView(generic.ListView):
     template_name = 'party/party_list.html'
     model = Party
-    queryset = Party.objects.order_by(Lower("name"), "date_start")
+
+    def get_queryset(self):
+        qs = Party.objects.order_by(Lower("name"), "date_start")
+        if "year" in self.kwargs:
+            qs = qs.filter(date_start__year=self.kwargs.get("year"))
+        return qs
 
 
 class PartyCreateView(LoginRequiredMixin, generic.CreateView):
@@ -38,7 +43,12 @@ class PartyCreateView(LoginRequiredMixin, generic.CreateView):
     @staticmethod
     def _get_demoparties():
         feed = fetch_demopartynet_parties()
-        return [(p.title, p.link) for p in feed.entries]
+        print(feed.entries)
+        return [(p.title, p.link, p.demopartynet_country) for p in feed.entries]
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -54,6 +64,10 @@ class PartyUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Party
     form_class = PartyForm
 
+    def form_valid(self, form):
+        form.instance.modified_by = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse("party:landing_page")
 
@@ -65,12 +79,13 @@ class PartyDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         trips = self.object.trips.select_related("created_by").order_by(Lower("display_name"))
-        ctx["inbound"] = trips.filter(towards_home=False)
-        ctx["outbound"] = trips.filter(towards_home=True)
+        ctx["inbound"] = trips.filter(towards_party=True)
+        ctx["outbound"] = trips.filter(towards_party=False)
         return ctx
 
 
 class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
+    # https://www.demoparty.net/assembly/assembly-winter-2022.jsonld
     def get(self, request, *args, **kwargs):
         demopartynet_slug = request.GET.get("slug", None)
         if not demopartynet_slug:
