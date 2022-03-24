@@ -1,8 +1,10 @@
 from dal import autocomplete
 from django.db.models import Q
+from django.db.models.functions import Lower
 from django_countries import countries
 
-from common.mixins import AuthenticatedOr403Mixin
+from authentication.models import User
+from common.mixins import AuthenticatedOr403Mixin, SuperUserOr403Mixin
 
 
 class BaseAutoComplete(AuthenticatedOr403Mixin, autocomplete.Select2QuerySetView):
@@ -25,3 +27,14 @@ class CountryAutoComplete(AuthenticatedOr403Mixin, autocomplete.Select2ListView)
 
     def get_list(self):
         return countries
+
+
+class UserAutoComplete(SuperUserOr403Mixin, autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        qs = User.objects.order_by(Lower("display_name"))
+
+        if self.q:
+            qs = qs.filter(display_name__istartswith=self.q)
+
+        return qs
