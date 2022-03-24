@@ -1,6 +1,6 @@
 from django.urls import path
 
-from party.views.site import LandingPageView, AboutView, SearchView
+from party.views.site import LandingPageView, AboutView, SearchView, StatsView
 from party.views.party import PartyListView, PartyCreateView, PartyDetailView, PartyUpdateView, DemopartyNetCreateView
 from party.views.trip import TripToCreateView, TripFromCreateView, TripToUpdateView, TripFromUpdateView, \
     TripToCloneView, TripFromCloneView
@@ -11,6 +11,7 @@ urlpatterns = [
     path('', LandingPageView.as_view(), name="landing_page"),
     path('about/', AboutView.as_view(), name="about"),
     path('search/', SearchView.as_view(), name="search"),
+    path('stats/', StatsView.as_view(), name="stats"),
     path('list/', PartyListView.as_view(), name="list"),
     path('list/<int:year>/', PartyListView.as_view(), name="list-by-year"),
     path('create/', PartyCreateView.as_view(), name="create"),
