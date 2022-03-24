@@ -39,7 +39,7 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" href="{% url 'party:about' %}"><i
                     class="fa fa-info-circle"></i> About</a></li>
-            <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-pie"></i> Stats</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis"
