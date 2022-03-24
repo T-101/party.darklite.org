@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_user_agents',
     'tempus_dominus',
+    'django_simple_plausible',
     # Our apps
     'authentication',
     'party',
@@ -180,3 +181,7 @@ SCENEID_HOST = env('SCENEID_HOST')
 SCENEID_CLIENT_ID = env('SCENEID_CLIENT_ID')
 SCENEID_SECRET = env('SCENEID_SECRET')
 SCENEID_RETURN_BASE_URL = env('SCENEID_RETURN_BASE_URL')
+
+PLAUSIBLE_SITES = env.str("PLAUSIBLE_SITES")
+PLAUSIBLE_SCRIPT_URL = env.str("PLAUSIBLE_SCRIPT_URL")
+

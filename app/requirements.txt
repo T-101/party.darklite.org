@@ -8,6 +8,7 @@ django-environ==0.4.5
 djangorestframework==3.12.2
 django-extensions==3.1.1
 django-object-actions==3.0.1
+django-simple-plausible==0.0.3
 django-tempus-dominus==5.1.2.13
 django-user-agents==0.4.0
 feedparser==6.0.2
