@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     {% block title %}
         <title>Darklite Partywiki</title>
-        <meta property="og:title" content="Darklite Partywiki" />
+        <meta property="og:title" content="Darklite Partywiki"/>
     {% endblock %}
-    <meta property="og:description" content="You'll never travel alone - Even if you'd want to" />
+    <meta property="og:description" content="You'll never travel alone - Even if you'd want to"/>
     <meta property="og:image" content="https://party.darklite.org/static/android-chrome-192x192.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-expand-md">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-expand-custom">
     <a class="navbar-brand" href="{% url 'party:landing_page' %}">
         <img src="{% static 'favicon-32x32.png' %}" class="d-inline-block align-top" alt=""
              style="height: 20px; padding-right: 5px"/>
@@ -39,7 +39,8 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" href="{% url 'party:about' %}"><i
                     class="fa fa-info-circle"></i> About</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i>
+                Stats</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis"
@@ -60,10 +61,16 @@
                 </li>
             {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'party:search' %}">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
+
+        <div class="form-group" style="margin-bottom: 0px;">
+            <div class="input-group">
+                <form class="form-inline" method="get" action="{% url 'party:search' %}">
+                    <input type="text" class="form-control square" placeholder="Search" name="search"
+                           aria-label="Search">
+                    <button class="btn btn-secondary square" type="button" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
     </div>
 </nav>
 
@@ -78,7 +85,7 @@
 
 <noscript>
     <style>
-        div, .navbar {
+        .container, .navbar {
             display: none;
         }
     </style>
@@ -87,30 +94,38 @@
     <h5>We use JS as follows:</h5>
     <ul>
         <li>jQuery.js to make our autocompletes work</li>
-        <li>Puppet.js to make our dropboxes work</li>
+        <li>Moment.js with locales</li>
+        <li>Tempus Dominus datepicker</li>
+        <li>Plausible analytics</li>
     </ul>
     <p>
-        Feel free to block out analytics, but before mentioned scripts are needed for this webapp to work
+        Feel free to block out analytics, but the other scripts are needed for this webapp to work
     </p>
 </noscript>
 
 {% block content %}
 {% endblock %}
-<p></p>
-<div class="bg-primary text-center">
+
+<div class="footer bg-primary text-center">
     <div class="container">
-        <div class="row">
-            <div class="col-3 py-1">
+        <div class="row py-1">
+            <div class="col">
                 <a href="https://www.darklite.org"><i class="fa fa-fw fa-home text-white fa-2x"></i></a>
             </div>
-            <div class="col-3 py-1">
+            <div class="col">
                 <a href="https://www.facebook.com/groups/darklite/"><i
                         class="fab fa-facebook-square text-white fa-2x"></i></a>
             </div>
-            <div class="col-3 py-1">
+            <div class="col">
                 <a href="https://twitter.com/darkliters"><i class="fab fa-twitter text-white fa-2x"></i></a>
             </div>
-            <div class="col-3 py-1"><a><i class="fab fa-github text-white fa-2x"></i></a></div>
+            <div class="col">
+                <a href="https://www.instagram.com/darklitegroupigs/"><i
+                        class="fab fa-instagram-square text-white fa-2x"></i></a>
+            </div>
+            <div class="col">
+                <a><i class="fab fa-github text-white fa-2x"></i></a>
+            </div>
         </div>
     </div>
 </div>
