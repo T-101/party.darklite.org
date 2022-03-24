@@ -1,5 +1,5 @@
 {% load partywiki_extras %}
-<tr>
+<tr class="table-data-row">
     <td class="text-truncate handle-ellipsis"
         style="max-width: 150px" title="{{ trip.display_name }}">{{ trip.display_name }}
     </td>
@@ -8,6 +8,7 @@
              height="10" title="{{ trip.departure_country.name }}"
              alt="{{ trip.departure_country.name }}"
              onerror="this.style.display='none'">
+        <span style="font-size: 0">{{ trip.departure_country.name }}</span>
         <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
     </td>
     {% if user.is_authenticated %}
@@ -18,6 +19,7 @@
              height="10" title="{{ trip.arrival_country.name }}"
              alt="{{ trip.arrival_country.name }}"
              onerror="this.style.display='none'">
+        <span style="font-size: 0">{{ trip.arrival_country.name }}</span>
         <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
     </td>
     {% if user.is_authenticated %}
