@@ -10,6 +10,13 @@ class AuthenticatedOr403Mixin:
         return super().get(request, *args, **kwargs)
 
 
+class SuperUserOr403Mixin:
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
+
+
 class LoginRequiredMixin(BaseLoginRequiredMixin):
     def get_login_url(self):
         return reverse("authentication:auth")
