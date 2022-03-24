@@ -30,4 +30,10 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        $("#id_date_start").on("change.datetimepicker", e => {
+            $("#id_date_end").val(e.target.value)
+        })
+    </script>
 {% endblock %}

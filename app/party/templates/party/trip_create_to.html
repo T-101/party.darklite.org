@@ -24,6 +24,12 @@
     </div>
     <p>&nbsp;</p>
 
+    <script>
+        $("#id_departure_datetime").on("change.datetimepicker", e => {
+            $("#id_arrival_datetime").val(e.target.value)
+        })
+    </script>
+
 {% endblock %}
 
 
