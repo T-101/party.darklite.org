@@ -53,6 +53,7 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_filter = ('departure_datetime', 'arrival_datetime', 'towards_party', "type")
     autocomplete_fields = ['party', 'created_by']
     date_hierarchy = "departure_datetime"
+
     # form = UsersForm
 
     def import_trips(self, request, obj):
@@ -62,7 +63,6 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
         ret_arr = []
         regex = re.compile(r"(?:^([a-z]{2})$|^.* ([a-z]{2}$))", re.IGNORECASE)
         for item in data:
-            print(item)
             trip = Trip()
             trip.display_name = item.get("display_name")
             trip.departure_town = item.get("departure_town")
@@ -102,7 +102,6 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
             data = json.loads(raw_data.read())
         ret_arr = []
         for item in data:
-            print(item)
             trip = Trip()
             trip.display_name = item.get("display_name")
             trip.departure_town = item.get("departure_town")
