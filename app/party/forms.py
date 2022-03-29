@@ -17,6 +17,9 @@ class PartyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
 
+        self.fields["country"].initial = self.instance.country
+        self.fields["country"].choices = list(countries)
+
         self.helper.layout = Layout(
             Row(
                 Column('name'),
@@ -40,7 +43,7 @@ class PartyForm(forms.ModelForm):
 
     class Meta:
         model = Party
-        exclude = ['slug', 'created_by']
+        exclude = ['slug', 'created_by', 'modified_by']
 
 
 def _trip_layout():
