@@ -63,6 +63,7 @@ class Party(models.Model):
 
 
 class Trip(models.Model):
+    BICYCLE = 'bicycle'
     BUS = 'bus'
     CAR = 'car'
     MOTORCYCLE = 'motorcycle'
@@ -72,6 +73,7 @@ class Trip(models.Model):
     OTHER = 'other'
 
     TYPES = [
+        (BICYCLE, 'Bicycle'),
         (SHIP, 'Boat'),
         (BUS, 'Bus'),
         (CAR, 'Car'),
