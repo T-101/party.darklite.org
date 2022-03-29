@@ -43,7 +43,6 @@ class PartyCreateView(LoginRequiredMixin, generic.CreateView):
     @staticmethod
     def _get_demoparties():
         feed = fetch_demopartynet_parties()
-        print(feed.entries)
         return [(p.title, p.link, p.demopartynet_country) for p in feed.entries]
 
     def form_valid(self, form):
@@ -69,7 +68,7 @@ class PartyUpdateView(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse("party:landing_page")
+        return reverse("party:detail", kwargs=self.kwargs)
 
 
 class PartyDetailView(generic.DetailView):
