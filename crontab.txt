@@ -1,0 +1,1 @@
+# * 0 * * *		/code/app/manage.py flush_empty_parties
