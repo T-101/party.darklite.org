@@ -70,6 +70,7 @@ class Trip(models.Model):
     PLANE = 'plane'
     SHIP = 'ship'
     TRAIN = 'train'
+    WALKING = 'walking'
     OTHER = 'other'
 
     TYPES = [
@@ -80,6 +81,7 @@ class Trip(models.Model):
         (MOTORCYCLE, 'Motorcycle'),
         (PLANE, 'Plane'),
         (TRAIN, 'Train'),
+        (WALKING, 'Walking'),
         (OTHER, 'Other')
     ]
 
