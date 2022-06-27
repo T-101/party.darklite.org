@@ -64,3 +64,9 @@ body {
     width: 100% !important;
     min-width: 0 !important;
 }
+
+/* Fix Font Awesome inconsistent widths */
+
+.tripTypeIcon {
+    width: 16px
+}
