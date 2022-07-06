@@ -1,1 +1,2 @@
 # * 0 * * *		/code/app/manage.py flush_empty_parties
+0 0/12 * * *		wget https://www.demoparty.net/demoparties.xml -O /code/app/o.xml
