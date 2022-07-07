@@ -101,4 +101,4 @@ class Trip(models.Model):
                                    null=True)
 
     def __str__(self):
-        return '%s -> %s' % (self.departure_town, self.arrival_town)
+        return f'{self.display_name} ({self.departure_town} -> {self.arrival_town})'
