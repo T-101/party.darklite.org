@@ -10,5 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         delta = timezone.localtime() - timezone.timedelta(days=31)
         parties = Party.objects.filter(date_end__lte=delta, trips__isnull=True)
-        print(parties)
-        # parties.delete()
+        if len(parties):
+            print(f"Flushing {len(parties)} parties.")
+            parties.delete()
+        else:
+            print("Nothing to flush.")
