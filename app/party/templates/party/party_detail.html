@@ -29,9 +29,10 @@
                             <ul class="list-unstyled">
                                 <li>{{ object.date_range }}</li>
                                 <li>
+                                    {{ object.location }}
                                     <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country|lower }}.svg"
-                                         alt="flag of {{ object.country }}"
-                                         height="11" onerror="this.style.display='none'">&nbsp;{{ object.location }}
+                                         alt="flag of {{ object.country.name }}" title="{{ object.country.name }}"
+                                         height="11" onerror="this.style.display='none'">
                                 </li>
                                 {% if object.www %}
                                     <li><a href="{{ object.www }}">{{ object.www }}</a></li>
