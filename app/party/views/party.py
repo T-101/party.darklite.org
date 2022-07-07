@@ -1,6 +1,7 @@
 import feedparser
 from datetime import datetime
 
+import requests
 from django.db.models.functions import Lower
 from django.contrib import messages
 from django.http import HttpResponse
@@ -84,7 +85,6 @@ class PartyDetailView(generic.DetailView):
 
 
 class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
-    # https://www.demoparty.net/assembly/assembly-winter-2022.jsonld
     def get(self, request, *args, **kwargs):
         demopartynet_slug = request.GET.get("slug", None)
         if not demopartynet_slug:
@@ -92,20 +92,40 @@ class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
         try:
             feed = fetch_demopartynet_parties()
         except Exception:
-            messages.warning(request, "Error connecting to demoparty.net")
+            messages.warning(self.request, "Error connecting to demoparty.net")
             return redirect("party:landing_page")
+        if Party.objects.filter(slug=slugify(demopartynet_slug)):
+            messages.info(request, "Party already exists")
+            return redirect("party:detail", slug=slugify(demopartynet_slug))
         party_feed = [p for p in feed.entries if slugify(p.title) == slugify(demopartynet_slug)]
         if not party_feed:
+            messages.warning(request, "Unknown party slug, unable to add party")
             return redirect("party:landing_page")
         if len(party_feed) != 1:
-            return HttpResponse("Multiple party slug error. Contact someone")
+            messages.warning(self.request, "More than one party found with slug, unable to add party")
+            return redirect("party:landing_page")
+        party_feed = party_feed[0]
+        address = []
+        if party_feed.link:
+            url = f"{party_feed.link}.jsonld"
+            res = requests.get(url=url)
+            if res.status_code == 200:
+                j = res.json()
+                address.append(j.get("location", {}).get("address", {}).get("streetAddress", ""))
+                address.append(j.get("location", {}).get("address", {}).get("postalCode", ""))
+                address.append(j.get("location", {}).get("address", {}).get("addressLocality", ""))
+        if len(address):
+            address = [p for p in address if p != ""]
+            address = ", ".join(address)
+        else:
+            address = "Unknown"
         defaults = {
-            "name": party_feed[0].title,
-            "www": party_feed[0].demopartynet_url,
-            "date_start": datetime.strptime(party_feed[0].demopartynet_startdate, '%a, %d %b %Y %X %z'),
-            "date_end": datetime.strptime(party_feed[0].demopartynet_enddate, '%a, %d %b %Y %X %z'),
-            "location": "Unknown",
-            "country": str(party_feed[0].demopartynet_country).upper(),
+            "name": party_feed.title,
+            "www": party_feed.demopartynet_url,
+            "date_start": datetime.strptime(party_feed.demopartynet_startdate, '%a, %d %b %Y %X %z'),
+            "date_end": datetime.strptime(party_feed.demopartynet_enddate, '%a, %d %b %Y %X %z'),
+            "location": address,
+            "country": str(party_feed.demopartynet_country).upper(),
             "created_by": request.user
         }
         party, _ = Party.objects.update_or_create(slug=slugify(demopartynet_slug), defaults=defaults)
