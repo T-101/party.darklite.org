@@ -1,7 +1,7 @@
 from django.db.models import Q, Count
 from django.views import generic
 
-from party.models import Party
+from party.models import Party, Trip
 
 
 class LandingPageView(generic.TemplateView):
@@ -36,6 +36,14 @@ class StatsView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["parties"] = Party.objects.filter(trips__towards_party=True).distinct().annotate(Count("trips")).order_by(
-            "-trips__count")[:10]
+        ctx["parties"] = Party.objects \
+                             .filter(trips__towards_party=True) \
+                             .distinct() \
+                             .annotate(Count("trips")) \
+                             .order_by("-trips__count")[:10]
+        ctx["display_names"] = Trip.objects \
+                                   .filter(towards_party=True) \
+                                   .values("display_name") \
+                                   .annotate(count=Count("display_name")) \
+                                   .order_by("-count")[:10]
         return ctx
