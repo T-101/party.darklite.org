@@ -108,9 +108,9 @@ class TripToCloneView(PartyMixin, FormModelMixin, generic.CreateView):
         initial = super().get_initial()
         initial["display_name"] = self.request.user.display_name
         initial["departure_town"] = self.trip.departure_town
-        initial["arrival_town"] = self.trip.departure_town
+        initial["arrival_town"] = self.trip.arrival_town
         initial["departure_datetime"] = self.trip.departure_datetime
-        initial["arrival_datetime"] = self.trip.departure_datetime
+        initial["arrival_datetime"] = self.trip.arrival_datetime
         initial["type"] = self.trip.type
         initial["detail1"] = self.trip.detail1
         initial["detail2"] = self.trip.detail2
