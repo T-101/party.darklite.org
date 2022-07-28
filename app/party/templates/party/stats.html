@@ -27,6 +27,25 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col">
+                <h3>Top partygoers</h3>
+                <table>
+                    <thead>
+                    <th style="padding-right: 1em;">Trips towards</th>
+                    <th>Display name</th>
+                    </thead>
+                    <tbody>
+                    {% for name in display_names %}
+                        <tr>
+                            <td>{{ name.count }}</td>
+                            <td>
+                                {{ name.display_name }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
