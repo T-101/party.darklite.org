@@ -50,6 +50,7 @@ class TripToCreateView(PartyMixin, FormModelMixin, generic.CreateView):
         form.instance.party = self.party
         form.instance.display_name = self.request.user.display_name
         form.instance.towards_party = self.towards_party
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 
@@ -119,6 +120,7 @@ class TripToCloneView(PartyMixin, FormModelMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.towards_party = self.towards_party
         form.instance.party = self.party
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 
