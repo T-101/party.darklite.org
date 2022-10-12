@@ -5,15 +5,15 @@ import json
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db.models import F
 from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.dateparse import parse_datetime
-from django_countries import countries
 
+from django_countries import countries
 from django_object_actions import DjangoObjectActions
 
-from autocomplete_contrib.forms import UsersForm
 from party.models import Party, Trip
 
 
@@ -25,12 +25,29 @@ class PartyAdmin(admin.ModelAdmin):
         'date_start',
         'date_end',
         'location',
-        'country',
+        'country_name',
         'www',
         'slug',
         'created_dt',
         'created_by',
     )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.annotate(country_code=F("country"))
+
+    def country_name(self, obj):
+        return obj.country.name
+
+    country_name.admin_order_field = 'country_code'
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, may_have_duplicates = super().get_search_results(
+            request, queryset, search_term,
+        )
+        queryset |= self.model.objects.filter(country__icontains=search_term)
+        return queryset, may_have_duplicates
+
     list_filter = ('date_start', 'date_end', 'created_dt')
     search_fields = ('name', 'created_by__email')
     readonly_fields = ["slug"]
