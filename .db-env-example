@@ -1,0 +1,3 @@
+POSTGRES_DB=partywiki
+POSTGRES_USER=partywiki
+POSTGRES_PASSWORD=NotAVeryGoodPassword
