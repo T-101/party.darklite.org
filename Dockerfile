@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code/app/
 
-RUN apk add nano tzdata bash build-base
+RUN apk add nano tzdata bash build-base postgresql-dev
 RUN cp /usr/share/zoneinfo/Europe/Helsinki /etc/localtime
 RUN echo "Europe/Helsinki" > /etc/timezone
 
