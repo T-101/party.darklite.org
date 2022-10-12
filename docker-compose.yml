@@ -6,9 +6,11 @@ services:
     container_name: partywiki_app
     build: .
     # command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
-    command: gunicorn config.wsgi --pid partywiki.pid --log-level debug --graceful-timeout 3600 --timeout 3600 --keep-alive 3600 -w ${UWSGI_WORKERS} -b 0.0.0.0:${CONTAINER_PORT}
+    # command: gunicorn config.wsgi --pid partywiki.pid --log-level debug --graceful-timeout 3600 --timeout 3600 --keep-alive 3600 -w ${UWSGI_WORKERS} -b 0.0.0.0:${CONTAINER_PORT}
     volumes:
       - .:/code
+    depends_on:
+      - postgres
     ports:
       - "${CONTAINER_PORT}:${CONTAINER_PORT}"
     restart: unless-stopped
@@ -16,8 +18,23 @@ services:
   cron:
     container_name: partywiki_app_cron
     build: .
-    command: ["/usr/sbin/crond", "-f"]
+    command: [ "/usr/sbin/crond", "-f" ]
     volumes:
       - .:/code
     depends_on:
       - app
+    restart: unless-stopped
+
+  postgres:
+    env_file: .db-env
+    image: postgres:14.5-alpine
+    container_name: partywiki_postgres
+    ports:
+      - "5432:5432/tcp"
+    volumes:
+      - partywiki-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  partywiki-db-data:
+    driver: local
