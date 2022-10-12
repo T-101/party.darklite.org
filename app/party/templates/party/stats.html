@@ -47,5 +47,24 @@
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <h3>Top party countries</h3>
+                <table>
+                    <thead>
+                    <th>Amount</th>
+                    <th>Country</th>
+                    </thead>
+                    <tbody>
+                    {% for country in countries %}
+                        <tr>
+                            <td>{{ country.count }}</td>
+                            <td>{{ country.country_code }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

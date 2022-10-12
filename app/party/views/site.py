@@ -1,4 +1,4 @@
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F
 from django.views import generic
 
 from party.models import Party, Trip
@@ -46,4 +46,10 @@ class StatsView(generic.TemplateView):
                                    .values("display_name") \
                                    .annotate(count=Count("display_name")) \
                                    .order_by("-count")[:10]
+        ctx["countries"] = Party.objects \
+                               .annotate(country_code=F("country")) \
+                               .values("country_code") \
+                               .annotate(count=Count(F("country_code"))) \
+                               .order_by("-count")[:10]
+
         return ctx
