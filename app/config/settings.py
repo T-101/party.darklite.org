@@ -35,20 +35,19 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
+if DEBUG:
+    import socket
 
-# Display Django Debug Toolbar in docker
-def show_toolbar(request):
-    if not DEBUG:
-        return False
-    if request.is_ajax():
-        return False
-    return True
-
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': 'config.settings.show_toolbar',
+    # Display Django Debug Toolbar in docker when DEBUG = True
+    'SHOW_TOOLBAR_CALLBACK': lambda _: DEBUG,
 }
+
 
 # Application definition
 
