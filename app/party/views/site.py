@@ -1,5 +1,9 @@
-from django.db.models import Q, Count
+import sys
+
+from django import VERSION as DJANGO_VERSION
+from django.db.models import Q, Count, F, When, Value, Case
 from django.views import generic
+from django_countries import countries
 
 from party.models import Party, Trip
 
@@ -16,6 +20,12 @@ class LandingPageView(generic.TemplateView):
 
 class AboutView(generic.TemplateView):
     template_name = 'party/about.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data()
+        ctx["django_version"] = '.'.join(map(str, list(DJANGO_VERSION[0:3])))
+        ctx["python_version"] = sys.version[0:5]
+        return ctx
 
 
 class SearchView(generic.TemplateView):
@@ -36,6 +46,7 @@ class StatsView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        whens = [When(country_code=k, then=Value(v)) for k, v in dict(countries).items()]
         ctx["parties"] = Party.objects \
                              .filter(trips__towards_party=True) \
                              .distinct() \
@@ -46,4 +57,11 @@ class StatsView(generic.TemplateView):
                                    .values("display_name") \
                                    .annotate(count=Count("display_name")) \
                                    .order_by("-count")[:10]
+        ctx["countries"] = Party.objects \
+                               .annotate(country_code=F("country")) \
+                               .annotate(country_name=Case(*whens)) \
+                               .values("country_code", "country_name") \
+                               .annotate(count=Count(F("country_code"))) \
+                               .order_by("-count")[:10]
+
         return ctx

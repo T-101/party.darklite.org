@@ -9,11 +9,10 @@ from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.dateparse import parse_datetime
-from django_countries import countries
 
+from django_countries import countries
 from django_object_actions import DjangoObjectActions
 
-from autocomplete_contrib.forms import UsersForm
 from party.models import Party, Trip
 
 
@@ -25,12 +24,25 @@ class PartyAdmin(admin.ModelAdmin):
         'date_start',
         'date_end',
         'location',
-        'country',
+        'country_name',
         'www',
         'slug',
         'created_dt',
         'created_by',
     )
+
+    def country_name(self, obj):
+        return obj.country.name
+
+    country_name.admin_order_field = 'country'
+
+    def get_search_results(self, request, queryset, search_term):
+        queryset, may_have_duplicates = super().get_search_results(
+            request, queryset, search_term,
+        )
+        queryset |= self.model.objects.filter(country__icontains=search_term)
+        return queryset, may_have_duplicates
+
     list_filter = ('date_start', 'date_end', 'created_dt')
     search_fields = ('name', 'created_by__email')
     readonly_fields = ["slug"]
@@ -41,8 +53,12 @@ class PartyAdmin(admin.ModelAdmin):
 class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_display = (
         'id', 'party', 'display_name', 'type',
-        'departure_town', 'departure_country', 'departure_datetime',
-        'arrival_town', 'arrival_country', 'arrival_datetime',
+        'departure_town',
+        'departure_country_name',
+        'departure_datetime',
+        'arrival_town',
+        'arrival_country_name',
+        'arrival_datetime',
         'detail1', 'detail2',
         'towards_party',
         # 'created_by',
@@ -53,8 +69,17 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_filter = ('departure_datetime', 'arrival_datetime', 'towards_party', "type")
     autocomplete_fields = ['party', 'created_by']
     date_hierarchy = "departure_datetime"
+    list_select_related = ["party", "created_by"]
 
-    # form = UsersForm
+    def departure_country_name(self, obj):
+        return obj.departure_country.name
+
+    departure_country_name.admin_order_field = 'departure_country'
+
+    def arrival_country_name(self, obj):
+        return obj.arrival_country.name
+
+    arrival_country_name.admin_order_field = 'arrival_country'
 
     def import_trips(self, request, obj):
         file_name = os.path.join(settings.BASE_DIR, "tdump.json")

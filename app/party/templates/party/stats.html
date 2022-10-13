@@ -8,7 +8,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-12 col-sm-6">
                 <h3>Top parties</h3>
                 <table>
                     <thead>
@@ -27,7 +27,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col">
+            <div class="col-12 col-sm-6">
                 <h3>Top partygoers</h3>
                 <table>
                     <thead>
@@ -41,6 +41,25 @@
                             <td>
                                 {{ name.display_name }}
                             </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top party countries</h3>
+                <table>
+                    <thead>
+                    <th class="pr-3">Amount</th>
+                    <th>Country</th>
+                    </thead>
+                    <tbody>
+                    {% for country in countries %}
+                        <tr>
+                            <td>{{ country.count }}</td>
+                            <td>{{ country.country_name }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

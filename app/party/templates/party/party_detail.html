@@ -30,7 +30,7 @@
                                 <li>{{ object.date_range }}</li>
                                 <li>
                                     {{ object.location }}
-                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country|lower }}.svg"
+                                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country.code|lower }}.svg"
                                          alt="flag of {{ object.country.name }}" title="{{ object.country.name }}"
                                          height="11" onerror="this.style.display='none'">
                                 </li>

@@ -48,7 +48,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda _: DEBUG,
 }
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -67,12 +66,12 @@ INSTALLED_APPS = [
     'django_countries',
     'django_object_actions',
     'crispy_forms',
-    'django_user_agents',
     'tempus_dominus',
     'django_simple_plausible',
     # Our apps
     'authentication',
     'party',
+    'django_simple_user_agents',
 ]
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -81,12 +80,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_simple_user_agents.middleware.UserAgentMiddleware',
     'common.middleware.UserIPAddressMiddleware',
 ]
 
@@ -162,7 +161,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 TEMPUS_DOMINUS_LOCALIZE = True
 
 STATIC_ROOT = env('STATIC_ROOT')
@@ -183,4 +181,3 @@ SCENEID_RETURN_BASE_URL = env('SCENEID_RETURN_BASE_URL')
 
 PLAUSIBLE_SITES = env.str("PLAUSIBLE_SITES")
 PLAUSIBLE_SCRIPT_URL = env.str("PLAUSIBLE_SCRIPT_URL")
-
