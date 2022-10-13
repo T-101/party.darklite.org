@@ -52,14 +52,14 @@
                 <h3>Top party countries</h3>
                 <table>
                     <thead>
-                    <th>Amount</th>
+                    <th class="pr-3">Amount</th>
                     <th>Country</th>
                     </thead>
                     <tbody>
                     {% for country in countries %}
                         <tr>
                             <td>{{ country.count }}</td>
-                            <td>{{ country.country_code }}</td>
+                            <td>{{ country.country_name }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
