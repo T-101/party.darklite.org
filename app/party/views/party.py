@@ -1,10 +1,10 @@
 import feedparser
 from datetime import datetime
+import string
 
 import requests
 from django.db.models.functions import Lower
 from django.contrib import messages
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
@@ -24,10 +24,21 @@ class PartyListView(generic.ListView):
     template_name = 'party/party_list.html'
     model = Party
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ret_arr = []
+        for i in ["country", "year"]:
+            if self.kwargs.get(i):
+                ret_arr.append(string.capwords(str(self.kwargs.get(i))))
+        ctx["breadcrumb"] = ret_arr
+        return ctx
+
     def get_queryset(self):
         qs = Party.objects.order_by(Lower("name"), "date_start")
         if "year" in self.kwargs:
             qs = qs.filter(date_start__year=self.kwargs.get("year"))
+        if "country" in self.kwargs:
+            qs = qs.filter(country__icontains=self.kwargs.get("country"))
         return qs
 
 

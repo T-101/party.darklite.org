@@ -59,7 +59,9 @@
                     {% for country in countries %}
                         <tr>
                             <td>{{ country.count }}</td>
-                            <td>{{ country.country_name }}</td>
+                            <td>
+                                <a href="{% url 'party:list-by-country' country.country_name %}">{{ country.country_name }}</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
