@@ -2,7 +2,7 @@
 
 {% block title %}
     <title>List of parties | Darklite Partywiki</title>
-    <meta property="og:title" content="List of parties | Darklite Partywiki" />
+    <meta property="og:title" content="List of parties | Darklite Partywiki"/>
 {% endblock %}
 
 {% block content %}
@@ -26,12 +26,12 @@
                 <div class="col-md-12">
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'party:list' %}">Parties</a></li>
-                        {% comment %}                        <li class="breadcrumb-item"><a
-                                href="{% url 'party:list' year %}">{{ year }}</a>
-                        </li>{% endcomment %}
-                        <li class="breadcrumb-item active">{{ object.name }}</li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'party:list' %}">Parties</a>
+                        </li>
+                        {% for item in breadcrumb %}
+                            <li class="breadcrumb-item active">{{ item }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
