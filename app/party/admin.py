@@ -5,7 +5,6 @@ import json
 from django.contrib import admin
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import F
 from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -32,14 +31,10 @@ class PartyAdmin(admin.ModelAdmin):
         'created_by',
     )
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.annotate(country_code=F("country"))
-
     def country_name(self, obj):
         return obj.country.name
 
-    country_name.admin_order_field = 'country_code'
+    country_name.admin_order_field = 'country'
 
     def get_search_results(self, request, queryset, search_term):
         queryset, may_have_duplicates = super().get_search_results(
@@ -58,8 +53,12 @@ class PartyAdmin(admin.ModelAdmin):
 class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_display = (
         'id', 'party', 'display_name', 'type',
-        'departure_town', 'departure_country', 'departure_datetime',
-        'arrival_town', 'arrival_country', 'arrival_datetime',
+        'departure_town',
+        'departure_country_name',
+        'departure_datetime',
+        'arrival_town',
+        'arrival_country_name',
+        'arrival_datetime',
         'detail1', 'detail2',
         'towards_party',
         # 'created_by',
@@ -70,8 +69,17 @@ class TripAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_filter = ('departure_datetime', 'arrival_datetime', 'towards_party', "type")
     autocomplete_fields = ['party', 'created_by']
     date_hierarchy = "departure_datetime"
+    list_select_related = ["party", "created_by"]
 
-    # form = UsersForm
+    def departure_country_name(self, obj):
+        return obj.departure_country.name
+
+    departure_country_name.admin_order_field = 'departure_country'
+
+    def arrival_country_name(self, obj):
+        return obj.arrival_country.name
+
+    arrival_country_name.admin_order_field = 'arrival_country'
 
     def import_trips(self, request, obj):
         file_name = os.path.join(settings.BASE_DIR, "tdump.json")
