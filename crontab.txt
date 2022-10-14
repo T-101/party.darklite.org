@@ -1,3 +1,4 @@
 0 0 * * *		cd /code/app && /code/app/manage.py flush_empty_parties
+0 1 * * *		cd /code/app && /code/app/manage.py clearsessions
 0 0 * * *		wget https://www.demoparty.net/demoparties.xml -O /code/app/demoparties.xml
 0 12 * * *		wget https://www.demoparty.net/demoparties.xml -O /code/app/demoparties.xml
