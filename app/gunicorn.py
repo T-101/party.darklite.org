@@ -10,3 +10,5 @@ pid = "partywiki.pid"
 timeout = 3600
 threads = 2
 workers = os.environ.get("UWSGI_WORKERS")
+capture_output = True
+enable_stdio_inheritance = True

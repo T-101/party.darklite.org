@@ -162,6 +162,28 @@ REST_FRAMEWORK = {
     ]
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'timestamp': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'timestamp'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+    },
+}
+
 TEMPUS_DOMINUS_LOCALIZE = True
 
 STATIC_ROOT = env('STATIC_ROOT')
