@@ -6,7 +6,7 @@ services:
     container_name: partywiki_app
     build: .
     # command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
-    # command: gunicorn config.wsgi --pid partywiki.pid --log-level debug --graceful-timeout 3600 --timeout 3600 --keep-alive 3600 -w ${UWSGI_WORKERS} -b 0.0.0.0:${CONTAINER_PORT}
+    # command: gunicorn -c gunicorn.py config.wsgi
     volumes:
       - .:/code
     depends_on:
