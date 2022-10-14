@@ -18,8 +18,8 @@ class LogViewerIndexView(AdminBaseView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
         ctx["files"] = sorted(
-            [(os.path.splitext(x)[0].capitalize(), os.stat(x).st_size) for x in os.listdir("/var/log/") if
-             x.endswith(".log")])
+            [(os.path.splitext(x)[0].capitalize(), os.stat(os.path.join("/var/log/", x)).st_size) for x in
+             os.listdir("/var/log/") if x.endswith(".log")])
         return ctx
 
 
