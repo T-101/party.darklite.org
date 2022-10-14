@@ -1,24 +1,15 @@
-.PHONY: build start stop up
-
-BASE_DIR = $(shell pwd)
-CONTAINER_PORT := $(shell grep CONTAINER_PORT .env | cut -d '=' -f2)
+.PHONY: build start stop
 
 build:
+	@if [[ ! -f ".env" || ! -f ".db-env" || ! -f app/.envv ]]; \
+		then echo "ERROR! .env, .db-env or app/.env missing"; \
+		exit 1; \
+	fi
 	@docker-compose build
 	@docker-compose run --rm app python ./manage.py collectstatic --no-input
-	@docker build -t partywiki .
 
 start:
-	@docker start partywiki
+	@docker-compose up -d
 
 stop:
-	@docker stop partywiki
-	@docker rm partywiki
-
-up:
-	@docker run \
-	--env-file=.env \
-	-p 127.0.0.1:${CONTAINER_PORT}:${CONTAINER_PORT} \
-	-v ${BASE_DIR}/app:/code/app \
-	--name partywiki \
-	-d partywiki
+	@docker-compose stop
