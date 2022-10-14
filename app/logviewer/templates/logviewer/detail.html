@@ -1,0 +1,72 @@
+{% extends 'party/base.html' %}
+
+{% block content %}
+
+    <style>
+        html, body {
+            height: 95%;
+        }
+
+        textarea {
+            margin: 0 10px;
+            width: 99%;
+            height: 90%;
+            font-size: 0.8em;
+        }
+
+        table {
+            font-size: 0.7em;
+            font-family: monospace;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #filter {
+            box-shadow: none;
+        }
+    </style>
+
+    <body>
+    <a href="{% url 'logviewer:index' %}" class="ml-3">Back</a>
+
+    <div class="container">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            <span class="input-group-text"
+                  id="inputGroup-sizing-default">Logfile&nbsp;&nbsp;<strong>{{ view.kwargs.filename }}</strong></span>
+            </div>
+            <input id="filter" type="text" class="form-control" placeholder="Filter...">
+        </div>
+    </div>
+
+
+    <table class="table table-responsive table-sm table-striped table-hover ml-3">
+        {% for row in file_contents %}
+            <tr class="table-data-row">
+                <td>{{ row }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        const input = document.querySelector('#filter');
+        const items = document.getElementsByClassName('table-data-row')
+
+        input.addEventListener('keyup', function (ev) {
+            const text = ev.target.value;
+            const pat = new RegExp(text, 'i');
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (pat.test(item.innerText)) {
+                    item.classList.remove("hidden");
+                } else {
+                    item.classList.add("hidden");
+                }
+            }
+        });
+
+    </script>
+
+{% endblock %}
