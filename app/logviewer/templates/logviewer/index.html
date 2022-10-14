@@ -1,0 +1,21 @@
+{% extends 'party/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3>Select logfile to view</h3>
+
+        <table class="table table-responsive">
+            <tbody>
+            {% for file in files %}
+                <tr>
+                    <td><a href="{% url "logviewer:detail" file.0 %}">{{ file.0 }}</a></td>
+                    <td>{{ file.1|filesizeformat }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+{% endblock %}

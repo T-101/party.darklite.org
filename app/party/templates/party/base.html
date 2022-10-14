@@ -41,27 +41,36 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="{% url 'party:about' %}"><i
-                    class="fa fa-info-circle"></i> About</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i>
-                Stats</a></li>
+            <li class="nav-item {% if request.resolver_match.view_name == "party:about" %} active {% endif %}">
+                <a class="nav-link" href="{% url 'party:about' %}">
+                    <i class="fa fa-info-circle"></i> About</a>
+            </li>
+            <li class="nav-item {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}">
+                <a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
+            </li>
             {% if user.is_authenticated %}
-                <li class="nav-item">
+                <li class="nav-item {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}">
                     <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis"
                        style="max-width: 150px;" title="{{ request.user|get_display_name }}">
                         <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
                         {{ request.user|get_display_name }}
                     </a>
                     {% if request.user.is_superuser %}
-                        <li class="nav-item"><a class="nav-link"
-                                                href="{% url 'admin:index' %}">DjangoAdmin</a></li>
+                        <li class="nav-item {% if request.resolver_match.view_name == "admin:index" %} active {% endif %}">
+                            <a class="nav-link" href="{% url 'admin:index' %}">DjangoAdmin</a>
+                        </li>
+                        <li class="nav-item {% if request.resolver_match.view_name|first in "logviewer" %} active {% endif %}">
+                            <a class="nav-link" href="{% url 'logviewer:index' %}">LogViewer</a>
+                        </li>
                     {% endif %}
-                <li class="nav-item"><a class="nav-link"
-                                        href="{% url 'authentication:logout' %}?next={{ request.path }}"><i
-                        class="fa fa-sign-out"></i> Logout </a></li>
+                <li class="nav-item {% if request.resolver_match.view_name == "authentication:logout" %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'authentication:logout' %}?next={{ request.path }}">
+                        <i class="fa fa-sign-out"></i> Logout </a>
+                </li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'authentication:auth' %}"><i
-                        class="fa fa-user-circle"></i> Login</a>
+                <li class="nav-item {% if request.resolver_match.view_name == "authentication:auth" %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'authentication:auth' %}">
+                        <i class="fa fa-user-circle"></i> Login</a>
                 </li>
             {% endif %}
         </ul>

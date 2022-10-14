@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     # Our apps
     'authentication',
     'party',
+    'logviewer',
     'django_simple_user_agents',
 ]
 

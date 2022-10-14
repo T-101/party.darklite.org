@@ -9,6 +9,7 @@ services:
     # command: gunicorn -c gunicorn.py config.wsgi
     volumes:
       - .:/code
+      - partywiki_logs:/var/log
     depends_on:
       - postgres
     ports:
@@ -37,4 +38,6 @@ services:
 
 volumes:
   partywiki-db-data:
+    driver: local
+  partywiki_logs:
     driver: local

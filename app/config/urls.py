@@ -33,6 +33,7 @@ urlpatterns = [
     path('autocomplete/', include('autocomplete_contrib.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1router.urls)),
+    path('logviewer/', include('logviewer.urls')),
     path('', include('party.urls')),
     path('account/', include('authentication.urls')),
 ]
