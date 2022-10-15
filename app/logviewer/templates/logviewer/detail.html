@@ -29,7 +29,10 @@
     </style>
 
     <body>
+    <a id="top"></a>
     <a href="{% url 'logviewer:index' %}" class="ml-3">Back</a>
+    &nbsp;&#124;&nbsp;
+    <a href="#bottom">Go to bottom of page</a>
 
     <div class="container">
         <div class="input-group mb-3">
@@ -41,7 +44,6 @@
         </div>
     </div>
 
-
     <table class="table table-responsive table-sm table-striped table-hover ml-3">
         {% for row in file_contents %}
             <tr class="table-data-row">
@@ -49,6 +51,8 @@
             </tr>
         {% endfor %}
     </table>
+    <a id="bottom"></a>
+    <a href="#top">Go to top of page</a>
 
     <script>
         const input = document.querySelector('#filter');
