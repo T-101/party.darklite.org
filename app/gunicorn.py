@@ -1,6 +1,6 @@
 import os
 
-access_log_format = '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+access_log_format = '%({x-real-ip}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 accesslog = "/var/log/access.log"
 bind = "0.0.0.0:" + os.environ.get("CONTAINER_PORT")
 capture_output = True  # Capture stdio
