@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import logging
 import os
 
 from pathlib import Path
@@ -162,18 +162,35 @@ REST_FRAMEWORK = {
     ]
 }
 
+
+class IPAddressFilter(logging.Filter):
+    def filter(self, record):
+        if hasattr(record, 'request') and hasattr(record.request, "META"):
+            # request is an WSGIRequest object ONLY with 4xx/5xx errors
+            record.ip = record.request.META.get("REMOTE_ADDR")
+        else:
+            record.ip = "-"
+        return True
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'timestamp': {
-            'format': '{asctime} {levelname} {message}',
+            'format': '{ip:s} - - {asctime} {levelname} {message}',
             'style': '{',
+        },
+    },
+    'filters': {
+        'ip_address_filter': {
+            '()': 'config.settings.IPAddressFilter',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'filters': ['ip_address_filter'],
             'formatter': 'timestamp'
         },
     },
@@ -201,6 +218,8 @@ SCENEID_HOST = env('SCENEID_HOST')
 SCENEID_CLIENT_ID = env('SCENEID_CLIENT_ID')
 SCENEID_SECRET = env('SCENEID_SECRET')
 SCENEID_RETURN_BASE_URL = env('SCENEID_RETURN_BASE_URL')
+
+FAIL2BAN_JAILS = env.list("FAIL2BAN_JAILS", default=[])
 
 PLAUSIBLE_SITES = env.str("PLAUSIBLE_SITES")
 PLAUSIBLE_SCRIPT_URL = env.str("PLAUSIBLE_SCRIPT_URL")

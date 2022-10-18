@@ -1,0 +1,35 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+            aria-expanded="false">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="dropdown-menu">
+        {% if not row.0 %}
+            <a class="dropdown-item disabled">No IP</a>
+        {% else %}
+            <a class="dropdown-item disabled">IP {{ row.0 }}</a>
+            <a class="dropdown-item" data-command="find" data-value="{{ row.0 }}">Find
+                uses</a>
+            {% if not fail2ban %}
+                <a class="dropdown-item disabled">No Fail2Ban jails</a>
+            {% else %}
+                <a class="dropdown-item" data-command="ban"
+                   data-value="{{ row.0 }}">Ban {{ row.0 }}</a>
+                <a class="dropdown-item" id="dropdown-row-{{ forloop.counter0 }}-24"
+                   data-command="ban"
+                   data-value="{{ row.0 }}">Ban {{ row.0 }}/24</a>
+                <a class="dropdown-item" id="dropdown-row-{{ forloop.counter0 }}-16"
+                   data-command="ban"
+                   data-value="{{ row.0 }}">Ban {{ row.0 }}/16</a>
+                <script>
+                    a = document.getElementById("dropdown-row-{{ forloop.counter0 }}-24")
+                    a.dataset.value = a.dataset.value.replace(regex, "$1.$2.$3.0") + "/24"
+                    a.innerHTML = a.innerHTML.replace(regex, "$1.$2.$3.0")
+                    a = document.getElementById("dropdown-row-{{ forloop.counter0 }}-16")
+                    a.dataset.value = a.dataset.value.replace(regex, "$1.$2.0.0") + "/16"
+                    a.innerHTML = a.innerHTML.replace(regex, "$1.$2.0.0")
+                </script>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
