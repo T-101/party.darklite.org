@@ -10,6 +10,9 @@ ENV TZ=Europe/Helsinki
 COPY partywiki_logrotate.conf /etc/logrotate.d/
 COPY .bashrc /root/
 
+# Allow postgres container to write logs to volume
+RUN ["chmod", "777", "/var/log"]
+
 COPY app/requirements.txt /code/app/
 RUN pip install -r requirements.txt
 

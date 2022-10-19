@@ -34,6 +34,10 @@ services:
       - "5432:5432/tcp"
     volumes:
       - partywiki-db-data:/var/lib/postgresql/data
+      - partywiki_logs:/var/log
+    environment:
+      TZ: "Europe/Helsinki"
+    command: ["-c", "logging_collector=on", "-c", "log_directory=/var/log/", "-c", "log_filename=postgres.log"]
     restart: unless-stopped
 
 volumes:

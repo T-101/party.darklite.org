@@ -1,4 +1,15 @@
 import os
+import datetime
+from gunicorn.glogging import Logger
+
+
+class CustomLogger(Logger):
+
+    def now(self):
+        return datetime.datetime.now().isoformat(sep=' ', timespec='milliseconds')
+
+
+logger_class = CustomLogger
 
 access_log_format = '%({x-real-ip}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 accesslog = "/var/log/access.log"

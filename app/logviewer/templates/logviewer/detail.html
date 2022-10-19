@@ -96,6 +96,8 @@
 
         input.addEventListener('keyup', function (ev) {
             const text = ev.target.value;
+            // Escape the search string
+            // const pat = new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
             const pat = new RegExp(text, 'i');
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
