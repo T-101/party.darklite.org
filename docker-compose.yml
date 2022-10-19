@@ -6,7 +6,7 @@ services:
     container_name: partywiki_app
     build: .
     # command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
-    # command: gunicorn -c gunicorn.py config.wsgi
+    # command: gunicorn -c config/gunicorn_config.py config.wsgi
     volumes:
       - .:/code
       - partywiki_logs:/var/log
