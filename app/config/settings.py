@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
@@ -75,13 +74,18 @@ INSTALLED_APPS = [
     'django_simple_user_agents',
 ]
 
+if DEBUG:
+    for i, item in enumerate(INSTALLED_APPS):
+        if item == "django.contrib.staticfiles":
+            INSTALLED_APPS.insert(i + 1, "debug_toolbar")
+            break
+
 AUTH_USER_MODEL = 'authentication.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -89,6 +93,12 @@ MIDDLEWARE = [
     'django_simple_user_agents.middleware.UserAgentMiddleware',
     'common.middleware.UserIPAddressMiddleware',
 ]
+
+if DEBUG:
+    for i, item in enumerate(MIDDLEWARE):
+        if item == "django.middleware.common.CommonMiddleware":
+            MIDDLEWARE.insert(i + 1, "debug_toolbar.middleware.DebugToolbarMiddleware")
+            break
 
 ROOT_URLCONF = 'config.urls'
 
@@ -165,11 +175,14 @@ REST_FRAMEWORK = {
 
 class IPAddressFilter(logging.Filter):
     def filter(self, record):
+        record.ip = "-"
         if hasattr(record, 'request') and hasattr(record.request, "META"):
             # request is an WSGIRequest object ONLY with 4xx/5xx errors
-            record.ip = record.request.META.get("REMOTE_ADDR")
-        else:
-            record.ip = "-"
+            meta = record.request.META
+            if meta.get("HTTP_X_FORWARDED_FOR"):
+                record.ip = meta.get("HTTP_X_FORWARDED_FOR")
+            if not record.ip or meta.get("REMOTE_ADDR"):
+                record.ip = meta.get("REMOTE_ADDR")
         return True
 
 
@@ -197,6 +210,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
+            'propagate': False
         },
     },
 }
