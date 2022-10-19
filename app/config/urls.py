@@ -34,12 +34,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1router.urls)),
     path('logviewer/', include('logviewer.urls')),
-    path('', include('party.urls')),
     path('account/', include('authentication.urls')),
+    path('', include('party.urls')),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
 
-    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # This will enable static assets even when debugging using gunicorn etc
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns
