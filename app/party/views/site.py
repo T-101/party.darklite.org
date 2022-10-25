@@ -24,7 +24,7 @@ class AboutView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
         ctx["django_version"] = '.'.join(map(str, list(DJANGO_VERSION[0:3])))
-        ctx["python_version"] = sys.version[0:5]
+        ctx["python_version"] = sys.version.split(" ")[0]
         return ctx
 
 
