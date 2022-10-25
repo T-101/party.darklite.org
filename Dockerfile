@@ -1,4 +1,4 @@
-FROM python:3.9.2-alpine3.13
+FROM python:3.11-alpine3.16
 
 ENV PYTHONUNBUFFERED 1
 
@@ -7,8 +7,6 @@ WORKDIR /code/app/
 
 RUN apk add nano tzdata bash build-base postgresql-dev logrotate
 ENV TZ=Europe/Helsinki
-COPY partywiki_logrotate.conf /etc/logrotate.d/
-COPY .bashrc /root/
 
 # Allow postgres container to write logs to volume
 RUN ["chmod", "777", "/var/log"]
@@ -18,6 +16,8 @@ RUN pip install -r requirements.txt
 
 RUN pip install --upgrade pip
 
+COPY partywiki_logrotate.conf /etc/logrotate.d/
+COPY .bashrc /root/
 COPY crontab.txt /crontab.txt
 RUN /usr/bin/crontab /crontab.txt
 
