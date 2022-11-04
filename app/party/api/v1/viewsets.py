@@ -8,7 +8,7 @@ from party.models import Party, Trip
 
 
 class PartyViewSet(ModelViewSet):
-    queryset = Party.objects.select_related("created_by").all()
+    queryset = Party.objects.select_related("created_by").filter(visible=True)
     serializer_class = PartySerializer
     pagination_class = PageNumberPagination
 
