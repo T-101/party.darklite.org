@@ -13,8 +13,8 @@ class LandingPageView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['upcoming_parties'] = Party.upcoming_parties.all()
-        ctx['past_parties'] = Party.past_parties.all()
+        ctx['upcoming_parties'] = Party.upcoming_parties.filter(visible=True)
+        ctx['past_parties'] = Party.past_parties.filter(visible=True)
         return ctx
 
 
@@ -35,7 +35,7 @@ class SearchView(generic.TemplateView):
         ctx = super().get_context_data(**kwargs)
         query = self.request.GET.get("search", None)
         if query:
-            ctx["results"] = Party.objects.filter(
+            ctx["results"] = Party.objects.filter(visible=True).filter(
                 Q(name__icontains=query) | Q(trips__display_name__icontains=query)
             ).order_by("date_start").distinct()
         return ctx
@@ -48,7 +48,7 @@ class StatsView(generic.TemplateView):
         ctx = super().get_context_data(**kwargs)
         whens = [When(country_code=k, then=Value(v)) for k, v in dict(countries).items()]
         ctx["parties"] = Party.objects \
-                             .filter(trips__towards_party=True) \
+                             .filter(trips__towards_party=True, visible=True) \
                              .distinct() \
                              .annotate(Count("trips")) \
                              .order_by("-trips__count")[:10]
@@ -57,7 +57,7 @@ class StatsView(generic.TemplateView):
                                    .values("display_name") \
                                    .annotate(count=Count("display_name")) \
                                    .order_by("-count")[:10]
-        ctx["countries"] = Party.objects \
+        ctx["countries"] = Party.objects.filter(visible=True) \
                                .annotate(country_code=F("country")) \
                                .annotate(country_name=Case(*whens)) \
                                .values("country_code", "country_name") \
