@@ -34,7 +34,7 @@ class PartyListView(generic.ListView):
         return ctx
 
     def get_queryset(self):
-        qs = Party.objects.order_by(Lower("name"), "date_start")
+        qs = Party.objects.filter(visible=True).order_by(Lower("name"), "date_start")
         if "year" in self.kwargs:
             qs = qs.filter(date_start__year=self.kwargs.get("year"))
         if "country" in self.kwargs:
@@ -45,7 +45,7 @@ class PartyListView(generic.ListView):
 class PartyCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'party/party_create.html'
     model = Party
-    queryset = Party.objects.all()
+    queryset = Party.objects.filter(visible=True)
 
     def get_form_class(self):
         if self.request.user_agent.is_mobile:
