@@ -1,0 +1,27 @@
+{% extends 'party/base.html' %}
+
+{% block title %}
+    <title>RSS Feeds | Darklite Partywiki</title>
+    <meta property="og:title" content="RSS Feeds | Darklite Partywiki"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>RSS Feeds</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <ul>
+                    <li><a href="{% url 'feeds-rss2' %}">RSS 2.01</a></li>
+                    <li><a href="{% url 'feeds-rss09' %}">RSS 0.91</a></li>
+                    <li><a href="{% url 'feeds-atom1' %}">Atom 1.0</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

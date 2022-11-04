@@ -26,6 +26,8 @@ class Party(models.Model):
     modified_by = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, blank=True, null=True,
                                     related_name="modified_parties")
 
+    visible = models.BooleanField(default=True)
+
     objects = models.Manager()
     upcoming_parties = UpcomingPartyManager()
     past_parties = PastPartyManager()

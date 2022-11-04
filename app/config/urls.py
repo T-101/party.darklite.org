@@ -22,6 +22,8 @@ from rest_framework import routers
 
 from party.api.v1.routers import router as v1_party_router
 from authentication.api.v1.routers import router as v1_authentication_router
+from party.views.feeds import FeedsView
+from common.feeds import PartyFeedRss2, PartyFeedRss09, PartyFeedAtom1
 
 v1router = routers.DefaultRouter() if settings.DEBUG else routers.SimpleRouter()
 
@@ -32,6 +34,10 @@ if settings.DEBUG:
 urlpatterns = [
     path('autocomplete/', include('autocomplete_contrib.urls')),
     path('admin/', admin.site.urls),
+    path('feeds/', FeedsView.as_view(), name="feeds"),
+    path('feeds/parties_rss2.xml', PartyFeedRss2(), name="feeds-rss2"),
+    path('feeds/parties_rss09.xml', PartyFeedRss09(), name="feeds-rss09"),
+    path('feeds/parties_atom1.xml', PartyFeedAtom1(), name="feeds-atom1"),
     path('api/v1/', include(v1router.urls)),
     path('logviewer/', include('logviewer.urls')),
     path('account/', include('authentication.urls')),
