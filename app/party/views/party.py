@@ -89,7 +89,7 @@ class PartyDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        trips = self.object.trips.select_related("created_by").order_by(Lower("display_name"))
+        trips = self.object.trips.order_by(Lower("display_name"))
         ctx["inbound"] = trips.filter(towards_party=True)
         ctx["outbound"] = trips.filter(towards_party=False)
         return ctx
@@ -122,9 +122,10 @@ class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
             res = requests.get(url=url)
             if res.status_code == 200:
                 j = res.json()
-                address.append(j.get("location", {}).get("address", {}).get("streetAddress", ""))
-                address.append(j.get("location", {}).get("address", {}).get("postalCode", ""))
-                address.append(j.get("location", {}).get("address", {}).get("addressLocality", ""))
+                if type(j.get("location")) == dict:
+                    address.append(j.get("location", {}).get("address", {}).get("streetAddress", ""))
+                    address.append(j.get("location", {}).get("address", {}).get("postalCode", ""))
+                    address.append(j.get("location", {}).get("address", {}).get("addressLocality", ""))
         if len(address):
             address = [p for p in address if p != ""]
             address = ", ".join(address)
@@ -139,5 +140,7 @@ class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
             "country": str(party_feed.demopartynet_country).upper(),
             "created_by": request.user
         }
-        party, _ = Party.objects.update_or_create(slug=slugify(demopartynet_slug), defaults=defaults)
+        party, created = Party.objects.update_or_create(slug=slugify(demopartynet_slug), defaults=defaults)
+        if created:
+            messages.success(request, "Party created succesfully")
         return redirect('party:detail', party.slug)
