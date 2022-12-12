@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 from django_extensions.db.fields import AutoSlugField
 
 from common.parsers import strip_trailing_year
-from party.managers import UpcomingPartyManager, PastPartyManager
+from party.managers import UpcomingPartyManager, PastPartyManager, PartyManager
 
 
 class Party(models.Model):
@@ -28,7 +28,7 @@ class Party(models.Model):
 
     visible = models.BooleanField(default=True)
 
-    objects = models.Manager()
+    objects = PartyManager()
     upcoming_parties = UpcomingPartyManager()
     past_parties = PastPartyManager()
 
