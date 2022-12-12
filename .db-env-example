@@ -1,2 +1,2 @@
-POSTGRES_USER=partywiki
+POSTGRES_DB=partywiki
 POSTGRES_PASSWORD=NotAVeryGoodPassword
