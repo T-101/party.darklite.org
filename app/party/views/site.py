@@ -2,6 +2,7 @@ import sys
 
 from django import VERSION as DJANGO_VERSION
 from django.db.models import Q, Count, F, When, Value, Case
+from django.db.models.functions import Lower
 from django.views import generic
 from django_countries import countries
 
@@ -37,7 +38,7 @@ class SearchView(generic.TemplateView):
         if query:
             ctx["results"] = Party.objects.filter(visible=True).filter(
                 Q(name__icontains=query) | Q(trips__display_name__icontains=query)
-            ).order_by("date_start").distinct()
+            ).order_by("date_start__year", Lower("name")).distinct()
         return ctx
 
 
