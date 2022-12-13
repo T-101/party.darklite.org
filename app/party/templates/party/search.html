@@ -4,8 +4,14 @@
     <div class="py-2">
         <div class="container">
             <h3>Search</h3>
-            {% for result in results %}
-                <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
+            {% regroup results by date_start.year as yearly_results %}
+            {% for yearly in yearly_results %}
+                {{ yearly.grouper }}
+                <ul>
+                    {% for result in yearly.list %}
+                        <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
+                    {% endfor %}
+                </ul>
             {% endfor %}
         </div>
     </div>
