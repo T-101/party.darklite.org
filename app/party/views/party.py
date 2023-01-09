@@ -77,6 +77,7 @@ class PartyUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def form_valid(self, form):
         form.instance.modified_by = self.request.user
+        form.instance.visible = self.get_object().visible
         return super().form_valid(form)
 
     def get_success_url(self):
