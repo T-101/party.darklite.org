@@ -63,12 +63,17 @@
                         {{ request.user|get_display_name }}
                     </a>
                     {% if request.user.is_superuser %}
-                        <li class="nav-item {% if request.resolver_match.view_name == "admin:index" %} active {% endif %}">
-                            <a class="nav-link" href="{% url 'admin:index' %}">DjangoAdmin</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                               aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'admin:index' %}">DjangoAdmin</a>
+                                <a class="dropdown-item" href="{% url 'logviewer:index' %}">LogViewer</a>
+                            </div>
                         </li>
-                        <li class="nav-item {% if request.resolver_match.view_name|first in "logviewer" %} active {% endif %}">
-                            <a class="nav-link" href="{% url 'logviewer:index' %}">LogViewer</a>
-                        </li>
+
                     {% endif %}
                 <li class="nav-item {% if request.resolver_match.view_name == "authentication:logout" %} active {% endif %}">
                     <a class="nav-link" href="{% url 'authentication:logout' %}?next={{ request.path }}">
@@ -76,21 +81,22 @@
                 </li>
             {% else %}
                 <li class="nav-item {% if request.resolver_match.view_name == "authentication:auth" %} active {% endif %}">
-                    <a class="nav-link" href="{% url 'authentication:auth' %}">
-                        <i class="fa fa-user-circle"></i> Login</a>
+                    <a class="nav-link sceneid-a" href="{% url 'authentication:auth' %}">
+                        <img class="sceneid-img" src="{% static 'party/images/SceneID_Icon_300x48.png' %}"
+                             alt="Login using SceneID"/>
+                    </a>
                 </li>
             {% endif %}
         </ul>
 
-        <div class="form-group" style="margin-bottom: 0px;">
-            <div class="input-group">
-                <form class="form-inline" method="get" action="{% url 'party:search' %}">
-                    <input type="text" class="form-control square" placeholder="Search" name="search"
-                           aria-label="Search">
-                    <button class="btn btn-secondary square" type="button" type="submit">Search</button>
-                </form>
+        <form method="get" action="{% url 'party:search' %}">
+            <div class="input-group search-input-group">
+                <input type="search" class="form-control" placeholder="Search" name="search">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit">Search</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </nav>
 

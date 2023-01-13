@@ -1,4 +1,4 @@
-@media (min-width: 810px) {
+@media (min-width: 879px) {
     .navbar-expand-custom {
         flex-direction: row;
         flex-wrap: nowrap;
@@ -30,6 +30,10 @@
     .navbar-expand-custom .navbar-toggler {
         display: none;
     }
+
+    .sceneid-a {
+    padding: 4px 8px 0 8px;
+}
 }
 
 
@@ -69,4 +73,16 @@ body {
 
 .tripTypeIcon {
     width: 16px
+}
+
+/* SceneID logo in Navbar */
+
+.sceneid-img {
+    height: 30px;
+}
+
+/* Search inputgroup in Navbar */
+
+.search-input-group {
+    max-width: 250px;
 }
