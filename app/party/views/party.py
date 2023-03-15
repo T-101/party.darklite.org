@@ -59,6 +59,7 @@ class PartyCreateView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        form.instance.visible = True
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
