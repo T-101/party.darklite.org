@@ -22,7 +22,7 @@ class PartyAdmin(admin.ModelAdmin):
         'id',
         'name',
         'date_start',
-        'date_end',
+        'visible',
         'location',
         'country_name',
         'www',
@@ -43,7 +43,7 @@ class PartyAdmin(admin.ModelAdmin):
         queryset |= self.model.objects.filter(country__icontains=search_term)
         return queryset, may_have_duplicates
 
-    list_filter = ('date_start', 'date_end', 'created_dt')
+    list_filter = ('visible', 'date_start', 'date_end', 'created_dt')
     search_fields = ('name', 'created_by__email')
     readonly_fields = ["slug"]
     list_select_related = ["created_by"]
