@@ -6,14 +6,16 @@ services:
     container_name: partywiki_app
     build: .
     # command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
-    # command: gunicorn -c config/gunicorn_config.py config.wsgi
+    # command: gunicorn -c config/gunicorn_config.py config.wsgi --bind 0.0.0.0:${CONTAINER_PORT}
     volumes:
       - .:/code
       - partywiki_logs:/var/log
     depends_on:
       - postgres
     ports:
-      - "${CONTAINER_PORT}:${CONTAINER_PORT}"
+      - "127.0.0.1:${CONTAINER_PORT}:${CONTAINER_PORT}"
+    # expose:
+    #   - 8000
     restart: unless-stopped
 
   cron:
@@ -25,6 +27,17 @@ services:
     depends_on:
       - app
     restart: unless-stopped
+
+  nginx:
+    image: nginx:1.23.2-alpine
+    container_name: partywiki_nginx
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - django_static:/app/static
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
 
   postgres:
     env_file: .db-env
@@ -45,3 +58,4 @@ volumes:
     driver: local
   partywiki_logs:
     driver: local
+  django_static:
