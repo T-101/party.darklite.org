@@ -64,5 +64,9 @@ class StatsView(generic.TemplateView):
                                .values("country_code", "country_name") \
                                .annotate(count=Count(F("country_code"))) \
                                .order_by("-count")[:10]
+        ctx["transportation"] = Trip.objects \
+            .values("type") \
+            .annotate(count=Count("type")) \
+            .order_by("-count")
 
         return ctx
