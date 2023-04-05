@@ -67,6 +67,25 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top transportation</h3>
+                <table>
+                    <thead>
+                    <th class="pr-3">Amount</th>
+                    <th>Type</th>
+                    </thead>
+                    <tbody>
+                    {% for transport in transportation %}
+                        <tr>
+                            <td>{{ transport.count }}</td>
+                            <td>
+                                {{ transport.type|capfirst }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
