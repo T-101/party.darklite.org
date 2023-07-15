@@ -31,7 +31,7 @@ class PartyForm(forms.ModelForm):
             ),
             Row(
                 Column('location', css_class="col-md-6"),
-                Column('country', css_class="col-md-6")
+                Column('country', css_class="col-md-6 mb-2")
             ),
             Row(
                 Column(
@@ -62,7 +62,7 @@ def _trip_layout():
             Column('arrival_datetime', css_class="col-md-3"),
         ),
         Row(
-            Column('type', css_class="col-md-3"),
+            Column('type', css_class="col-md-4"),
             Column('detail1', css_class="col-md-4"),
             Column('detail2', css_class="col-md-4"),
         ),
@@ -72,6 +72,8 @@ def _trip_layout():
 class TripForm(forms.ModelForm):
     departure_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
     arrival_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
+    type = forms.ChoiceField(choices=Trip.TYPES,
+                             widget=forms.Select(attrs={'class': 'form-control form-select'}))
 
     departure_datetime = forms.DateTimeField(
         widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))
@@ -117,6 +119,7 @@ class TripForm(forms.ModelForm):
 class TripFormNative(TripForm):
     departure_datetime = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"type": "datetime-local"}))
     arrival_datetime = forms.DateTimeField(widget=forms.DateTimeInput(attrs={"type": "datetime-local"}))
+    type = forms.ChoiceField(choices=Trip.TYPES)
 
 
 class PartyFormNative(PartyForm):

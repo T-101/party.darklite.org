@@ -25,7 +25,7 @@
 
 
                         </div>
-                        <div class="text-right col">
+                        <div class="text-end col">
                             <ul class="list-unstyled">
                                 <li>{{ object.date_range }}</li>
                                 <li>
@@ -60,7 +60,7 @@
                 <div class="col">
                     <p class="lead">Towards party</p>
                 </div>
-                <div class="col text-right">
+                <div class="col text-end">
                     {% if user.is_authenticated %}
                         {% if not object.has_ended or user.is_superuser %}
                             <a class="btn btn-success" type="button" id="dropdownPartyButton"
@@ -111,7 +111,7 @@
                 <div class="col">
                     <p class="lead">From party</p>
                 </div>
-                <div class="col text-right">
+                <div class="col text-end">
                     {% if user.is_authenticated %}
                         {% if not object.has_ended or user.is_superuser %}
                             <a class="btn btn-success" type="button" id="dropdownPartyButton"

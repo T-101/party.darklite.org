@@ -68,5 +68,15 @@ class StatsView(generic.TemplateView):
             .values("type") \
             .annotate(count=Count("type")) \
             .order_by("-count")
+        ctx["towns"] = Trip.objects \
+                           .filter(towards_party=True) \
+                           .values("departure_town") \
+                           .annotate(count=Count("departure_town")) \
+                           .order_by("-count")[:10]
+        ctx["airlines"] = Trip.objects \
+                              .filter(type=Trip.PLANE, detail1__iregex=r"\S\S.+") \
+                              .values("detail1") \
+                              .annotate(count=(Count(Lower("detail1")))) \
+                              .order_by("-count")[:10]
 
         return ctx

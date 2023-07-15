@@ -36,26 +36,28 @@
             {% endif %}
         </td>
 
-        {% if not object.has_ended or user.is_superuser %}
+        {% if not object.has_ended %}
             <td class="text-right" nowrap="">
                 {% if direction == "to" %}
-                    {% if trip.created_by == user or user.is_superuser %}
-                        <a href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
-                            <i class="far fa-edit icon-help"></i>
-                        </a>&nbsp;
-                    {% endif %}
                     <a href="{% url 'party:clone-trip-to' object.slug trip.pk %}" title="Clone this trip">
                         <i class="far fa-clone icon-help"></i>
                     </a>
-                {% else %}
-                    {% if trip.created_by == user or user.is_superuser %}
-                        <a href="{% url 'party:update-trip-from' object.slug trip.pk %}" title="Modify this trip">
+                    {% if trip.created_by == user %}
+                        <a class="ms-2"
+                                href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
                             <i class="far fa-edit icon-help"></i>
-                        </a>&nbsp;
+                        </a>
                     {% endif %}
+                {% else %}
                     <a href="{% url 'party:clone-trip-from' object.slug trip.pk %}" title="Clone this trip">
                         <i class="far fa-clone icon-help"></i>
                     </a>
+                    {% if trip.created_by == user %}
+                        <a class="ms-2"
+                           href="{% url 'party:update-trip-from' object.slug trip.pk %}" title="Modify this trip">
+                            <i class="far fa-edit icon-help"></i>
+                        </a>
+                    {% endif %}
                 {% endif %}
 
             </td>

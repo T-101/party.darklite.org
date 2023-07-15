@@ -1,5 +1,5 @@
 <!DOCTYPE html>{% load static %}{% load partywiki_extras %}{% load plausible %}
-<html lang="en">
+<html lang="en" data-bs-theme="auto">
 <head>
     <meta charset="UTF-8">
     {% block title %}
@@ -20,83 +20,102 @@
     {% block extrahead %}
     {% endblock %}
 
-    <link rel="stylesheet" href="{% static 'party/lumen.bootswatch.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'party/lumen.bootswatch.5.3.0.min.css' %}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
           integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
           crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
-            integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"
+            integrity="sha512-VK2zcvntEufaimc+efOYi622VN5ZacdnufnmX7zIhCPmjhKnOi9ZDMtg1/ug5l183f19gG1/cBstPO4D8N/Img=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'party/bs-color-mode-toggler.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'party/style.css' %}?{% now "U" %}"/>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-expand-custom mb-3">
-    <a class="navbar-brand" href="{% url 'party:landing_page' %}">
-        <img src="{% static 'favicon-32x32.png' %}" class="d-inline-block align-top" alt=""
-             style="height: 20px; padding-right: 5px"/>
-        Darklite PartyWiki
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% if request.resolver_match.view_name == "party:about" %} active {% endif %}">
-                <a class="nav-link" href="{% url 'party:about' %}">
-                    <i class="fa fa-info-circle"></i> About</a>
-            </li>
-            <li class="nav-item {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}">
-                <a class="nav-link" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
-            </li>
-            <li class="nav-item {% if request.resolver_match.view_name == "feeds" %} active {% endif %}">
-                <a class="nav-link" href="{% url 'feeds' %}"><i class="fas fa-rss"></i></i> Feeds</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}">
-                    <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis"
-                       style="max-width: 150px;" title="{{ request.user|get_display_name }}">
-                        <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
-                        {{ request.user|get_display_name }}
-                    </a>
-                    {% if request.user.is_superuser %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                               aria-expanded="false">
-                                Admin
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'admin:index' %}">DjangoAdmin</a>
-                                <a class="dropdown-item" href="{% url 'logviewer:index' %}">LogViewer</a>
-                            </div>
-                        </li>
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-2 navbar-expand-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'party:landing_page' %}">
+            <img src="{% static 'favicon-32x32.png' %}" class="me-2"/>
+            Darklite PartyWiki
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 
-                    {% endif %}
-                <li class="nav-item {% if request.resolver_match.view_name == "authentication:logout" %} active {% endif %}">
-                    <a class="nav-link" href="{% url 'authentication:logout' %}?next={{ request.path }}">
-                        <i class="fa fa-sign-out"></i> Logout </a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.view_name == "party:about" %} active {% endif %}" href="{% url 'party:about' %}">
+                        <i class="fa fa-info-circle"></i> About</a>
                 </li>
-            {% else %}
-                <li class="nav-item {% if request.resolver_match.view_name == "authentication:auth" %} active {% endif %}">
-                    <a class="nav-link sceneid-a" href="{% url 'authentication:auth' %}">
-                        <img class="sceneid-img" src="{% static 'party/images/SceneID_Icon_300x48.png' %}"
-                             alt="Login using SceneID"/>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
                 </li>
-            {% endif %}
-        </ul>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.view_name == "feeds" %} active {% endif %}"
+                       href="{% url 'feeds' %}"><i class="fas fa-rss"></i></i> Feeds</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}"
+                           style="max-width: 150px;" title="{{ request.user|get_display_name }}">
+                            <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
+                            {{ request.user|get_display_name }}
+                        </a>
+                        {% if request.user.is_superuser %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Admin
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{% url 'admin:index' %}">DjangoAdmin</a>
+                                    <a class="dropdown-item" href="{% url 'logviewer:index' %}">LogViewer</a>
+                                </div>
+                            </li>
 
-        <form method="get" action="{% url 'party:search' %}">
-            <div class="input-group search-input-group">
-                <input type="search" class="form-control" placeholder="Search" name="search">
-                <div class="input-group-append">
-                    <button class="btn btn-secondary" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
+                        {% endif %}
+                    <li class="nav-item {% if request.resolver_match.view_name == "authentication:logout" %} active {% endif %}">
+                        <a class="nav-link" href="{% url 'authentication:logout' %}?next={{ request.path }}">
+                            <i class="fa fa-sign-out"></i> Logout </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item {% if request.resolver_match.view_name == "authentication:auth" %} active {% endif %}">
+                        <a class="nav-link sceneid-a" href="{% url 'authentication:auth' %}">
+                            <img class="sceneid-img" src="{% static 'party/images/SceneID_Icon_300x48.png' %}"
+                                 alt="Login using SceneID"/>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="d-flex" role="search" method="get" action="{% url 'party:search' %}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-secondary" type="submit">Search</button>
+
+                <!-- <input type="text" class="form-control" placeholder="Recipient's username"
+                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-secondary" type="button" id="button-addon2">Button</button> -->
+
+            </form>
+            <ul class="navbar-nav mb-2 mb-lg-0 ms-2">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false"><i class="fas fa-sun"></i></a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <button class="dropdown-item" data-bs-theme-value="light"><i class="fas fa-sun"></i> Light
+                        </button>
+                        <button class="dropdown-item" data-bs-theme-value="dark"><i class="fas fa-moon"></i> Dark
+                        </button>
+                        <button class="dropdown-item" data-bs-theme-value="auto"><i
+                                class="fas fa-magic"></i> Auto
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
