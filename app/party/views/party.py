@@ -91,7 +91,7 @@ class PartyDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        trips = self.object.trips.order_by(Lower("display_name"))
+        trips = self.object.trips.select_related("created_by").order_by(Lower("display_name"))
         ctx["inbound"] = trips.filter(towards_party=True)
         ctx["outbound"] = trips.filter(towards_party=False)
         return ctx

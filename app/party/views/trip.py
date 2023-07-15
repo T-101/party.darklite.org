@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
@@ -69,7 +69,11 @@ class TripToUpdateView(FormModelMixin, PartyMixin, generic.UpdateView):
         self.party = None
 
     def get_object(self, queryset=None):
-        trip = get_object_or_404(self.model, pk=self.kwargs.get("trip"))
+        # trip = get_object_or_404(self.model, pk=self.kwargs.get("trip"))
+        try:
+            trip = Trip.objects.select_related("created_by").get(pk=self.kwargs.get("trip"))
+        except Trip.DoesNotExist:
+            raise Http404
         if not trip.created_by == self.request.user:
             raise PermissionDenied
         return trip
