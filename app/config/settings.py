@@ -59,12 +59,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # packages
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
     'django_countries',
     'django_object_actions',
     'crispy_forms',
+    'crispy_bootstrap5',
     'tempus_dominus',
     'django_simple_plausible',
     # Our apps
@@ -223,7 +225,8 @@ STATIC_URL = env('STATIC_URL')
 MEDIA_URL = env('MEDIA_URL')
 MEDIA_ROOT = env('MEDIA_ROOT')
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 DEMOPARTYNET_RSS_FEED = env.str("DEMOPARTYNET_RSS_FEED")
 
