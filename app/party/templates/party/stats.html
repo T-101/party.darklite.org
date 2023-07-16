@@ -12,7 +12,7 @@
                 <h3>Top parties</h3>
                 <table>
                     <thead>
-                    <th style="padding-right: 1em;">Trips towards</th>
+                    <th class="pe-2">Trips towards</th>
                     <th>Party</th>
                     </thead>
                     <tbody>
@@ -31,7 +31,7 @@
                 <h3>Top partygoers</h3>
                 <table>
                     <thead>
-                    <th style="padding-right: 1em;">Trips towards</th>
+                    <th class="pe-2">Trips towards</th>
                     <th>Display name</th>
                     </thead>
                     <tbody>
@@ -52,7 +52,7 @@
                 <h3>Top party countries</h3>
                 <table>
                     <thead>
-                    <th class="pr-3">Amount</th>
+                    <th class="pe-2">Amount</th>
                     <th>Country</th>
                     </thead>
                     <tbody>
@@ -71,7 +71,7 @@
                 <h3>Top transportation</h3>
                 <table>
                     <thead>
-                    <th class="pr-3">Amount</th>
+                    <th class="pe-2">Amount</th>
                     <th>Type</th>
                     </thead>
                     <tbody>
@@ -80,6 +80,46 @@
                             <td>{{ transport.count }}</td>
                             <td>
                                 {{ transport.type|capfirst }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top departure places</h3>
+                <table>
+                    <thead>
+                    <th class="pe-2">Amount</th>
+                    <th>Departure Town</th>
+                    </thead>
+                    <tbody>
+                    {% for town in towns %}
+                        <tr>
+                            <td>{{ town.count }}</td>
+                            <td>
+                                {{ town.departure_town|capfirst }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top airlines</h3>
+                <table>
+                    <thead>
+                    <th class="pe-2">Amount</th>
+                    <th>Name</th>
+                    </thead>
+                    <tbody>
+                    {% for airline in airlines %}
+                        <tr>
+                            <td>{{ airline.count }}</td>
+                            <td>
+                                {{ airline.detail1|capfirst }}
                             </td>
                         </tr>
                     {% endfor %}

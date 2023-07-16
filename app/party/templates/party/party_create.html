@@ -16,17 +16,19 @@
             {% if parties %}
                 <div class="col-sm-6">
                     <h3>Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
-                    {% for party in parties %}
-                        {% get_country party.2 as country %}
-                        <li>
-                            <img src="/static/flags/{{ party.2|lower }}.gif"
-                                 height="10" title="{{ country.name }}"
-                                 alt="Flag: {{ country.name }}"
-                                 onerror="this.style.display='none'">&nbsp;
-                            <a class="createPartyLink"
-                               href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
-                        </li>
-                    {% endfor %}
+                    <ul style="list-style: none">
+                        {% for party in parties %}
+                            {% get_country party.2 as country %}
+                            <li>
+                                <img src="/static/flags/{{ party.2|lower }}.gif"
+                                     height="10" title="{{ country.name }}"
+                                     alt="Flag: {{ country.name }}"
+                                     onerror="this.style.display='none'">&nbsp;
+                                <a class="createPartyLink"
+                                   href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
         </div>
