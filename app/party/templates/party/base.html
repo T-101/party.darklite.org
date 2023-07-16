@@ -1,5 +1,5 @@
 <!DOCTYPE html>{% load static %}{% load partywiki_extras %}{% load plausible %}
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     {% block title %}
@@ -48,11 +48,13 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.view_name == "party:about" %} active {% endif %}" href="{% url 'party:about' %}">
+                    <a class="nav-link {% if request.resolver_match.view_name == "party:about" %} active {% endif %}"
+                       href="{% url 'party:about' %}">
                         <i class="fa fa-info-circle"></i> About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}" href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
+                    <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}"
+                       href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.view_name == "feeds" %} active {% endif %}"
@@ -60,7 +62,8 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{% url 'authentication:profile' %}" class="nav-link text-truncate handle-ellipsis {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}"
+                        <a href="{% url 'authentication:profile' %}"
+                           class="nav-link text-truncate handle-ellipsis {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}"
                            style="max-width: 150px;" title="{{ request.user|get_display_name }}">
                             <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
                             {{ request.user|get_display_name }}
@@ -92,7 +95,8 @@
                 {% endif %}
             </ul>
             <form class="d-flex" role="search" method="get" action="{% url 'party:search' %}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ query }}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search"
+                       value="{{ query }}">
                 <button class="btn btn-secondary" type="submit">Search</button>
 
                 <!-- <input type="text" class="form-control" placeholder="Recipient's username"
@@ -105,9 +109,9 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false"><i class="fas fa-sun"></i></a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <button class="dropdown-item" data-bs-theme-value="light"><i class="fas fa-sun"></i> Light
+                        <button class="dropdown-item" data-bs-theme-value="dark"><i class="fas fa-moon"></i> Darklite mode
                         </button>
-                        <button class="dropdown-item" data-bs-theme-value="dark"><i class="fas fa-moon"></i> Dark
+                        <button class="dropdown-item" data-bs-theme-value="light"><i class="fas fa-sun"></i> Not Darklite mode
                         </button>
                         <button class="dropdown-item" data-bs-theme-value="auto"><i
                                 class="fas fa-magic"></i> Auto
