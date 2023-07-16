@@ -37,8 +37,9 @@ class SearchView(generic.TemplateView):
         query = self.request.GET.get("search", None)
         if query:
             ctx["results"] = Party.objects.filter(visible=True).filter(
-                Q(name__icontains=query) | Q(trips__display_name__icontains=query)
+                Q(name__icontains=query) | Q(trips__display_name__icontains=query) | Q(country__icontains=query) | Q(location__icontains=query)
             ).order_by("date_start__year", Lower("name")).distinct()
+        ctx["query"] = query
         return ctx
 
 

@@ -92,7 +92,7 @@
                 {% endif %}
             </ul>
             <form class="d-flex" role="search" method="get" action="{% url 'party:search' %}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" value="{{ query }}">
                 <button class="btn btn-secondary" type="submit">Search</button>
 
                 <!-- <input type="text" class="form-control" placeholder="Recipient's username"
