@@ -37,7 +37,8 @@ class SearchView(generic.TemplateView):
         query = self.request.GET.get("search", None)
         if query:
             ctx["results"] = Party.objects.filter(visible=True).filter(
-                Q(name__icontains=query) | Q(trips__display_name__icontains=query) | Q(country__icontains=query) | Q(location__icontains=query)
+                Q(name__icontains=query) | Q(trips__display_name__icontains=query) | Q(country__icontains=query) | Q(
+                    location__icontains=query)
             ).order_by("date_start__year", Lower("name")).distinct()
         ctx["query"] = query
         return ctx
@@ -79,5 +80,14 @@ class StatsView(generic.TemplateView):
                               .values("detail1") \
                               .annotate(count=(Count(Lower("detail1")))) \
                               .order_by("-count")[:10]
-
+        ctx["trips_per_year"] = Trip.objects \
+                                    .filter(towards_party=True) \
+                                    .values("departure_datetime__year") \
+                                    .annotate(count=Count("departure_datetime__year")) \
+                                    .order_by("-count")[:10]
+        ctx["trips_per_country"] = Trip.objects \
+                                       .filter(towards_party=True) \
+                                       .values("departure_country") \
+                                       .annotate(count=Count("departure_country")) \
+                                       .order_by("-count")[:10]
         return ctx
