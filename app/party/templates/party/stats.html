@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}
+{% extends 'party/base.html' %}{% load countries %}
 
 {% block title %}
     <title>Stats | Darklite Partywiki</title>
@@ -120,6 +120,49 @@
                             <td>{{ airline.count }}</td>
                             <td>
                                 {{ airline.detail1|capfirst }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top amount of trips towards parties</h3>
+                <table>
+                    <thead>
+                    <th class="pe-2">Amount</th>
+                    <th>Year</th>
+                    </thead>
+                    <tbody>
+                    {% for item in trips_per_year %}
+                        <tr>
+                            <td>{{ item.count }}</td>
+                            <td>
+                                <a href="{% url 'party:list-by-year' item.departure_datetime__year %}">{{ item.departure_datetime__year }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-6 mt-3">
+                <h3>Top trips by country</h3>
+                <table>
+                    <thead>
+                    <th class="pe-2">Trips towards</th>
+                    <th>Year</th>
+                    </thead>
+                    <tbody>
+                    {% for item in trips_per_country %}
+                    {% get_country item.departure_country as country %}
+                        <tr>
+                            <td>{{ item.count }}</td>
+                            <td>
+                                <a href="{% url 'party:list-by-country' country.name %}">{{ country.name }}</a>
                             </td>
                         </tr>
                     {% endfor %}
