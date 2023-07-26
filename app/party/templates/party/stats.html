@@ -5,6 +5,12 @@
     <meta property="og:title" content="Stats | Darklite Partywiki"/>
 {% endblock %}
 
+{% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+            integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
@@ -12,8 +18,10 @@
                 <h3>Top parties</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Trips towards</th>
-                    <th>Party</th>
+                    <tr>
+                        <th class="pe-2">Trips towards</th>
+                        <th>Party</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for party in parties %}
@@ -31,8 +39,10 @@
                 <h3>Top partygoers</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Trips towards</th>
-                    <th>Display name</th>
+                    <tr>
+                        <th class="pe-2">Trips towards</th>
+                        <th>Display name</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for name in display_names %}
@@ -47,13 +57,16 @@
                 </table>
             </div>
         </div>
+        <hr/>
         <div class="row">
             <div class="col-12 col-sm-6 mt-3">
                 <h3>Top party countries</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Amount</th>
-                    <th>Country</th>
+                    <tr>
+                        <th class="pe-2">Amount</th>
+                        <th>Country</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for country in countries %}
@@ -68,32 +81,19 @@
                 </table>
             </div>
             <div class="col-12 col-sm-6 mt-3">
-                <h3>Top transportation</h3>
-                <table>
-                    <thead>
-                    <th class="pe-2">Amount</th>
-                    <th>Type</th>
-                    </thead>
-                    <tbody>
-                    {% for transport in transportation %}
-                        <tr>
-                            <td>{{ transport.count }}</td>
-                            <td>
-                                {{ transport.type|capfirst }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                <canvas id="chartPartiesByCountries" class="chart"></canvas>
             </div>
         </div>
+        <hr/>
         <div class="row">
             <div class="col-12 col-sm-6 mt-3">
                 <h3>Top departure places</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Amount</th>
-                    <th>Departure Town</th>
+                    <tr>
+                        <th class="pe-2">Amount</th>
+                        <th>Departure Town</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for town in towns %}
@@ -111,8 +111,10 @@
                 <h3>Top airlines</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Amount</th>
-                    <th>Name</th>
+                    <tr>
+                        <th class="pe-2">Amount</th>
+                        <th>Name</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for airline in airlines %}
@@ -127,15 +129,43 @@
                 </table>
             </div>
         </div>
-
-
+        <hr/>
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <h3>Top transportation</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="pe-2">Amount</th>
+                        <th>Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for transport in transportation %}
+                        <tr>
+                            <td>{{ transport.count }}</td>
+                            <td>
+                                {{ transport.type|capfirst }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-6 mt-3">
+                <canvas id="chartTransportation" class="chart"></canvas>
+            </div>
+        </div>
+        <hr/>
         <div class="row">
             <div class="col-12 col-sm-6 mt-3">
                 <h3>Top amount of trips towards parties</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Amount</th>
-                    <th>Year</th>
+                    <tr>
+                        <th class="pe-2">Amount</th>
+                        <th>Year</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for item in trips_per_year %}
@@ -153,12 +183,14 @@
                 <h3>Top trips by country</h3>
                 <table>
                     <thead>
-                    <th class="pe-2">Trips towards</th>
-                    <th>Year</th>
+                    <tr>
+                        <th class="pe-2">Trips towards</th>
+                        <th>Year</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for item in trips_per_country %}
-                    {% get_country item.departure_country as country %}
+                        {% get_country item.departure_country as country %}
                         <tr>
                             <td>{{ item.count }}</td>
                             <td>
@@ -171,4 +203,60 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+        const configPartiesByCountries = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: {{ countries_piechart.1|safe }},
+                    borderColor: 'rgba(0,0,0,0)',
+                    backgroundColor: [
+                        'rgb(21, 140, 186)',
+                        'rgb(12, 100, 140)'
+                    ],
+                    hoverOffset: 10
+                }],
+                labels: {{ countries_piechart.0|safe }},
+            },
+            options: {
+                spacing: 0,
+                responsive: true
+            }
+        }
+
+        const configTransportation = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: {{ transportation_piechart.1|safe }},
+                    borderColor: 'rgba(0,0,0,0)',
+                    backgroundColor: [
+                        'rgb(21, 140, 186)',
+                        'rgb(12, 100, 140)'
+                    ],
+                    hoverOffset: 10
+                }],
+                labels: {{ transportation_piechart.0|safe }},
+            },
+            options: {
+                spacing: 0,
+                responsive: true
+            }
+        }
+
+        const chartPartiesByCountries = new Chart(
+            document.getElementById('chartPartiesByCountries'),
+            configPartiesByCountries
+        );
+
+        const chartTransportation = new Chart(
+            document.getElementById('chartTransportation'),
+            configTransportation
+        );
+
+
+    </script>
+
 {% endblock %}
