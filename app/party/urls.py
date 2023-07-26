@@ -3,7 +3,7 @@ from django.urls import path
 from party.views.site import LandingPageView, AboutView, SearchView, StatsView
 from party.views.party import PartyListView, PartyCreateView, PartyDetailView, PartyUpdateView, DemopartyNetCreateView
 from party.views.trip import TripToCreateView, TripFromCreateView, TripToUpdateView, TripFromUpdateView, \
-    TripToCloneView, TripFromCloneView
+    TripToCloneView, TripFromCloneView, TripDeleteView
 
 app_name = "party"
 
@@ -25,5 +25,6 @@ urlpatterns = [
     path('clone-trip-from/<slug:slug>/from_trip/<int:trip>/', TripFromCloneView.as_view(), name="clone-trip-from"),
     path('update-trip-to/<slug:slug>/<int:trip>/', TripToUpdateView.as_view(), name="update-trip-to"),
     path('update-trip-from/<slug:slug>/<int:trip>/', TripFromUpdateView.as_view(), name="update-trip-from"),
+    path('<slug:slug>/delete-trip/<int:pk>/', TripDeleteView.as_view(), name="delete-trip"),
     path('<slug:slug>/', PartyDetailView.as_view(), name="detail")
 ]
