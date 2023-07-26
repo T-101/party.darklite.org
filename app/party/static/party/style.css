@@ -116,3 +116,10 @@ body {
 .search-input-group {
     max-width: 250px;
 }
+
+/* Chart stylings */
+
+.chart {
+    max-width: 400px;
+    max-height: 400px;
+}

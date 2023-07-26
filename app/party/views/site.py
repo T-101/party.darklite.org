@@ -60,16 +60,28 @@ class StatsView(generic.TemplateView):
                                    .values("display_name") \
                                    .annotate(count=Count("display_name")) \
                                    .order_by("-count")[:10]
-        ctx["countries"] = Party.objects.filter(visible=True) \
-                               .annotate(country_code=F("country")) \
-                               .annotate(country_name=Case(*whens)) \
-                               .values("country_code", "country_name") \
-                               .annotate(count=Count(F("country_code"))) \
-                               .order_by("-count")[:10]
-        ctx["transportation"] = Trip.objects \
-            .values("type") \
-            .annotate(count=Count("type")) \
-            .order_by("-count")
+        ctx["countries"] = list(Party.objects.filter(visible=True)
+                                .annotate(country_code=F("country"))
+                                .annotate(country_name=Case(*whens))
+                                .values("country_code", "country_name")
+                                .annotate(count=Count(F("country_code")))
+                                .order_by("-count"))
+
+        ctx["countries_piechart"] = [
+            [x.get("country_name") for x in ctx["countries"]],
+            [x.get("count") for x in ctx["countries"]]
+        ]
+
+        ctx["transportation"] = list(Trip.objects
+                                     .values("type")
+                                     .annotate(count=Count("type"))
+                                     .order_by("-count"))
+
+        ctx["transportation_piechart"] = [
+            [x.get("type").capitalize() for x in ctx["transportation"]],
+            [x.get("count") for x in ctx["transportation"]]
+        ]
+
         ctx["towns"] = Trip.objects \
                            .filter(towards_party=True) \
                            .values("departure_town") \
