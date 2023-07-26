@@ -1,59 +1,38 @@
 {% extends 'party/base.html' %}{% load crispy_forms_tags %}
 
 {% block title %}
-    <title>Create flight | Darklite Partywiki</title>
-    <meta property="og:title" content="Create flight | Darklite Partywiki" />
+    <title>Create Trip | Darklite Partywiki</title>
+    <meta property="og:title" content="Create Trip | Darklite Partywiki"/>
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col">
-                <h3>Create a Trip</h3>
-
+                {% if towards_party %}
+                    <h3>Create a Trip to {{ party }}</h3>
+                {% else %}
+                    <h3>Create a Trip from {{ party }}</h3>
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
-                    {% crispy trip_formset helper %}
-{% comment %}                    {% for f in form %}
-                        {% if forloop.counter0 == 0 %}
-                            <p class="lead bg-info text-white col-md-11">TO PARTY</p>
-                        {% else %}
-                            <p class="lead bg-info text-white col-md-11">TO HOME</p>
+                    {% crispy form %}
+                    {% if not party_ended %}
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        {% if object %}
+                            <a class="btn btn-danger ms-4"
+                               href="{% url 'party:delete-trip' party.slug object.pk %}">Delete</a>
                         {% endif %}
-                        {% crispy f %}
-                    {% endfor %}{% endcomment %}
-                    <button class="btn btn-primary" type="submit">Save</button>
+                    {% endif %}
                 </form>
             </div>
         </div>
     </div>
-    <p>&nbsp;</p>
-    {% comment %}    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'party:list' %}">Parties</a></li>
-                    <li class="breadcrumb-item active"><a href="{% url 'party:detail' party.slug %}">{{ party }}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>{% endcomment %}
 
-{% endblock %}
+    <script>
+        $("#id_departure_datetime").on("change.datetimepicker", e => {
+            $("#id_arrival_datetime").val(e.target.value)
+        })
+    </script>
 
-
-{% block formmedia %}
-    {{ inbound.media }}
-
-    <style>
-        .select2-selection, .select2-selection__arrow {
-            height: 35px !important;
-        }
-
-        .select2-selection__arrow {
-            display: none !important;
-        }
-    </style>
 {% endblock %}
