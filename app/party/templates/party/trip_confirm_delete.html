@@ -1,0 +1,28 @@
+{% extends 'party/base.html' %}
+
+{% block title %}
+    <title>Delete trip | Darklite Partywiki</title>
+    <meta property="og:title" content="Delete trip | Darklite Partywiki"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4>Delete a Trip</h4>
+                <p>
+                    You are about to delete the trip <strong>{{ trip }}</strong>. This cannot be undone!
+                </p>
+                <p>
+                    Are you sure?
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit" value="Confirm">Yes, Delete</button>
+                    <a href="{% url "party:detail" party.slug %}" class="btn btn-secondary">Cancel</a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
