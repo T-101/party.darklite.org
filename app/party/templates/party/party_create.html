@@ -1,33 +1,35 @@
 {% extends 'party/base.html' %}{% load crispy_forms_tags %}{% load countries %}
 
 {% block title %}
-    <title>Create a new party | Darklite Partywiki</title>
-    <meta property="og:title" content="Create a new party | Darklite Partywiki"/>
+    {% if request.resolver_match.view_name != "party:update" %}
+        <title>Create a new party | Darklite Partywiki</title>
+        <meta property="og:title" content="Create a new party | Darklite Partywiki"/>
+    {% else %}
+        <title>Modify a new party | Darklite Partywiki</title>
+        <meta property="og:title" content="Modify a new party | Darklite Partywiki"/>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <h3>Add a party</h3>
+                {% if request.resolver_match.view_name != "party:update" %}
+                    <h3>Add a party</h3>
+                {% else %}
+                    <h3>Modify a party</h3>
+                {% endif %}
                 {% crispy form %}
                 <p>Fields with (*) are mandatory</p>
             </div>
-            {% if parties %}
+
+            {% if request.resolver_match.view_name != "party:update" %}
                 <div class="col-sm-6">
                     <h3>Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
-                    <ul style="list-style: none">
-                        {% for party in parties %}
-                            {% get_country party.2 as country %}
-                            <li>
-                                <img src="/static/flags/{{ party.2|lower }}.gif"
-                                     height="10" title="{{ country.name }}"
-                                     alt="Flag: {{ country.name }}"
-                                     onerror="this.style.display='none'">&nbsp;
-                                <a class="createPartyLink"
-                                   href="{% url 'party:demopartynet-create' %}?slug={{ party.0|slugify }}">{{ party.0 }}</a>
-                            </li>
-                        {% endfor %}
+                    <div class="spinner-border float-right" role="status" id="demopartySpinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <ul style="list-style: none" id="partyList">
                     </ul>
                 </div>
             {% endif %}
@@ -58,10 +60,53 @@
         </div>
     </div>
 
-    <script>
+    <script type="text/javascript">
         $("#id_date_start").on("change.datetimepicker", e => {
             $("#id_date_end").val(e.target.value)
         })
-        $(".createPartyLink").click(() => $("#spinnerModal").modal("show"))
     </script>
+
+    {% if request.resolver_match.view_name != "party:update" %}
+        <script type="text/javascript">
+
+            const partyList = document.getElementById("partyList"),
+                spinner = document.getElementById("demopartySpinner"),
+                date = new Date().toISOString().slice(0,10)
+
+
+            renderParties = (data) => {
+                spinner.hidden = true
+                const partyArray = data.map(({name, id, locationCountry}) => (
+                    {
+                        name, id, country: locationCountry.slice(-2)
+                    }
+                ))
+
+                partyArray.forEach(item => {
+                    const li = document.createElement("li")
+                    const img = document.createElement("img")
+                    img.src = `/static/flags/${item.country.toLowerCase()}.gif`
+                    img.height = 10
+                    img.title = item.country
+                    img.alt = `Flag: ${item.country}`
+                    const a = document.createElement("a")
+                    a.className = "createPartyLink ms-2"
+                    a.href = "{% url 'party:demopartynet-create' %}?id=" + item.id
+                    a.textContent = item.name
+                    a.addEventListener("click", () => {
+                        $("#spinnerModal").modal("show")
+                    })
+                    li.append(img, a)
+                    partyList.append(li)
+                })
+
+            }
+
+            fetch(`https://www.demoparty.net/api/events?startDate[after]=${date}&order[startDate]=asc`)
+                .then(res => res.json())
+                .then(j => renderParties(j["hydra:member"]))
+
+        </script>
+    {% endif %}
+
 {% endblock %}
