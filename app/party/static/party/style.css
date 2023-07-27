@@ -123,3 +123,8 @@ body {
     max-width: 400px;
     max-height: 400px;
 }
+
+/* Fix crispy forms suffix calendar icon */
+.input-group-text {
+    display: block;
+}
