@@ -10,7 +10,6 @@ django-extensions==3.2.3
 django-object-actions==4.1.0
 django-simple-plausible==0.0.4
 django-tempus-dominus==5.1.2.17
-feedparser==6.0.10
 ipython==8.5.0
 gunicorn==20.1.0
 psycopg2==2.9.4
