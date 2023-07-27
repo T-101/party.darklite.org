@@ -43,6 +43,12 @@ class TripToCreateView(PartyMixin, FormModelMixin, generic.CreateView):
         self.towards_party = True
         self.party = None
 
+    def get(self, request, *args, **kwargs):
+        if self.party.has_ended:
+            messages.warning(request, "Cannot create a trip to a party that has ended")
+            return redirect(reverse("party:landing_page"))
+        return super().get(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["display_name"] = self.request.user.display_name
