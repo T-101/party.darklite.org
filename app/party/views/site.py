@@ -60,7 +60,7 @@ class StatsView(generic.TemplateView):
                                    .values("display_name") \
                                    .annotate(count=Count("display_name")) \
                                    .order_by("-count")[:10]
-        ctx["countries"] = list(Party.objects.filter(visible=True)
+        ctx["countries"] = list(Party.objects.filter(visible=True).exclude(country__name="None")
                                 .annotate(country_code=F("country"))
                                 .annotate(country_name=Case(*whens))
                                 .values("country_code", "country_name")
