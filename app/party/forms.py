@@ -1,7 +1,7 @@
 from dal import autocomplete
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, ButtonHolder
+from crispy_forms.layout import Layout, Submit, Row, Column, HTML
 from django_countries import countries
 
 from common.classes import LocaleDateTimePicker, LocaleDatePicker
@@ -36,7 +36,8 @@ class PartyForm(forms.ModelForm):
             Row(
                 Column(
                     Submit('submit', 'Save'),
-                    Submit('cancel', 'Cancel')
+                    HTML("""<a role="button" class="btn btn-primary ms-4"
+                        href="{% url "party:landing_page" %}">Cancel</a>""")
                 )
             )
         )
