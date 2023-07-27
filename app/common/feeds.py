@@ -44,7 +44,7 @@ class BasePartyFeed(Feed):
         return feed
 
     def items(self):
-        return Party.objects.order_by('-created_dt')[:10]
+        return Party.objects.filter(visible=True).order_by('-created_dt')[:10]
 
     def item_extra_kwargs(self, item):
         return {
