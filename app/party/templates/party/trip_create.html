@@ -19,6 +19,7 @@
                     {% crispy form %}
                     {% if not party_ended %}
                         <button class="btn btn-primary" type="submit">Save</button>
+                        <a class="btn btn-primary ms-4" href="{% url 'party:detail' party.slug %}">Cancel</a>
                         {% if object %}
                             <a class="btn btn-danger ms-4"
                                href="{% url 'party:delete-trip' party.slug object.pk %}">Delete</a>
