@@ -15,7 +15,7 @@
                         <div class="col">
                             <h1 class="">{{ object|small_year }} <a
                                     href="{% url 'party:update' object.slug %}" title="Modify this party">
-                                {% if not object.has_ended or user.is_superuser %}
+                                {% if not object.has_ended %}
                                     <span style="font-size: 1rem;">
                                         <i class="far fa-edit"></i>
                                     </span>
@@ -30,11 +30,14 @@
                                 <li>{{ object.date_range }}</li>
                                 <li>
                                     {{ object.location }}
-                                    <a href="{% url "party:list-by-country" object.country.name %}">
-                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country.code|lower }}.svg"
-                                             alt="flag of {{ object.country.name }}" title="{{ object.country.name }}"
-                                             height="11" onerror="this.style.display='none'">
-                                    </a>
+                                    {% if object.country %}
+                                        <a href="{% url "party:list-by-country" object.country.name %}">
+                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country.code|lower }}.svg"
+                                                 alt="flag of {{ object.country.name }}"
+                                                 title="{{ object.country.name }}"
+                                                 height="11" onerror="this.style.display='none'">
+                                        </a>
+                                    {% endif %}
                                 </li>
                                 {% if object.www %}
                                     <li><a href="{{ object.www }}">{{ object.www }}</a></li>
@@ -62,7 +65,7 @@
                 </div>
                 <div class="col text-end">
                     {% if user.is_authenticated %}
-                        {% if not object.has_ended or user.is_superuser %}
+                        {% if not object.has_ended %}
                             <a class="btn btn-success" type="button" id="dropdownPartyButton"
                                href="{% url 'party:create-trip-to' object.slug %}">
                                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP TOWARDS PARTY
@@ -113,7 +116,7 @@
                 </div>
                 <div class="col text-end">
                     {% if user.is_authenticated %}
-                        {% if not object.has_ended or user.is_superuser %}
+                        {% if not object.has_ended %}
                             <a class="btn btn-success" type="button" id="dropdownPartyButton"
                                href="{% url 'party:create-trip-from' object.slug %}">
                                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP FROM PARTY
