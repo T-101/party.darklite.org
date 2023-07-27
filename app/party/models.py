@@ -2,7 +2,7 @@ import re
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.text import slugify
+from django.utils import timezone
 from django_countries.fields import CountryField
 from django_extensions.db.fields import AutoSlugField
 
@@ -14,7 +14,7 @@ class Party(models.Model):
     name = models.CharField(max_length=64)
     date_start = models.DateField()
     date_end = models.DateField()
-    location = models.CharField(max_length=64)
+    location = models.CharField(max_length=128)
     country = CountryField(multiple=False, null=True, blank=True)
     www = models.URLField(blank=True, null=True)
     slug = AutoSlugField(populate_from=["name", "date_start__year"])
@@ -39,6 +39,10 @@ class Party(models.Model):
         if self.name.endswith(str(self.date_start.year)):
             self.name = strip_trailing_year(self.name)
         super().save(*args, **kwargs)
+
+    @property
+    def has_ended(self):
+        return self.date_end < timezone.localtime().date()
 
     @property
     def date_range(self):
