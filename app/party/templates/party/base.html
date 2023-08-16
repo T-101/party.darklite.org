@@ -52,10 +52,12 @@
                        href="{% url 'party:about' %}">
                         <i class="fa fa-info-circle"></i> About</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}"
-                       href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}"
+                           href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.view_name == "feeds" %} active {% endif %}"
                        href="{% url 'feeds' %}"><i class="fas fa-rss"></i></i> Feeds</a>
