@@ -1,8 +1,10 @@
 import sys
 
 from django import VERSION as DJANGO_VERSION
+from django.contrib import messages
 from django.db.models import Q, Count, F, When, Value, Case
 from django.db.models.functions import Lower
+from django.shortcuts import redirect
 from django.views import generic
 from django_countries import countries
 
@@ -46,6 +48,12 @@ class SearchView(generic.TemplateView):
 
 class StatsView(generic.TemplateView):
     template_name = 'party/stats.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.add_message(request, level=messages.WARNING, message="You need to be logged in to view stats")
+            return redirect("party:landing_page")
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

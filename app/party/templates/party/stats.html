@@ -202,9 +202,38 @@
                 </table>
             </div>
         </div>
+        <hr/>
+        <div class="row">
+            <div class="col-12">
+                <canvas id="chartSiteUsage" class="mb-4"></canvas>
+                <div id="siteUsageCard" class="card text-center d-none">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                Alltime usage stats
+                            </div>
+                            <div class="col">
+                                Page views: <span id="pageViews">-</span>
+                            </div>
+                            <div class="col">
+                                Visitors: <span id="visitors">-</span>
+                            </div>
+                            <div class="col">
+                                Visits: <span id="visits">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript">
+
+        const pageViews = document.querySelector("#pageViews"),
+            visitors = document.querySelector("#visitors"),
+            visits = document.querySelector("#visits"),
+            siteUsegeCard = document.querySelector("#siteUsageCard")
 
         const configPartiesByCountries = {
             type: 'doughnut',
@@ -246,6 +275,27 @@
             }
         }
 
+        const configSiteUsage = {
+            type: 'line',
+            data: {
+                datasets: [],
+                labels: [],
+            },
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            stepSize: 1
+                        }
+                    },
+                    x: {
+                        // Hide date labels
+                        display: false
+                    }
+                }
+            }
+        }
+
         const chartPartiesByCountries = new Chart(
             document.getElementById('chartPartiesByCountries'),
             configPartiesByCountries
@@ -256,6 +306,51 @@
             configTransportation
         );
 
+        let chartSiteUsage
+
+        const drawSiteUsage = (data) => {
+            pageViews.innerText = data.alltime.results.pageviews.value
+            visitors.innerText = data.alltime.results.visitors.value
+            visits.innerText = data.alltime.results.visits.value
+            siteUsegeCard.classList.remove("d-none")
+            configSiteUsage.data.labels = data.month.results.map(e => e.date)
+            configSiteUsage.data.datasets = [
+                {
+                    label: "Page Views",
+                    data: data.month.results.map(e => e.pageviews),
+                    borderColor: 'rgb(0, 140, 186)',
+                    backgroundColor: 'rgb(0, 140, 186)',
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                },
+                {
+                    label: "Visitors",
+                    data: data.month.results.map(e => e.visitors),
+                    borderColor: 'rgb(12, 100, 140)',
+                    backgroundColor: 'rgb(21, 140, 186)',
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                },
+                {
+                    label: "Visits",
+                    data: data.month.results.map(e => e.visits),
+                    borderColor: 'rgb(12, 80, 120)',
+                    backgroundColor: 'rgb(21, 128, 166)',
+                    cubicInterpolationMode: 'monotone',
+                    tension: 0.4
+                }
+            ]
+
+            chartSiteUsage = new Chart(
+                document.getElementById('chartSiteUsage'),
+                configSiteUsage
+            );
+        }
+
+        fetch("https://p.didnot.win/stats_api")
+            .then(res => {
+                if (res.status === 200) res.json().then(j => drawSiteUsage(j))
+            })
 
     </script>
 
