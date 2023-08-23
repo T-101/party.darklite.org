@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'tempus_dominus',
     'django_simple_plausible',
+    'drf_spectacular',
     # Our apps
     'authentication',
     'party',
@@ -180,7 +181,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'common.permissions.IsSuperUserOrReadOnly',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -224,6 +226,14 @@ LOGGING = {
             'propagate': False
         },
     },
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Darklite Partywiki',
+    'DESCRIPTION': "You'll never travel alone - Even if you'd want to",
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PERMISSIONS': ['common.permissions.IsSuperUserOrReadOnly'],
 }
 
 SESSION_COOKIE_SECURE = not DEBUG
