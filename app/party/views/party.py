@@ -103,13 +103,21 @@ class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
             return redirect(reverse("party:landing_page"))
 
         j = res.json()
-        if j.get("location", {}).get("@type") == "VirtualLocation":
-            defaults["location"] = "Online"
-        else:
-            address.append(j.get("location", {}).get("address", {}).get("streetAddress", ""))
-            address.append(j.get("location", {}).get("address", {}).get("postalCode", ""))
-            address.append(j.get("location", {}).get("address", {}).get("addressLocality", ""))
-            defaults["location"] = ", ".join([p for p in address if p != ""])
+        location = j.get("location", {})
+
+        if location:
+            if location.get("@type") == "VirtualLocation":
+                defaults["location"] = "Online"
+            else:
+                address.append(location.get("address", {}).get("streetAddress", ""))
+                address.append(location.get("address", {}).get("postalCode", ""))
+                address.append(location.get("address", {}).get("addressLocality", ""))
+                defaults["location"] = ", ".join([p for p in address if p != ""])
+            defaults["country"] = location.get("address", {}).get("addressCountry", "")[-2:]
+
+        if not location:
+            defaults["country"] = j.get("locationCountry", "")[-2:]
+
         defaults["name"] = j.get("name")
         defaults["www"] = j.get("url")
         try:
@@ -118,7 +126,6 @@ class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
         except ValueError:
             messages.warning(request, "Error parsing dates from demoparty.net")
             return redirect(reverse("party:landing_page"))
-        defaults["country"] = j.get("location", {}).get("address", {}).get("addressCountry", "")[-2:]
 
         party, _ = Party.objects.update_or_create(slug=slugify(defaults["name"]), defaults=defaults)
         return redirect('party:detail', party.slug)
