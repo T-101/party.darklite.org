@@ -1,4 +1,6 @@
 import sys
+import sqlite3
+import rest_framework
 
 from django import VERSION as DJANGO_VERSION
 from django.contrib import messages
@@ -9,6 +11,7 @@ from django.views import generic
 from django_countries import countries
 
 from party.models import Party, Trip
+from common.parsers import get_dependency_version
 
 
 class LandingPageView(generic.TemplateView):
@@ -27,7 +30,12 @@ class AboutView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
         ctx["django_version"] = '.'.join(map(str, list(DJANGO_VERSION[0:3])))
+        ctx["rest_framework_version"] = rest_framework.VERSION
         ctx["python_version"] = sys.version.split(" ")[0]
+        ctx["sqlite_version"] = sqlite3.version
+        ctx["bootstrap_version"] = get_dependency_version("bootstrap")
+        ctx["fontawesome_version"] = get_dependency_version("font-awesome")
+        ctx["jquery_version"] = get_dependency_version("jquery")
         return ctx
 
 
