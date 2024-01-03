@@ -10,12 +10,8 @@ services:
     volumes:
       - .:/code
       - partywiki_logs:/var/log
-    depends_on:
-      - postgres
     ports:
       - "127.0.0.1:${CONTAINER_PORT}:${CONTAINER_PORT}"
-    # expose:
-    #   - 8000
     restart: unless-stopped
 
   cron:
@@ -28,34 +24,6 @@ services:
       - app
     restart: unless-stopped
 
-  nginx:
-    image: nginx:1.23.2-alpine
-    container_name: partywiki_nginx
-    volumes:
-      - ./nginx/templates:/etc/nginx/templates
-      - django_static:/app/static
-    ports:
-      - "8080:80"
-    depends_on:
-      - app
-
-  postgres:
-    env_file: .db-env
-    image: postgres:15.1-alpine
-    container_name: partywiki_postgres
-    ports:
-      - "5432:5432/tcp"
-    volumes:
-      - partywiki-db-data:/var/lib/postgresql/data
-      - partywiki_logs:/var/log
-    environment:
-      TZ: "Europe/Helsinki"
-    command: ["-c", "logging_collector=on", "-c", "log_directory=/var/log/", "-c", "log_filename=postgres.log"]
-    restart: unless-stopped
-
 volumes:
-  partywiki-db-data:
-    driver: local
   partywiki_logs:
     driver: local
-  django_static:
