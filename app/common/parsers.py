@@ -14,9 +14,6 @@ def get_dependency_version(dependency: str) -> str:
         data = raw_data.readlines()
     try:
         depe = [x for x in data if dependency in x][0]
-    except IndexError:
-        return ""
-    try:
         return re.search(r"\d+\.\d+\.\d+", depe).group()
-    except AttributeError:
+    except (IndexError, AttributeError):
         return ""
