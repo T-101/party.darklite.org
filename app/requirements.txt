@@ -1,5 +1,5 @@
 crispy-bootstrap5==0.7
-django==4.2.9
+django==4.2.10
 django-autocomplete-light==3.9.7
 django-countries==7.5.1
 django-crispy-forms==1.14.0
