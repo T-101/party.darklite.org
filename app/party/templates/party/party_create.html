@@ -25,12 +25,14 @@
 
             {% if request.resolver_match.view_name != "party:update" %}
                 <div class="col-sm-6">
-                    <h3>Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
-                    <div class="spinner-border float-right" role="status" id="demopartySpinner">
-                        <span class="sr-only">Loading...</span>
+                    <div class="ms-4">
+                        <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                        <div class="spinner-border float-right" role="status" id="demopartySpinner">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div style="list-style: none" id="partyList">
+                        </div>
                     </div>
-                    <ul style="list-style: none" id="partyList">
-                    </ul>
                 </div>
             {% endif %}
         </div>
@@ -71,24 +73,34 @@
 
             const partyList = document.getElementById("partyList"),
                 spinner = document.getElementById("demopartySpinner"),
-                date = new Date().toISOString().slice(0,10)
+                date = new Date().toISOString().slice(0, 10)
 
 
             renderParties = (data) => {
-                spinner.hidden = true
-                const partyArray = data.map(({name, id, locationCountry}) => (
-                    {
-                        name, id, country: locationCountry.slice(-2)
-                    }
+                const regionNames = 'Intl' in window ? new Intl.DisplayNames(['en'], {type: 'region'}) : false
+                const partyArray = data.map(({name, id, locationCountry, startDate}) => (
+                    {name, id, country: locationCountry.slice(-2), startDate: startDate.slice(0, 10)}
                 ))
 
+                let lastMonth = ""
+                spinner.hidden = true
+
                 partyArray.forEach(item => {
+                    const countryName = regionNames ? regionNames.of(item.country) : item.country
+                    const thisMonth = new Date(item.startDate).toLocaleString('en-us', {month: 'long'})
+                    if (lastMonth !== thisMonth) {
+                        lastMonth = thisMonth
+                        const header = document.createElement("h5")
+                        header.className = "mt-2"
+                        header.innerText = thisMonth
+                        partyList.appendChild(header)
+                    }
                     const li = document.createElement("li")
                     const img = document.createElement("img")
                     img.src = `/static/flags/${item.country.toLowerCase()}.gif`
                     img.height = 10
-                    img.title = item.country
-                    img.alt = `Flag: ${item.country}`
+                    img.title = countryName
+                    img.alt = `Flag of ${countryName}`
                     const a = document.createElement("a")
                     a.className = "createPartyLink ms-2"
                     a.href = "{% url 'party:demopartynet-create' %}?id=" + item.id
@@ -102,7 +114,9 @@
 
             }
 
-            fetch(`https://www.demoparty.net/api/events?startDate[after]=${date}&order[startDate]=asc`)
+            const url = `https://www.demoparty.net/api/events?startDate[after]=${date}&order[startDate]=asc`
+
+            fetch(url)
                 .then(res => res.json())
                 .then(j => renderParties(j["hydra:member"]))
 
