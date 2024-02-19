@@ -205,7 +205,8 @@
         <hr/>
         <div class="row">
             <div class="col-12">
-                <canvas id="chartSiteUsage" class="mb-4"></canvas>
+                <h3>Site usage in past 30 days</h3>
+                <canvas id="chartSiteUsage" class="mb-4" style="max-height: 20em;"></canvas>
                 <div id="siteUsageCard" class="card text-center d-none">
                     <div class="card-body">
                         <div class="row">
@@ -295,7 +296,8 @@
                 },
                 interaction: {
                     mode: "index"
-                }
+                },
+                maintainAspectRatio: false
             }
         }
 
