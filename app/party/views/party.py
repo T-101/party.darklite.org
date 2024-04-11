@@ -5,13 +5,13 @@ from django.db.models.functions import Lower
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.text import slugify
 from django.views import generic
 
 from common.mixins import LoginRequiredMixin
 from party.forms import PartyForm, PartyFormNative
 from party.models import Party
+from party.parsers import get_country, get_location, get_start_date, get_end_date
 
 
 class PartyListView(generic.ListView):
@@ -91,41 +91,26 @@ class PartyDetailView(generic.DetailView):
 class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
         demopartynet_id = request.GET.get("id", None)
-        address = []
-        defaults = {
-            "created_by": request.user
-        }
+        if not demopartynet_id:
+            messages.warning(request, "No demoparty.net ID provided")
+            return redirect(reverse("party:landing_page"))
 
-        url = f"https://www.demoparty.net/api/events/{demopartynet_id}"
-        res = requests.get(url=url, timeout=10)
+        res = requests.get(timeout=10, url=f"https://www.demoparty.net/api/events/{demopartynet_id}")
         if res.status_code != 200:
             messages.warning(request, "Error fetching data from demoparty.net")
             return redirect(reverse("party:landing_page"))
 
         j = res.json()
-        location = j.get("location", {})
 
-        if location:
-            if location.get("@type") == "VirtualLocation":
-                defaults["location"] = "Online"
-            else:
-                address.append(location.get("address", {}).get("streetAddress", ""))
-                address.append(location.get("address", {}).get("postalCode", ""))
-                address.append(location.get("address", {}).get("addressLocality", ""))
-                defaults["location"] = ", ".join([p for p in address if p != ""])
-            defaults["country"] = location.get("address", {}).get("addressCountry", "")[-2:]
-
-        if not location:
-            defaults["country"] = j.get("locationCountry", "")[-2:]
-
-        defaults["name"] = j.get("name")
-        defaults["www"] = j.get("url")
-        try:
-            defaults["date_start"] = timezone.datetime.strptime(j.get("startDate"), "%Y-%m-%dT%H:%M:%S%z").date()
-            defaults["date_end"] = timezone.datetime.strptime(j.get("endDate"), "%Y-%m-%dT%H:%M:%S%z").date()
-        except ValueError:
-            messages.warning(request, "Error parsing dates from demoparty.net")
-            return redirect(reverse("party:landing_page"))
+        defaults = {
+            "created_by": request.user,
+            "location": get_location(j),
+            "country": get_country(j),
+            "name": j.get("name"),
+            "www": j.get("url"),
+            "date_start": get_start_date(j),
+            "date_end": get_end_date(j),
+        }
 
         party, _ = Party.objects.update_or_create(slug=slugify(defaults["name"]), defaults=defaults)
         return redirect('party:detail', party.slug)
