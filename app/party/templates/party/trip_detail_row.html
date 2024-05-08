@@ -3,19 +3,35 @@
     <td class="text-truncate handle-ellipsis"
         style="max-width: 150px" title="{{ trip.display_name }}">{{ trip.display_name }}
     </td>
-    <td class="text-truncate handle-ellipsis" style="max-width: 150px">
-        {% include 'snippets/cf_flag.html' with country=trip.departure_country %}
-        <span style="font-size: 0">{{ trip.departure_country.name }}</span>
-        <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
-    </td>
+    {% if not user.is_authenticated %}
+        <td style="filter: blur(3px);">
+            <i class="fas fa-sign-in-alt"></i>
+            Login needed
+        </td>
+    {% else %}
+        <td class="text-truncate handle-ellipsis" style="max-width: 150px">
+            {% include 'snippets/cf_flag.html' with country=trip.departure_country %}
+            <span style="font-size: 0">{{ trip.departure_country.name }}</span>
+            <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
+        </td>
+    {% endif %}
+
     {% if user.is_authenticated %}
         <td>{{ trip.departure_datetime|date:"D, d M Y H:i" }}</td>
     {% endif %}
-    <td class="text-truncate handle-ellipsis" style="max-width: 150px">
-        {% include 'snippets/cf_flag.html' with country=trip.arrival_country %}
-        <span style="font-size: 0">{{ trip.arrival_country.name }}</span>
-        <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
-    </td>
+
+    {% if not user.is_authenticated %}
+        <td style="filter: blur(3px);">
+            <i class="fas fa-sign-in-alt"></i>
+            Login needed
+        </td>
+    {% else %}
+        <td class="text-truncate handle-ellipsis" style="max-width: 150px">
+            {% include 'snippets/cf_flag.html' with country=trip.arrival_country %}
+            <span style="font-size: 0">{{ trip.arrival_country.name }}</span>
+            <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
+        </td>
+    {% endif %}
     {% if user.is_authenticated %}
         <td>{{ trip.arrival_datetime|date:"D, d M Y H:i" }}</td>
         <td>
@@ -38,7 +54,7 @@
                     </a>
                     {% if trip.created_by == user %}
                         <a class="ms-2"
-                                href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
+                           href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
                             <i class="far fa-edit icon-help"></i>
                         </a>
                     {% endif %}
