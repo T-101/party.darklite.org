@@ -96,11 +96,15 @@
                         partyList.appendChild(header)
                     }
                     const li = document.createElement("li")
+                    const div = document.createElement("div")
+                    div.className = "text-center"
+                    div.style.cssText = "width: 20px; display: inline-block"
                     const img = document.createElement("img")
                     img.src = `/static/flags/${item.country.toLowerCase()}.gif`
                     img.height = 10
                     img.title = countryName
                     img.alt = `Flag of ${countryName}`
+                    div.append(img)
                     const a = document.createElement("a")
                     a.className = "createPartyLink ms-2"
                     a.href = "{% url 'party:demopartynet-create' %}?id=" + item.id
@@ -108,7 +112,7 @@
                     a.addEventListener("click", () => {
                         $("#spinnerModal").modal("show")
                     })
-                    li.append(img, a)
+                    li.append(div, a)
                     partyList.append(li)
                 })
 

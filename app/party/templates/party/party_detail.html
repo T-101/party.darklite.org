@@ -32,7 +32,7 @@
                                     {{ object.location }}
                                     {% if object.country %}
                                         <a href="{% url "party:list-by-country" object.country.name %}">
-                                            {% include 'snippets/cf_flag.html' with country=object.country %}
+                                            {% include 'snippets/flag.html' with country=object.country %}
                                         </a>
                                     {% endif %}
                                 </li>
