@@ -1,10 +1,10 @@
-<div style="width: 20px; display: inline-block">
+<div class="text-center" style="width: 20px; display: inline-block">
     {% if not country %}
         <i class="far fa-question-circle"></i>
     {% else %}
         <a href="{% url "party:list-by-country" country.name %}" class="text-decoration-none">
         <img src="/static/flags/{{ country.code|lower }}.gif"
-             height="10" title="{{ country.name }}"
+             height="12" title="{{ country.name }}"
              alt="{{ country.name }}"
              onerror="this.style.display='none'">
         </a>

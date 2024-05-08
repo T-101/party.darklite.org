@@ -20,7 +20,7 @@
                 <ul class="list-unstyled">
                     {% for party in upcoming_parties %}
                         <li>
-                            {% include 'snippets/cf_flag.html' with country=party.country %}
+                            {% include 'snippets/flag.html' with country=party.country %}
                             <a href="{% url 'party:detail' party.slug %}">
                                 {{ party }}
                             </a>
@@ -33,7 +33,7 @@
                 <ul class="list-unstyled bg-faded">
                     {% for party in past_parties|slice:"10" %}
                         <li>
-                        {% include 'snippets/cf_flag.html' with country=party.country %}
+                        {% include 'snippets/flag.html' with country=party.country %}
                             <a href="{% url 'party:detail' party.slug %}">{{ party|small_year }}</a>
                         </li>
                     {% endfor %}
