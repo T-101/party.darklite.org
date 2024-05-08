@@ -12,10 +12,7 @@
         <td>{{ trip.departure_datetime|date:"D, d M Y H:i" }}</td>
     {% endif %}
     <td class="text-truncate handle-ellipsis" style="max-width: 150px">
-        <img src="/static/flags/{{ trip.arrival_country|lower }}.gif"
-             height="10" title="{{ trip.arrival_country.name }}"
-             alt="{{ trip.arrival_country.name }}"
-             onerror="this.style.display='none'">
+        {% include 'snippets/cf_flag.html' with country=trip.arrival_country %}
         <span style="font-size: 0">{{ trip.arrival_country.name }}</span>
         <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
     </td>
