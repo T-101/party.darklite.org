@@ -4,10 +4,7 @@
         style="max-width: 150px" title="{{ trip.display_name }}">{{ trip.display_name }}
     </td>
     <td class="text-truncate handle-ellipsis" style="max-width: 150px">
-        <img src="/static/flags/{{ trip.departure_country|lower }}.gif"
-             height="10" title="{{ trip.departure_country.name }}"
-             alt="{{ trip.departure_country.name }}"
-             onerror="this.style.display='none'">
+        {% include 'snippets/cf_flag.html' with country=trip.departure_country %}
         <span style="font-size: 0">{{ trip.departure_country.name }}</span>
         <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
     </td>
