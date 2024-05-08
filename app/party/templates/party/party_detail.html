@@ -32,10 +32,7 @@
                                     {{ object.location }}
                                     {% if object.country %}
                                         <a href="{% url "party:list-by-country" object.country.name %}">
-                                            <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/flags/4x3/{{ object.country.code|lower }}.svg"
-                                                 alt="flag of {{ object.country.name }}"
-                                                 title="{{ object.country.name }}"
-                                                 height="11" onerror="this.style.display='none'">
+                                            {% include 'snippets/cf_flag.html' with country=object.country %}
                                         </a>
                                     {% endif %}
                                 </li>
