@@ -19,7 +19,12 @@ class LandingPageView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['upcoming_parties'] = Party.upcoming_parties.filter(visible=True)
+        ctx['upcoming_parties'] = (Party.upcoming_parties
+                                   .filter(visible=True)
+                                   .annotate(towards_party_count=Count("trips", filter=Q(trips__towards_party=True)),
+                                             towards_home_count=Count("trips", filter=Q(trips__towards_party=False))
+                                             )
+                                   )
         ctx['past_parties'] = Party.past_parties.filter(visible=True)
         return ctx
 
