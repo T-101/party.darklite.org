@@ -17,23 +17,46 @@
                         {% endif %}
                     </div>
                 </div>
-                <ul class="list-unstyled">
-                    {% for party in upcoming_parties %}
-                        <li>
-                            {% include 'snippets/flag.html' with country=party.country %}
-                            <a href="{% url 'party:detail' party.slug %}">
-                                {{ party }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                <div class="table-responsive">
+                    <table class="table table-sm w-auto">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Party</th>
+                            <th class="text-center px-3"><i class="fas fa-plane-arrival"></i></th>
+                            <th class="text-center"><i class="fas fa-plane-departure"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for party in upcoming_parties %}
+                            <tr>
+                                <td>
+                                    {% include 'snippets/flag.html' with country=party.country %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'party:detail' party.slug %}">
+                                        {{ party }}
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    {{ party.towards_party_count }}
+                                </td>
+                                <td class="text-center">
+                                    {{ party.towards_home_count }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-md-4">
                 <p class="lead bg-info text-center text-white">Past parties</p>
                 <ul class="list-unstyled bg-faded">
                     {% for party in past_parties|slice:"10" %}
                         <li>
-                        {% include 'snippets/flag.html' with country=party.country %}
+                            {% include 'snippets/flag.html' with country=party.country %}
                             <a href="{% url 'party:detail' party.slug %}">{{ party|small_year }}</a>
                         </li>
                     {% endfor %}
