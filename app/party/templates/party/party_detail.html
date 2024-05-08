@@ -76,31 +76,33 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover table-responsive-sm table-sm">
-                        <thead class="thead">
-                        <tr>
-                            <th>Nick/Group</th>
-                            <th>From</th>
-                            {% if user.is_authenticated %}
-                                <th>Datetime</th>
-                            {% endif %}
-                            <th>To</th>
-                            {% if user.is_authenticated %}
-                                <th>Datetime</th>
-                                <th>Using</th>
-                                <th class="text-nowrap">Details</th>
-                                {% if not object.has_ended or user.is_superuser %}
-                                    <th></th>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="thead">
+                            <tr>
+                                <th>Nick/Group</th>
+                                <th>From</th>
+                                {% if user.is_authenticated %}
+                                    <th>Datetime</th>
                                 {% endif %}
-                            {% endif %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for trip in inbound %}
-                            {% include 'party/trip_detail_row.html' with direction="to" %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                <th>To</th>
+                                {% if user.is_authenticated %}
+                                    <th>Datetime</th>
+                                    <th>Using</th>
+                                    <th class="text-nowrap">Details</th>
+                                    {% if not object.has_ended or user.is_superuser %}
+                                        <th></th>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for trip in inbound %}
+                                {% include 'party/trip_detail_row.html' with direction="to" %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,31 +128,33 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover table-responsive-sm table-sm">
-                        <thead class="thead">
-                        <tr>
-                            <th>Nick/Group</th>
-                            <th>From</th>
-                            {% if user.is_authenticated %}
-                                <th>Datetime</th>
-                            {% endif %}
-                            <th>To</th>
-                            {% if user.is_authenticated %}
-                                <th>Datetime</th>
-                                <th>Using</th>
-                                <th class="text-nowrap">Details</th>
-                                {% if not object.has_ended or user.is_superuser %}
-                                    <th></th>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="thead">
+                            <tr>
+                                <th>Nick/Group</th>
+                                <th>From</th>
+                                {% if user.is_authenticated %}
+                                    <th>Datetime</th>
                                 {% endif %}
-                            {% endif %}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for trip in outbound %}
-                            {% include 'party/trip_detail_row.html' with direction="from" %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                <th>To</th>
+                                {% if user.is_authenticated %}
+                                    <th>Datetime</th>
+                                    <th>Using</th>
+                                    <th class="text-nowrap">Details</th>
+                                    {% if not object.has_ended or user.is_superuser %}
+                                        <th></th>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for trip in outbound %}
+                                {% include 'party/trip_detail_row.html' with direction="from" %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
