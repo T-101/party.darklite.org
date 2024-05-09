@@ -1,18 +1,23 @@
 {% extends 'party/base.html' %}{% load partywiki_extras %}
 
 {% block content %}
+
     <div class="py-2">
         <div class="container">
-            <h3>Search</h3>
-            {% regroup results by date_start.year as yearly_results %}
-            {% for yearly in yearly_results %}
-                {{ yearly.grouper }}
-                <ul>
-                    {% for result in yearly.list %}
-                        <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
+            {% if not request.user.is_authenticated %}
+                <h3>You must be logged in to use search</h3>
+            {% else %}
+                <h3>Search</h3>
+                {% regroup results by date_start.year as yearly_results %}
+                {% for yearly in yearly_results %}
+                    {{ yearly.grouper }}
+                    <ul>
+                        {% for result in yearly.list %}
+                            <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 
@@ -33,4 +38,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
