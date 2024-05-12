@@ -21,8 +21,10 @@ class LandingPageView(generic.TemplateView):
         ctx = super().get_context_data(**kwargs)
         ctx['upcoming_parties'] = (Party.upcoming_parties
                                    .filter(visible=True)
-                                   .annotate(towards_party_count=Count("trips", filter=Q(trips__towards_party=True)),
-                                             towards_home_count=Count("trips", filter=Q(trips__towards_party=False))
+                                   .annotate(towards_party_count=Count("trips",
+                                                                       filter=Q(trips__towards_party=True)),
+                                             towards_home_count=Count("trips",
+                                                                      filter=Q(trips__towards_party=False))
                                              )
                                    )
         ctx['past_parties'] = Party.past_parties.filter(visible=True)
@@ -50,11 +52,16 @@ class SearchView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         query = self.request.GET.get("search", None)
-        if query:
-            ctx["results"] = Party.objects.filter(visible=True).filter(
-                Q(name__icontains=query) | Q(trips__display_name__icontains=query) | Q(country__icontains=query) | Q(
-                    location__icontains=query)
-            ).order_by("date_start__year", Lower("name")).distinct()
+
+        if query and self.request.user.is_authenticated:
+            filters = (
+                    Q(name__icontains=query) |
+                    Q(trips__display_name__icontains=query) |
+                    Q(country__icontains=query) |
+                    Q(location__icontains=query)
+            )
+            ctx["results"] = (Party.objects.filter(filters)
+                              .order_by("date_start__year", Lower("name")).distinct())
         ctx["query"] = query
         return ctx
 
