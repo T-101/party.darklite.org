@@ -7,15 +7,14 @@
         <meta property="og:title" content="Darklite Partywiki"/>
     {% endblock %}
     <meta property="og:description" content="You'll never travel alone - Even if you'd want to"/>
-    <meta property="og:image" content="https://party.darklite.org/static/android-chrome-192x192.png"/>
+    <meta property="og:image" content="https://party.darklite.org/static/android-chrome-192x192.webp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="icon" sizes="any" type="image/svg+xml" href="{% static 'svg/partywiki_multi_color_smile.svg' %}"/>
+    <link rel="alternate icon" type="image/x-icon" href="{% static 'favicon.ico' %}"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-180x180.webp' %}">
+    <link rel="icon" type="image/webp" sizes="32x32" href="{% static 'favicon-32x32.webp' %}">
+    <link rel="icon" type="image/webp" sizes="16x16" href="{% static 'favicon-16x16.webp' %}">
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
-    <!-- favicon downloaded from https://favicon.io/emoji-favicons/pig/
-         Created by John Sorrentino -->
 
     {% block extrahead %}
     {% endblock %}
@@ -36,9 +35,9 @@
 
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-2 navbar-expand-custom">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'party:landing_page' %}">
-            <img src="{% static 'favicon-32x32.png' %}" class="me-2"/>
-            Darklite PartyWiki
+        <a class="navbar-brand my-0 py-0" href="{% url 'party:landing_page' %}">
+            <img src="{% static 'svg/partywiki_multi_color_smile.svg' %}" class="me-2 align-middle" style="height: 26px;"/>
+            <span class="align-middle">Darklite PartyWiki</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
                 aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
