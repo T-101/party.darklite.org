@@ -8,6 +8,24 @@ from common.classes import LocaleDateTimePicker, LocaleDatePicker
 from party.models import Party, Trip
 
 
+class CustomSelect(forms.Select):
+
+    def __init__(self, *args, **kwargs):
+        disabled_options: list = kwargs.pop("disabled_options", [])
+        super().__init__()
+        self.disabled_options = disabled_options
+
+    def optgroups(self, name, value, attrs=None):
+        groups = super().optgroups(name, value, attrs)
+        if groups and self.disabled_options:
+            for option in self.disabled_options:
+                try:
+                    groups[option][1][0]["attrs"]["disabled"] = True
+                except IndexError:
+                    pass
+        return groups
+
+
 class PartyForm(forms.ModelForm):
     date_start = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
     date_end = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
@@ -73,8 +91,8 @@ def _trip_layout():
 class TripForm(forms.ModelForm):
     departure_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
     arrival_country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
-    type = forms.ChoiceField(choices=Trip.TYPES,
-                             widget=forms.Select(attrs={'class': 'form-control form-select'}))
+    type = forms.ChoiceField(choices=[(None, "Select one")] + Trip.TYPES,
+                             widget=CustomSelect(attrs={'class': 'form-control form-select'}, disabled_options=[0]))
 
     departure_datetime = forms.DateTimeField(
         widget=LocaleDateTimePicker(attrs={"class": "col-md-12", "append": "fas fa-calendar"}))

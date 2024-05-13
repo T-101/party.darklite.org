@@ -2,11 +2,15 @@
     {% if not country %}
         <i class="far fa-question-circle"></i>
     {% else %}
-        <a href="{% url "party:list-by-country" country.name %}" class="text-decoration-none">
-        <img src="/static/flags/{{ country.code|lower }}.gif"
-             height="12" title="{{ country.name }}"
-             alt="{{ country.name }}"
-             onerror="this.style.display='none'">
+        {% if not hide_url %}
+            <a href="{% url "party:list-by-country" country.name %}" class="text-decoration-none">
+        {% endif %}
+    <img src="/static/flags/{{ country.code|lower }}.gif"
+         height="12" title="{{ country.name }}"
+         alt="{{ country.name }}"
+         onerror="this.style.display='none'">
+    {% if not hide_url %}
         </a>
+    {% endif %}
     {% endif %}
 </div>
