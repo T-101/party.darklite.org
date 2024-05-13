@@ -98,7 +98,7 @@
                             </thead>
                             <tbody>
                             {% for trip in inbound %}
-                                {% include 'party/trip_detail_row.html' with direction="to" %}
+                                {% include 'party/trip_detail_row.html' with direction="to" hide_url=True %}
                             {% endfor %}
                             </tbody>
                         </table>
