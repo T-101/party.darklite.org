@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}
+{% extends 'party/base.html' %}{% load static %}
 
 {% block title %}
     <title>RSS Feeds | Darklite Partywiki</title>
@@ -10,17 +10,20 @@
         <div class="row">
             <div class="col">
                 <h3>RSS Feeds</h3>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col">
                 <ul>
                     <li><a href="{% url 'feeds-rss2' %}">RSS 2.01</a></li>
                     <li><a href="{% url 'feeds-rss09' %}">RSS 0.91</a></li>
                     <li><a href="{% url 'feeds-atom1' %}">Atom 1.0</a></li>
                 </ul>
             </div>
+        </div>
+        <div class="mt-3">
+            <a href="//validator.w3.org/feed/check.cgi?url=https%3A//party.darklite.org/feeds/parties_rss2.xml">
+                <img src="{% static 'images/valid-rss-rogers.webp' %}" alt="[Valid RSS]" title="Validate my RSS feed"/></a>
+            <a href="//validator.w3.org/feed/check.cgi?url=https%3A//party.darklite.org/feeds/parties_atom1.xml">
+                <img src="{% static 'images/valid-atom.webp' %}" alt="[Valid Atom 1.0]"
+                     title="Validate my Atom 1.0 feed"/></a>
         </div>
     </div>
 
