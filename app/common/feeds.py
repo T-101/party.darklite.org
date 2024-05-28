@@ -12,6 +12,9 @@ class BasePartyFeed(Feed):
     description = "You'll never travel alone - Even if you'd want to!"
 
     def get_feed(self, obj, request):
+        # Since we are running behind a reverse proxy, we need to tell Django that we are running on HTTPS
+        request.is_secure = lambda: True
+
         feed = super().get_feed(obj, request)
         if settings.DEBUG:
             feed.content_type = 'text/xml; charset=utf-8'
