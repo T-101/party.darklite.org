@@ -18,17 +18,15 @@
 
     {% block extrahead %}
     {% endblock %}
-
-    <link rel="stylesheet" href="{% static 'party/lumen.bootswatch.5.3.2.min.css' %}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-          integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-          crossorigin="anonymous"/>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"
-            integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'party/bs-color-mode-toggler.js' %}"></script>
-
+    <link rel="stylesheet" href="{% static 'party/lumen.bootswatch.5.3.3.min.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"
+            integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="{% static 'party/style.css' %}"/>
 </head>
 <body>
@@ -36,7 +34,8 @@
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-2 navbar-expand-custom">
     <div class="container-fluid">
         <a class="navbar-brand my-0 py-0" href="{% url 'party:landing_page' %}">
-            <img src="{% static 'svg/partywiki_multi_color_smile.svg' %}" class="me-2 align-middle" style="height: 26px;"/>
+            <img src="{% static 'svg/partywiki_multi_color_smile.svg' %}" class="me-2 align-middle"
+                 style="height: 26px;"/>
             <span class="align-middle">Darklite PartyWiki</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
@@ -105,14 +104,17 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false"><i class="fas fa-sun"></i></a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <button class="dropdown-item" data-bs-theme-value="dark"><i class="fas fa-moon"></i> Darklite
-                            mode
-                        </button>
-                        <button class="dropdown-item" data-bs-theme-value="light"><i class="fas fa-sun"></i> Not
+                        <button class="dropdown-item" data-bs-theme-value="dark">
+                            <i class="fas fa-moon themeIcons"></i>
                             Darklite mode
                         </button>
-                        <button class="dropdown-item" data-bs-theme-value="auto"><i
-                                class="fas fa-magic"></i> Auto
+                        <button class="dropdown-item" data-bs-theme-value="light">
+                            <i class="fas fa-sun themeIcons"></i>
+                            Not Darklite mode
+                        </button>
+                        <button class="dropdown-item" data-bs-theme-value="auto">
+                            <i class="fa-solid fa-wand-magic-sparkles themeIcons"></i>
+                            Auto
                         </button>
                     </div>
                 </li>

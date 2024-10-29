@@ -39,7 +39,7 @@
 
 @font-face {
     font-family: "Roboto";
-    src: url("/static/party/fonts/Roboto/Roboto-Light.ttf") format("truetype")
+    src: url("/static/party/fonts/Roboto/Roboto-Light.ttf") format("truetype");
 }
 
 body {
@@ -127,4 +127,10 @@ body {
 /* Fix crispy forms suffix calendar icon */
 .input-group-text {
     display: block;
+}
+
+/* Theme dropdown icons */
+.themeIcons {
+    width: 1.5em;
+    text-align: center;
 }
