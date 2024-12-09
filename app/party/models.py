@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
 from django_extensions.db.fields import AutoSlugField
+from django_extensions.db.models import TimeStampedModel
 
 from common.parsers import strip_trailing_year
 from party.managers import UpcomingPartyManager, PastPartyManager, PartyManager
@@ -68,7 +69,7 @@ class Party(models.Model):
         return re.sub(r'(\s\d\d\d\d)', r',\1', range_str)
 
 
-class Trip(models.Model):
+class Trip(TimeStampedModel):
     BICYCLE = 'bicycle'
     BUS = 'bus'
     CAR = 'car'
