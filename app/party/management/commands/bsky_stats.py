@@ -31,8 +31,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        # if not self.bsky_username or not self.bsky_password:
-        #     return self.stdout.write(self.style.ERROR("BSKY_USERNAME and BSKY_PASSWORD must be set in .env"))
+        if not self.bsky_username or not self.bsky_password:
+            return self.stdout.write(self.style.ERROR("BSKY_USERNAME and BSKY_PASSWORD must be set in .env"))
 
         now = timezone.localtime()
 
