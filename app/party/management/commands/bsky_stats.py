@@ -1,6 +1,7 @@
 import os
 
 import environ
+from atproto import Client, client_utils
 
 from config import settings
 from django.core.management.base import BaseCommand
@@ -26,6 +27,7 @@ class Command(BaseCommand):
         parser.add_argument("-w", "--weekly", action="store_true", help="Get stats from past 7 days")
         parser.add_argument("-m", "--monthly", action="store_true", help="Get stats from previous month")
         parser.add_argument("-y", "--yearly", action="store_true", help="Get stats from previous year")
+        parser.add_argument("-d", "--debug", action="store_true", help="Post to bsky in debug mode")
 
     def handle(self, *args, **options):
 
@@ -71,5 +73,19 @@ class Command(BaseCommand):
             msg += f"{tc} trip{pluralize(tc)} towards parties added by {uc} user{pluralize(uc)}\n\n"
 
         if msg:
-            msg = "Travelwiki " + title + msg + "Go check it out! https://party.darklite.org"
-            return self.stdout.write(self.style.SUCCESS(msg))
+            msg = "Travelwiki " + title + msg
+
+            if not settings.DEBUG or options['debug']:
+                msg_bsky = (client_utils.TextBuilder()
+                          .text(f'{msg}Go check it out! ')
+                          .link('party.darklite.org', 'https://party.darklite.org'))
+
+                client = Client()
+                profile = client.login(self.bsky_username, self.bsky_password)
+                post = client.send_post(msg_bsky)
+
+
+            text_msg = msg + "Go check it out! https://party.darklite.org"
+            return self.stdout.write(self.style.SUCCESS(text_msg))
+
+
