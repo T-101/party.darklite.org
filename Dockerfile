@@ -1,6 +1,6 @@
 FROM python:3.12.1-alpine3.19
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 RUN mkdir /code
 WORKDIR /code/app/
