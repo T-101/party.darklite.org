@@ -27,8 +27,8 @@ class CustomSelect(forms.Select):
 
 
 class PartyForm(forms.ModelForm):
-    date_start = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
-    date_end = forms.DateField(widget=LocaleDatePicker(attrs={"type": "date", "append": "fas fa-calendar"}))
+    date_start = forms.DateField(widget=LocaleDatePicker())
+    date_end = forms.DateField(widget=LocaleDatePicker())
     country = autocomplete.Select2ListChoiceField(widget=autocomplete.ListSelect2(url='dal-countries'))
 
     def __init__(self, *args, **kwargs):
