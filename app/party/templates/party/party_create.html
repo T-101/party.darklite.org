@@ -26,12 +26,16 @@
             {% if request.resolver_match.view_name != "party:update" %}
                 <div class="col-sm-6">
                     <div class="ms-4">
-                        <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                        <!-- <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
                         <div class="spinner-border float-right" role="status" id="demopartySpinner">
                             <span class="sr-only">Loading...</span>
                         </div>
                         <div style="list-style: none" id="partyList">
-                        </div>
+                        </div> -->
+                        <h4>This is where you could add an upcoming party with one click,
+                            but Demoparty.net disabled their API without warning.</h4>
+                        <h6><a href="https://www.demoparty.net/api">https://www.demoparty.net/api</a></h6>
+                        <h6>Working on an XML parser for their RSS feed.</h6>
                     </div>
                 </div>
             {% endif %}
@@ -68,7 +72,7 @@
         })
     </script>
 
-    {% if request.resolver_match.view_name != "party:update" %}
+<!--    {% if request.resolver_match.view_name != "party:update" %}
         <script type="text/javascript">
 
             const partyList = document.getElementById("partyList"),
@@ -125,6 +129,6 @@
                 .then(j => renderParties(j["hydra:member"]))
 
         </script>
-    {% endif %}
+    {% endif %}-->
 
 {% endblock %}
