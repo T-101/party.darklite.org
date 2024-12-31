@@ -90,12 +90,12 @@ class PartyDetailView(generic.DetailView):
 
 class DemopartyNetCreateView(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
-        demopartynet_id = request.GET.get("id", None)
-        if not demopartynet_id:
-            messages.warning(request, "No demoparty.net ID provided")
+        demopartynet_url = request.GET.get("url", None)
+        if not demopartynet_url:
+            messages.warning(request, "No demoparty.net url provided")
             return redirect(reverse("party:landing_page"))
 
-        res = requests.get(timeout=10, url=f"https://www.demoparty.net/api/events/{demopartynet_id}")
+        res = requests.get(timeout=10, url=f"https://www.demoparty.net{demopartynet_url}.jsonld")
         if res.status_code != 200:
             messages.warning(request, "Error fetching data from demoparty.net")
             return redirect(reverse("party:landing_page"))
