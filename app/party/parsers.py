@@ -4,7 +4,7 @@ from typing import Union
 
 def _do_date_parse(date_str: Union[str, None]) -> timezone.datetime.date:
     try:
-        return timezone.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z").date()
+        return timezone.datetime.strptime(date_str, "%Y-%m-%d").date()
     except (ValueError, TypeError):
         return timezone.datetime.strptime("1970-01-01T00:00:00+02:00", "%Y-%m-%dT%H:%M:%S%z").date()
 
@@ -25,7 +25,7 @@ def get_location(payload: dict) -> str:
     address = []
     location = payload.get("location", {})
 
-    if location:
+    if location and type(location) is not str:
         if location.get("@type") == "VirtualLocation":
             location_str = "Online"
         else:
@@ -39,7 +39,8 @@ def get_location(payload: dict) -> str:
             if address_locality:
                 address.append(address_locality)
             location_str = ", ".join([p for p in address if p != ""])
-
+    elif location and type(location) is str:
+        location_str = location
     else:
         location_str = "Unknown"
     return location_str
@@ -47,7 +48,7 @@ def get_location(payload: dict) -> str:
 
 def get_country(payload: dict) -> str:
     location = payload.get("location", {})
-    if location:
+    if location and type(location) is not str:
         location_str = location.get("address", {}).get("addressCountry", "")
         if type(location_str) is str:
             location_str = location_str[-2:]

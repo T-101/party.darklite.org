@@ -26,16 +26,12 @@
             {% if request.resolver_match.view_name != "party:update" %}
                 <div class="col-sm-6">
                     <div class="ms-4">
-                        <!-- <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                        <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
                         <div class="spinner-border float-right" role="status" id="demopartySpinner">
                             <span class="sr-only">Loading...</span>
                         </div>
                         <div style="list-style: none" id="partyList">
-                        </div> -->
-                        <h4>This is where you could add an upcoming party with one click,
-                            but Demoparty.net disabled their API without warning.</h4>
-                        <h6><a href="https://www.demoparty.net/api">https://www.demoparty.net/api</a></h6>
-                        <h6>Working on an XML parser for their RSS feed.</h6>
+                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -66,32 +62,44 @@
         </div>
     </div>
 
+    <template id="listItem">
+        <li>
+            <div class="text-center" style="width: 20px; display: inline-block">
+                <img height="10">
+            </div>
+            <a class="createPartyLink ms-2"></a>
+        </li>
+
+    </template>
+
     <script type="text/javascript">
         $("#id_date_start").on("change.datetimepicker", e => {
             $("#id_date_end").val(e.target.value)
         })
     </script>
 
-<!--    {% if request.resolver_match.view_name != "party:update" %}
-        <script type="text/javascript">
-
+    {% if request.resolver_match.view_name != "party:update" %}
+        <script>
             const partyList = document.getElementById("partyList"),
                 spinner = document.getElementById("demopartySpinner"),
                 date = new Date().toISOString().slice(0, 10)
 
+            function getData() {
+                fetch("https://www.demoparty.net/demoparties.xml")
+                    .then(response => response.text())
+                    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+                    .then(data => {
+                        spinner.hidden = true
+                        renderData(data)
+                    })
+            }
 
-            renderParties = (data) => {
+            function renderData(rssData) {
+                let lastMonth
                 const regionNames = 'Intl' in window ? new Intl.DisplayNames(['en'], {type: 'region'}) : false
-                const partyArray = data.map(({name, id, locationCountry, startDate}) => (
-                    {name, id, country: locationCountry.slice(-2), startDate: startDate.slice(0, 10)}
-                ))
-
-                let lastMonth = ""
-                spinner.hidden = true
-
-                partyArray.forEach(item => {
-                    const countryName = regionNames ? regionNames.of(item.country) : item.country
-                    const thisMonth = new Date(item.startDate).toLocaleString('en-us', {month: 'long'})
+                rssData.querySelectorAll("item").forEach(item => {
+                    const countryName = regionNames ? regionNames.of(item.querySelector("country").textContent) : item.querySelector("country").textContent
+                    const thisMonth = new Date(item.querySelector("startDate").textContent).toLocaleString('en-us', {month: 'long'})
                     if (lastMonth !== thisMonth) {
                         lastMonth = thisMonth
                         const header = document.createElement("h5")
@@ -99,36 +107,25 @@
                         header.innerText = thisMonth
                         partyList.appendChild(header)
                     }
-                    const li = document.createElement("li")
-                    const div = document.createElement("div")
-                    div.className = "text-center"
-                    div.style.cssText = "width: 20px; display: inline-block"
-                    const img = document.createElement("img")
-                    img.src = `/static/flags/${item.country.toLowerCase()}.gif`
-                    img.height = 10
-                    img.title = countryName
+                    const content = document.getElementById("listItem").content.cloneNode(true)
+                    const a = content.querySelector("a")
+                    const img = content.querySelector("img")
+                    img.src = `/static/flags/${item.querySelector("country").textContent.toLowerCase()}.gif`
                     img.alt = `Flag of ${countryName}`
-                    div.append(img)
-                    const a = document.createElement("a")
-                    a.className = "createPartyLink ms-2"
-                    a.href = "{% url 'party:demopartynet-create' %}?id=" + item.id
-                    a.textContent = item.name
+                    img.title = countryName
+                    const url = new URL(item.querySelector("link").textContent)
+                    a.href = "{% url 'party:demopartynet-create' %}?url=" + url.pathname
+                    a.textContent = item.querySelector("title").textContent
                     a.addEventListener("click", () => {
                         $("#spinnerModal").modal("show")
                     })
-                    li.append(div, a)
-                    partyList.append(li)
+                    partyList.append(content)
                 })
-
             }
 
-            const url = `https://www.demoparty.net/api/events?startDate[after]=${date}&order[startDate]=asc`
-
-            fetch(url)
-                .then(res => res.json())
-                .then(j => renderParties(j["hydra:member"]))
+            getData()
 
         </script>
-    {% endif %}-->
+    {% endif %}
 
 {% endblock %}

@@ -63,13 +63,13 @@
                 <div class="col text-end">
                     {% if user.is_authenticated %}
                         {% if not object.has_ended %}
-                            <a class="btn btn-success" type="button" id="dropdownPartyButton"
+                            <a class="btn btn-sm btn-success" type="button" id="dropdownPartyButton"
                                href="{% url 'party:create-trip-to' object.slug %}">
-                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP TOWARDS PARTY
+                                <i class="fa fa-plus me-1" aria-hidden="true"></i>ADD TRIP TOWARDS PARTY
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'authentication:auth' %}" class="btn btn-success">LOGIN TO SEE DETAILS</a>
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE DETAILS</a>
                     {% endif %}
                 </div>
 
@@ -116,13 +116,13 @@
                 <div class="col text-end">
                     {% if user.is_authenticated %}
                         {% if not object.has_ended %}
-                            <a class="btn btn-success" type="button" id="dropdownPartyButton"
+                            <a class="btn btn-sm btn-success" type="button" id="dropdownPartyButton"
                                href="{% url 'party:create-trip-from' object.slug %}">
-                                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;ADD TRIP FROM PARTY
+                                <i class="fa fa-plus me-1" aria-hidden="true"></i>ADD TRIP FROM PARTY
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'authentication:auth' %}" class="btn btn-success">LOGIN TO SEE DETAILS</a>
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE DETAILS</a>
                     {% endif %}
                 </div>
             </div>
