@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 RUN mkdir /code
 WORKDIR /code/app/
 
-RUN apk add nano tzdata bash build-base logrotate
+RUN apk add --no-cache nano tzdata bash build-base logrotate
 ENV TZ=Europe/Helsinki
 
 # Allow postgres container to write logs to volume
