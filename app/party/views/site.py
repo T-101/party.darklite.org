@@ -54,14 +54,20 @@ class SearchView(generic.TemplateView):
         query = self.request.GET.get("search", None)
 
         if query and self.request.user.is_authenticated:
-            filters = (
-                    Q(name__icontains=query) |
-                    Q(trips__display_name__icontains=query) |
-                    Q(country__icontains=query) |
-                    Q(location__icontains=query)
-            )
-            ctx["results"] = (Party.objects.filter(filters)
-                              .order_by("date_start__year", Lower("name")).distinct())
+            filters = Q()
+            for item in query.split():
+                item = item.strip()
+                if item.isdigit() and int(item) >= 2012:
+                    filters &= Q(date_start__year=item)
+                else:
+                    filters &= (
+                            Q(name__icontains=item) |
+                            Q(trips__display_name__icontains=item) |
+                            Q(country__icontains=item) |
+                            Q(location__icontains=item)
+                    )
+
+            ctx["results"] = (Party.objects.filter(filters).order_by("date_start__year", Lower("name")).distinct())
         ctx["query"] = query
         return ctx
 
