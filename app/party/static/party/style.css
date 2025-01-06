@@ -58,7 +58,7 @@ body {
 /* fixing issues with django-autocomplete-light input rendering */
 
 .select2-selection {
-    height: 35px !important;
+    height: 37px !important;
 }
 
 .select2-selection__arrow {
@@ -79,6 +79,8 @@ body {
 
 .select2-selection__rendered {
     color: var(--bs-body-color) !important;
+    line-height: 23px !important;
+    padding-left: 0 !important;
 }
 
 .select2-results__option {
