@@ -13,7 +13,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-12 col-md-8">
                 {% if request.resolver_match.view_name != "party:update" %}
                     <h3>Add a party</h3>
                 {% else %}
@@ -24,14 +24,12 @@
             </div>
 
             {% if request.resolver_match.view_name != "party:update" %}
-                <div class="col-sm-6">
-                    <div class="ms-4">
-                        <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
-                        <div class="spinner-border float-right" role="status" id="demopartySpinner">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                        <div style="list-style: none" id="partyList">
-                        </div>
+                <div class="col-12 col-md-4">
+                    <h3 class="mb-4">Or generate from <a href="https://www.demoparty.net/">demoparty.net</a></h3>
+                    <div class="spinner-border float-right" role="status" id="demopartySpinner">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div style="list-style: none" id="partyList">
                     </div>
                 </div>
             {% endif %}
