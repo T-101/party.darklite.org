@@ -54,7 +54,7 @@ class PartyForm(forms.ModelForm):
             Row(
                 Column(
                     Submit('submit', 'Save'),
-                    HTML("""<a role="button" class="btn btn-primary ms-4"
+                    HTML("""<a role="button" class="btn btn-outline-primary ms-4"
                         href="{% url "party:landing_page" %}">Cancel</a>""")
                 )
             )

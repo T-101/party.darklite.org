@@ -49,8 +49,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-6">
-                <input class="form-control form-control-lg" type="text" autocomplete="off"
-                       placeholder="Filter visitors" id="filter"/>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="filter" placeholder="Filter visitors"
+                           autocomplete="off">
+                    <label for="filter">Filter visitors</label>
+                </div>
             </div>
         </div>
     </div>
@@ -69,7 +72,8 @@
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE DETAILS</a>
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE
+                            DETAILS</a>
                     {% endif %}
                 </div>
 
@@ -122,7 +126,8 @@
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE DETAILS</a>
+                        <a href="{% url 'authentication:auth' %}" class="btn btn-sm btn-success">LOGIN TO SEE
+                            DETAILS</a>
                     {% endif %}
                 </div>
             </div>
