@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}{% load crispy_forms_tags %}
+{% extends 'party/base.html' %}
 
 {% block title %}
     <title>Profile | Darklite Partywiki</title>
@@ -8,24 +8,34 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h3>Profile</h3>
-                {% crispy form %}
+            <div class="col-12 col-md-6 mb-4">
+                <h3 class="mb-3">Profile</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="form-floating">
+                            {{ form.display_name }}
+                            <label for="{{ form.display_name.auto_id }}">Your name</label>
+                        </div>
+                        <button class="btn btn-sm btn-primary" type="submit">Save</button>
+                    </div>
+                    <div class="form-text">{{ form.display_name.help_text }}</div>
+                </form>
             </div>
-            <div class="col">
-                <h3>Your parties</h3>
+            <div class="col-12 col-md-6">
+                <h3 class="mb-3">Your parties</h3>
 
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#by_name" aria-selected="false" role="tab"
-                           tabindex="-1">By Name</a>
+                        <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#by_name" role="tab">
+                            By Name</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_year" aria-selected="true" role="tab">
+                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_year" role="tab">
                             By Year</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_country" aria-selected="true" role="tab">
+                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_country" role="tab">
                             By Country</a>
                     </li>
                 </ul>
