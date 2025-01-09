@@ -37,7 +37,7 @@ class Command(BaseCommand):
         parser.add_argument("-w", "--weekly", action="store_true", help="Get stats from past 7 days")
         parser.add_argument("-m", "--monthly", action="store_true", help="Get stats from previous month")
         parser.add_argument("-y", "--yearly", action="store_true", help="Get stats from previous year")
-        parser.add_argument("-d", "--debug", action="store_true", help="Post to bsky in debug mode")
+        parser.add_argument("-d", "--dry-run", action="store_true", help="Only print the message, don't send it")
 
     def handle(self, *args, **options):
 
@@ -88,9 +88,8 @@ class Command(BaseCommand):
         if msg:
             msg = "Travelwiki " + title + msg
 
-            width, height = create_image(image_title)
-
-            if not settings.DEBUG or options['debug']:
+            if not options['dry_run']:
+                width, height = create_image(image_title)
                 msg_bsky = (client_utils.TextBuilder()
                             .text(f'{msg}Go check it out! ')
                             .link('party.darklite.org', 'https://party.darklite.org'))
