@@ -103,6 +103,7 @@ class Command(BaseCommand):
                 aspect_ratio = models.AppBskyEmbedDefs.AspectRatio(height=height, width=width)
                 post = client.send_image(text=msg_bsky, image=img_data.read(), image_aspect_ratio=aspect_ratio,
                                          image_alt='Darklite Piggy announcing stats for TravelWiki')
+                img_data.close()
 
             text_msg = msg + "Go check it out! https://party.darklite.org"
             return self.stdout.write(self.style.SUCCESS(text_msg))
