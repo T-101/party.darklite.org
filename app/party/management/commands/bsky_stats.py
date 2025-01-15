@@ -1,4 +1,5 @@
 import os
+import io
 
 import environ
 from atproto import Client, client_utils, models
@@ -17,13 +18,16 @@ environ.Env.read_env(os.path.join(settings.BASE_DIR, '.env'))
 
 
 def create_image(title):
-    with Image.open("party/static/images/piggy_template_logo.png") as im:
-        font_path = "party/static/party/fonts/adrip1.ttf"
+    with Image.open(os.path.join(settings.BASE_DIR, "party/static/images/piggy_template_logo.png")) as im:
+        font_path = os.path.join(settings.BASE_DIR, "party/static/party/fonts/adrip1.ttf")
         draw = ImageDraw.Draw(im)
         draw.text((250, 25), "TravelWiki Stats", font=ImageFont.truetype(font_path, 150), fill="black")
         draw.text((200, 280), title, font=ImageFont.truetype(font_path, 100), fill="black")
-        im.save("piggytext.png", "png")
-        return im.size
+        buffer = io.BytesIO()
+        im.save(buffer, "png")
+        buffer.seek(0)
+        return buffer, im.size[0], im.size[1]  # Image, width, height
+
 
 class Command(BaseCommand):
     help = 'Send stats to Bluesky'
@@ -54,7 +58,7 @@ class Command(BaseCommand):
             image_title = "Weekly\nStats"
 
         elif options['monthly']:
-            delta = now.replace(month=now.month - 1)
+            delta = now.replace(day=1) - timezone.timedelta(days=1)
             party_filter = {"created_dt__month": delta.month, "created_dt__year": delta.year}
             trip_filter = {"created__month": delta.month, "created__year": delta.year}
             title = f"Monthly stats ({timezone.datetime.strftime(delta, "%b %Y")}):\n\n"
@@ -89,18 +93,16 @@ class Command(BaseCommand):
             msg = "Travelwiki " + title + msg
 
             if not options['dry_run']:
-                width, height = create_image(image_title)
+                img_data, width, height = create_image(image_title)
                 msg_bsky = (client_utils.TextBuilder()
                             .text(f'{msg}Go check it out! ')
                             .link('party.darklite.org', 'https://party.darklite.org'))
 
                 client = Client()
                 profile = client.login(self.bsky_username, self.bsky_password)
-                with open("piggytext.png", "rb") as f:
-                    img_data = f.read()
-                    aspect_ratio = models.AppBskyEmbedDefs.AspectRatio(height=height, width=width)
-                    post = client.send_image(text=msg_bsky, image=img_data, image_aspect_ratio=aspect_ratio,
-                                             image_alt='Darklite Piggy announcing stats for TravelWiki')
+                aspect_ratio = models.AppBskyEmbedDefs.AspectRatio(height=height, width=width)
+                post = client.send_image(text=msg_bsky, image=img_data.read(), image_aspect_ratio=aspect_ratio,
+                                         image_alt='Darklite Piggy announcing stats for TravelWiki')
 
             text_msg = msg + "Go check it out! https://party.darklite.org"
             return self.stdout.write(self.style.SUCCESS(text_msg))
