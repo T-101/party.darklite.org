@@ -1,0 +1,72 @@
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#by_name" role="tab">
+            By Name</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_year" role="tab">
+            By Year</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_country" role="tab">
+            By Country</a>
+    </li>
+</ul>
+<div class="tab-content mt-2">
+    <div class="tab-pane active show" id="by_name" role="tabpanel">
+        {% regroup user_parties by name as parties %}
+        <ul class="list-group list-group-flush">
+            {% for party in parties %}
+                <li class="list-group-item p-1">
+                                    <span class="pe-1">
+                                        {{ party.grouper }}
+                                    </span>
+                    {% for party_instance in party.list %}
+                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
+                            {{ party_instance.date_start.year }}
+                        </a>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="tab-pane" id="by_year" role="tabpanel">
+        {% regroup user_parties|dictsort:"date_start.year" by date_start.year as parties %}
+        <ul class="list-group list-group-flush">
+            {% for party in parties %}
+                <li class="list-group-item p-1">
+                                    <span class="pe-1">
+                                        {{ party.grouper }}
+                                    </span>
+                    {% for party_instance in party.list %}
+                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
+                            {{ party_instance.name }}
+                        </a>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="tab-pane" id="by_country" role="tabpanel">
+        {% regroup user_parties|dictsort:"country.name" by country as parties %}
+        <ul class="list-group list-group-flush">
+            {% for party in parties %}
+                <li class="list-group-item p-1">
+                                    <span class="pe-1">
+                                        {% include 'snippets/flag.html' with country=party.grouper %}
+                                        {{ party.grouper.name }}
+                                    </span>
+                    {% for party_instance in party.list %}
+                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
+                            {{ party_instance.name }}
+                            <small>({{ party_instance.date_start.year }})</small>
+                        </a>
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<hr class="w-25"/>
+<p>Total parties: {{ user_parties.count }}</p>
