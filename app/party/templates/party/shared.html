@@ -1,0 +1,17 @@
+{% extends 'party/base.html' %}
+
+{% block title %}
+    <title>{{ share.user.display_name }} | Darklite Partywiki</title>
+    <meta property="og:title" content="{{ share.user.display_name }} | Darklite Partywiki"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <h3 class="mb-4">Trips by {{ share.user.display_name }}</h3>
+                {% include 'snippets/user-party-table.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

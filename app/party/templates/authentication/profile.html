@@ -5,6 +5,28 @@
     <meta property="og:title" content="Profile | Darklite Partywiki"/>
 {% endblock %}
 
+{% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"
+            integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const copyButton = document.getElementById('copybutton')
+            if (!copyButton) {
+                return
+            }
+            const popover = new bootstrap.Popover(copyButton, {placement: 'top'})
+            const clipboard = new ClipboardJS(copyButton)
+            clipboard.on("success", () => {
+                popover.show()
+                setTimeout(() => {
+                    popover.hide()
+                }, 2000)
+            })
+        })
+    </script>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
@@ -21,82 +43,38 @@
                     </div>
                     <div class="form-text">{{ form.display_name.help_text }}</div>
                 </form>
+                <hr/>
+                <h5>Party trip stats sharing</h5>
+                <p>
+                    Want to share your party going stats? You can create an unique share URL here
+                    and claim bragging rights on your party travel history. You can always disable it.
+                </p>
+                {% if user.share %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="share_url" readonly
+                               aria-label="Sharing URL" value="{{ share_url }}">
+                        <button id="copybutton" class="btn btn-primary" type="button"
+                                data-bs-content="Copied" data-clipboard-target="#share_url">
+                            <i class="fa-regular fa-clipboard me-2"></i>Copy
+                        </button>
+                    </div>
+                    <div class="form-text mb-4">Created: {{ user.share.created }}</div>
+                    <p>
+                        You can delete the sharing URL and the link won't work any more.
+                        If you create a new one, it will be different.
+                    </p>
+                    <a href="{% url 'authentication:set-profile-share' %}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Are you sure you want delete your share URL?')">
+                        Delete URL</a>
+                {% else %}
+
+                    <a href="{% url 'authentication:set-profile-share' %}" class="btn btn-primary">Create Share URL</a>
+                {% endif %}
+                <hr class="d-block d-md-none"/>
             </div>
             <div class="col-12 col-md-6">
                 <h3 class="mb-3">Your parties</h3>
-
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#by_name" role="tab">
-                            By Name</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_year" role="tab">
-                            By Year</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link fw-bold" data-bs-toggle="tab" href="#by_country" role="tab">
-                            By Country</a>
-                    </li>
-                </ul>
-                <div class="tab-content mt-2">
-                    <div class="tab-pane active show" id="by_name" role="tabpanel">
-                        {% regroup user_parties by name as parties %}
-                        <ul class="list-group list-group-flush">
-                            {% for party in parties %}
-                                <li class="list-group-item p-1">
-                                    <span class="pe-1">
-                                        {{ party.grouper }}
-                                    </span>
-                                    {% for party_instance in party.list %}
-                                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
-                                            {{ party_instance.date_start.year }}
-                                        </a>
-                                    {% endfor %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="tab-pane" id="by_year" role="tabpanel">
-                        {% regroup user_parties|dictsort:"date_start.year" by date_start.year as parties %}
-                        <ul class="list-group list-group-flush">
-                            {% for party in parties %}
-                                <li class="list-group-item p-1">
-                                    <span class="pe-1">
-                                        {{ party.grouper }}
-                                    </span>
-                                    {% for party_instance in party.list %}
-                                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
-                                            {{ party_instance.name }}
-                                        </a>
-                                    {% endfor %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="tab-pane" id="by_country" role="tabpanel">
-                        {% regroup user_parties|dictsort:"country.name" by country as parties %}
-                        <ul class="list-group list-group-flush">
-                            {% for party in parties %}
-                                <li class="list-group-item p-1">
-                                    <span class="pe-1">
-                                        {% include 'snippets/flag.html' with country=party.grouper %}
-                                        {{ party.grouper.name }}
-                                    </span>
-                                    {% for party_instance in party.list %}
-                                        <a class="pe-1" href="{% url 'party:detail' party_instance.slug %}">
-                                            {{ party_instance.name }}
-                                            <small>({{ party_instance.date_start.year }})</small>
-                                        </a>
-                                    {% endfor %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-
-                <hr class="w-25"/>
-                <p>Total parties: {{ user_parties.count }}</p>
+                {% include 'snippets/user-party-table.html' %}
             </div>
         </div>
 

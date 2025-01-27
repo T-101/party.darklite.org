@@ -12,6 +12,7 @@ from django.conf import settings
 from django.views.generic import RedirectView
 
 from authentication.forms import DisplayNameForm
+from authentication.models import Share
 from common.mixins import LoginRequiredMixin
 from party.models import Party
 
@@ -33,7 +34,22 @@ class ProfileView(LoginRequiredMixin, generic.UpdateView):
         ctx["user_parties"] = Party.objects.filter(
             trips__in=self.request.user.trips.all()
         ).order_by("name", "date_start").distinct()
+        if hasattr(self.request.user, "share"):
+            if settings.DEBUG:
+                protocol = "http"
+            else:
+                protocol = "https"
+            ctx["share_url"] = f"{protocol}://{self.request.get_host()}/shared/{self.request.user.share.short_uuid}/"
         return ctx
+
+
+def set_profile_share(request):
+    user = request.user
+    if hasattr(user, 'share'):
+        user.share.delete()
+    else:
+        Share.objects.create(user=user)
+    return redirect('authentication:profile')
 
 
 class SceneIDAuthRedirect(RedirectView):

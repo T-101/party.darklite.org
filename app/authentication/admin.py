@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django_object_actions import DjangoObjectActions
 
-from .models import User
+from .models import User, Share
 
 
 #
@@ -52,3 +52,15 @@ class UserAdmin(DjangoObjectActions, DjangoUserAdmin):
 
     def get_list_filter(self, request):
         return (EmailFilter,) + self.list_filter
+
+
+@admin.register(Share)
+class ShareAdmin(admin.ModelAdmin):
+    list_display = ('user', 'short_uuid', 'created')
+    search_fields = ('user__email', 'user__display_name')
+    list_filter = ('created',)
+    date_hierarchy = 'created'
+    autocomplete_fields = ('user',)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')

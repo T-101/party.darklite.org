@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django_extensions.db.fields import ShortUUIDField
+from django_extensions.db.models import TimeStampedModel
 
 
 class UserManager(BaseUserManager):
@@ -54,3 +56,11 @@ class User(AbstractUser):
         if not self.display_name:
             self.display_name = self.email.split("@")[0]
         super().save(*args, **kwargs)
+
+
+class Share(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="share")
+    short_uuid = ShortUUIDField()
+
+    def __str__(self):
+        return f"{self.user.display_name} ({self.short_uuid})"

@@ -6,10 +6,12 @@ from django import VERSION as DJANGO_VERSION
 from django.contrib import messages
 from django.db.models import Q, Count, F, When, Value, Case
 from django.db.models.functions import Lower
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.views import generic
 from django_countries import countries
 
+from authentication.models import Share
 from party.models import Party, Trip
 from common.parsers import get_dependency_version
 
@@ -136,4 +138,19 @@ class StatsView(generic.TemplateView):
                                        .values("departure_country") \
                                        .annotate(count=Count("departure_country")) \
                                        .order_by("-count")[:10]
+        return ctx
+
+
+class ShareView(generic.TemplateView):
+    template_name = "party/shared.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        try:
+            ctx["share"] = Share.objects.select_related("user").get(short_uuid=self.kwargs.get("short_uuid"))
+        except Share.DoesNotExist:
+            raise Http404
+        ctx["user_parties"] = (Party.objects
+                               .filter(trips__in=ctx["share"].user.trips.all())
+                               .order_by("name", "date_start").distinct())
         return ctx
