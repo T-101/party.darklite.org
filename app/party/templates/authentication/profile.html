@@ -1,4 +1,4 @@
-{% extends 'party/base.html' %}
+{% extends 'party/base.html' %}{% load humanize %}
 
 {% block title %}
     <title>Profile | Darklite Partywiki</title>
@@ -58,7 +58,7 @@
                             <i class="fa-regular fa-clipboard me-2"></i>Copy
                         </button>
                     </div>
-                    <div class="form-text mb-4">Created: {{ user.share.created }}</div>
+                    <div class="form-text mb-4" title="{{ user.share.created }}">Created {{ user.share.created|naturaltime }}</div>
                     <p>
                         You can delete the sharing URL and the link won't work any more.
                         If you create a new one, it will be different.
