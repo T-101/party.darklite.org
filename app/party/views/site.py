@@ -69,7 +69,7 @@ class SearchView(generic.TemplateView):
                             Q(location__icontains=item)
                     )
 
-            ctx["results"] = (Party.objects.filter(filters).order_by("date_start__year", Lower("name")).distinct())
+            ctx["results"] = (Party.objects.filter(filters, visible=True).order_by("date_start__year", Lower("name")).distinct())
         ctx["query"] = query
         return ctx
 
