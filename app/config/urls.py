@@ -21,6 +21,7 @@ from django.conf import settings
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework import routers
 
+from authentication.api.v1.views import MeView
 from party.api.v1.routers import router as v1_party_router
 from authentication.api.v1.routers import router as v1_authentication_router
 from party.views.feeds import FeedsView
@@ -40,6 +41,7 @@ urlpatterns = [
     path('feeds/parties_rss09.xml', PartyFeedRss09(), name="feeds-rss09"),
     path('feeds/parties_atom1.xml', PartyFeedAtom1(), name="feeds-atom1"),
     path('api/v1/', include(v1router.urls)),
+    path('api/v1/me/', MeView.as_view(), name='me'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
