@@ -12,6 +12,11 @@ class PartyViewSet(ModelViewSet):
     serializer_class = PartySerializer
     pagination_class = PageNumberPagination
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
     def perform_create(self, serializer):
         scene_id = self.request.data.get("scene_id", None)
         if scene_id:
