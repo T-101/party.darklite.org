@@ -14,8 +14,9 @@ class UserSerializer(BaseModelSerializer):
 
 class MeSerializer(UserSerializer):
     api_token = serializers.CharField(source='auth_token.key', read_only=True)
-    trips = serializers.SerializerMethodField()
+    share_code = serializers.CharField(source='share.short_uuid', read_only=True)
     parties_added = serializers.SerializerMethodField()
+    trips = serializers.SerializerMethodField()
 
     def get_trips(self, obj):
         serializer = party_serializers.TripSerializer(obj.trips.all(), many=True)
@@ -23,7 +24,8 @@ class MeSerializer(UserSerializer):
 
     def get_parties_added(self, obj):
         serializer = party_serializers.PartySerializer(Party.objects.filter(created_by=obj), many=True,
-                                                              exclude_fields=["modified_by", "id"])
+                                                       context=self.context,
+                                                       exclude_fields=["modified_by", "id"])
         return serializer.data
 
     class Meta(UserSerializer.Meta):
