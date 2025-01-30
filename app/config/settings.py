@@ -229,6 +229,8 @@ LOGGING = {
     },
 }
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Darklite Partywiki',
     'DESCRIPTION': "You'll never travel alone - Even if you'd want to",
