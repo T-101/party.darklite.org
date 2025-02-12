@@ -2,6 +2,7 @@ services:
   app:
     env_file: .env
     build: .
+    image: partywiki
     # command: python manage.py runserver 0.0.0.0:${CONTAINER_PORT}
     # command: gunicorn -c config/gunicorn_config.py config.wsgi --bind 0.0.0.0:${CONTAINER_PORT}
     volumes:
@@ -12,7 +13,7 @@ services:
     restart: unless-stopped
 
   cron:
-    build: .
+    image: partywiki
     init: true
     command: [ "/usr/sbin/crond", "-f" ]
     volumes:
