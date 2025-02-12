@@ -12,9 +12,10 @@ ENV TZ=Europe/Helsinki
 RUN ["chmod", "777", "/var/log"]
 
 COPY app/requirements.txt /code/app/
-RUN pip install -r requirements.txt
+RUN pip install uv
+RUN uv pip install -r requirements.txt --system
 
-RUN pip install --upgrade pip
+
 
 COPY partywiki_logrotate.conf /etc/logrotate.d/partywiki
 COPY .bashrc /root/
