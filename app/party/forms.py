@@ -73,12 +73,12 @@ def _trip_layout():
         Row(
             Column('departure_town', css_class="col-md-4"),
             Column('departure_country', css_class="col-md-4"),
-            Column('departure_datetime', css_class="col-md-3")
+            Column('departure_datetime', css_class="col-md-4 col-lg-3")
         ),
         Row(
             Column('arrival_town', css_class="col-md-4"),
             Column('arrival_country', css_class="col-md-4"),
-            Column('arrival_datetime', css_class="col-md-3"),
+            Column('arrival_datetime', css_class="col-md-4 col-lg-3"),
         ),
         Row(
             Column('type', css_class="col-md-4"),
