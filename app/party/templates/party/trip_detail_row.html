@@ -50,23 +50,19 @@
             <td class="text-right" nowrap="">
                 {% if direction == "to" %}
                     <a href="{% url 'party:clone-trip-to' object.slug trip.pk %}" title="Clone this trip">
-                        <i class="far fa-clone icon-help"></i>
-                    </a>
+                        <i class="far fa-clone icon-help"></i></a>
                     {% if trip.created_by == user %}
                         <a class="ms-2"
                            href="{% url 'party:update-trip-to' object.slug trip.pk %}" title="Modify this trip">
-                            <i class="far fa-edit icon-help"></i>
-                        </a>
+                            <i class="far fa-edit icon-help"></i></a>
                     {% endif %}
                 {% else %}
                     <a href="{% url 'party:clone-trip-from' object.slug trip.pk %}" title="Clone this trip">
-                        <i class="far fa-clone icon-help"></i>
-                    </a>
+                        <i class="far fa-clone icon-help"></i></a>
                     {% if trip.created_by == user %}
                         <a class="ms-2"
                            href="{% url 'party:update-trip-from' object.slug trip.pk %}" title="Modify this trip">
-                            <i class="far fa-edit icon-help"></i>
-                        </a>
+                            <i class="far fa-edit icon-help"></i></a>
                     {% endif %}
                 {% endif %}
 
