@@ -5,39 +5,93 @@
     <meta property="og:title" content="List of parties | Darklite Partywiki"/>
 {% endblock %}
 
-{% block content %}
-    <div class="container">
-        <h3>Parties:
-            {{ request.resolver_match.kwargs.country }}
-            {{ request.resolver_match.kwargs.year }}
-        </h3>
-        {% regroup object_list by name as parties %}
-        <ul class="list-group">
-            {% for party in parties %}
-                <li class="list-group-item" style="padding: .35rem 1.25rem;">{{ party.grouper }}
-                    {% for party_instance in party.list %}
-                        <a href="{% url 'party:detail' party_instance.slug %}">{{ party_instance.date_start.year }}</a>
-                    {% endfor %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+{% block extrahead %}
+    <script>
+        const selectedYear = "{{ request.resolver_match.kwargs.year }}"
+        const selectedCountry = "{{ request.resolver_match.kwargs.country }}"
+        document.addEventListener('DOMContentLoaded', function () {
+            const countrySelect = document.getElementById('country_select')
+            const yearSelect = document.getElementById('year_select')
+            countrySelect.addEventListener('change', function () {
+                const country = countrySelect.value ? countrySelect.value + "/" : ""
+                const year = selectedYear ? selectedYear + "/" : ""
+                window.location.href = "{% url 'party:list' %}" + country + year
+            })
+            yearSelect.addEventListener('change', function () {
+                const country = selectedCountry ? selectedCountry + "/" : ""
+                const year = yearSelect.value ? yearSelect.value + "/" : ""
+                window.location.href = "{% url 'party:list' %}" + country + year
+            })
+        })
+    </script>
+{% endblock %}
 
-    <div class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="{% url 'party:list' %}">Parties</a>
+{% block content %}
+
+    {% regroup object_list by name as parties %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-6 mb-4">
+                <h2><i class="fa-solid fa-filter"></i> Filters</h2>
+                <label for="country_select" class="form-label">Country</label>
+                <select id="country_select" class="form-select" autocomplete="off">
+                    <option value="" selected>Select a country</option>
+                    {% for party_country in party_countries %}
+                        <option value="{{ party_country }}"
+                                {% if request.resolver_match.kwargs.country == party_country %}selected{% endif %}
+                        >{{ party_country }}</option>
+                    {% endfor %}
+                </select>
+                <label for="year_select" class="form-label">Year</label>
+                <select id="year_select" class="form-select" autocomplete="off">
+                    <option value="" selected>Select a year</option>
+                    {% for party_year in party_years %}
+                        <option value="{{ party_year }}"
+                                {% if request.resolver_match.kwargs.year == party_year %}selected{% endif %}
+                        >{{ party_year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-sm-6 mb-4">
+                <h3>Parties:
+                    {{ request.resolver_match.kwargs.country }}
+                    {{ request.resolver_match.kwargs.year }}
+                </h3>
+
+                <small class="ms-4">
+                    {{ parties|length }} Parties, {{ object_list|length }} Party instances
+                </small>
+
+                <ul class="list-group mt-2">
+                    {% for party in parties %}
+                        <li class="list-group-item py-1">
+                            {% include 'snippets/flag.html' with country=party.list.0.country %}
+                            <span class="ms-2">{{ party.grouper }}</span>
+                            {% for party_instance in party.list %}
+                                <a href="{% url 'party:detail' party_instance.slug %}">{{ party_instance.date_start.year }}</a>
+                            {% endfor %}
                         </li>
-                        {% for item in breadcrumb %}
-                            <li class="breadcrumb-item active">{{ item }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
+
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'party:list' %}">Parties</a>
+                    </li>
+                    {% for item in breadcrumb %}
+                        <li class="breadcrumb-item active">{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
