@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views import generic
+from django_countries import countries
 
 from common.mixins import LoginRequiredMixin
 from party.forms import PartyForm, PartyFormNative
@@ -25,6 +26,9 @@ class PartyListView(generic.ListView):
             if self.kwargs.get(i):
                 ret_arr.append(string.capwords(str(self.kwargs.get(i))))
         ctx["breadcrumb"] = ret_arr
+        ctx["party_years"] = list(Party.objects.filter(visible=True).values_list("date_start__year", flat=True).order_by("date_start__year").distinct())
+        party_countries = [countries.name(x.get("country")) for x in Party.objects.filter(visible=True).values("country").distinct()]
+        ctx["party_countries"] = sorted(party_countries)
         return ctx
 
     def get_queryset(self):

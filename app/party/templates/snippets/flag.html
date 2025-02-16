@@ -5,10 +5,7 @@
         {% if not hide_url %}
             <a href="{% url "party:list-by-country" country.name %}" class="text-decoration-none">
         {% endif %}
-    <img src="/static/flags/{{ country.code|lower }}.gif"
-         height="12" title="{{ country.name }}"
-         alt="{{ country.name }}"
-         onerror="this.style.display='none'">
+    <span class="fi fi-{{ country.code|lower }}" title="{{ country.name }}" style="height: 12px;"></span>
     {% if not hide_url %}
         </a>
     {% endif %}
