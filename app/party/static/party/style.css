@@ -139,6 +139,7 @@ body {
 /* Fix crispy forms suffix calendar icon */
 .input-group-text {
     display: block;
+    border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
 }
 
 /* Theme dropdown icons */

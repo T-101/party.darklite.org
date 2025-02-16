@@ -63,7 +63,7 @@
     <template id="listItem">
         <li>
             <div class="text-center" style="width: 20px; display: inline-block">
-                <img height="10">
+                <span class="fi" style="height: 12px;"></span>
             </div>
             <a class="createPartyLink ms-2"></a>
         </li>
@@ -107,10 +107,9 @@
                     }
                     const content = document.getElementById("listItem").content.cloneNode(true)
                     const a = content.querySelector("a")
-                    const img = content.querySelector("img")
-                    img.src = `/static/flags/${item.querySelector("country").textContent.toLowerCase()}.gif`
-                    img.alt = `Flag of ${countryName}`
-                    img.title = countryName
+                    const span = content.querySelector("span")
+                    span.classList.add("fi-" + item.querySelector("country").textContent.toLowerCase())
+                    span.title = countryName
                     const url = new URL(item.querySelector("link").textContent)
                     a.href = "{% url 'party:demopartynet-create' %}?url=" + url.pathname
                     a.textContent = item.querySelector("title").textContent
