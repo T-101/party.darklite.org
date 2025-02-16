@@ -36,60 +36,65 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-2 navbar-expand-custom">
+<nav class="navbar navbar-expand-md bg-primary navbar-dark mb-2">
     <div class="container-fluid">
-        <a class="navbar-brand my-0 py-0" href="{% url 'party:landing_page' %}">
-            <img src="{% static 'svg/partywiki_multi_color_smile.svg' %}" class="me-2 align-middle"
-                 style="height: 26px;"/>
-            <span class="align-middle">Darklite PartyWiki</span>
-        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
                 aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <a class="navbar-brand my-0 py-0 me-2" href="{% url 'party:landing_page' %}">
+            <img src="{% static 'svg/partywiki_multi_color_smile.svg' %}" class="me-2 align-top"
+                 style="height: 26px;"/>
+            <span class="align-top">Darklite PartyWiki</span>
+        </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.view_name == "party:about" %} active {% endif %}"
-                       href="{% url 'party:about' %}">
-                        <i class="fa fa-info-circle"></i> About</a>
+                    <a class="nav-link {% if request.resolver_match.view_name == "party:list" %} active {% endif %}"
+                       href="{% url 'party:list' %}">
+                        <i class="fas fa-list d-inline d-md-none d-lg-inline"></i> Parties</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.view_name == "party:stats" %} active {% endif %}"
-                           href="{% url 'party:stats' %}"><i class="fas fa-chart-pie"></i> Stats</a>
+                           href="{% url 'party:stats' %}">
+                            <i class="fas fa-chart-pie d-inline d-md-none d-lg-inline"></i>
+                            Stats</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.view_name == "feeds" %} active {% endif %}"
-                       href="{% url 'feeds' %}"><i class="fas fa-rss"></i></i> Feeds</a>
-                </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'authentication:profile' %}"
-                           class="nav-link text-truncate handle-ellipsis {% if request.resolver_match.view_name == "authentication:profile" %} active {% endif %}"
-                           style="max-width: 150px;" title="{{ request.user|get_display_name }}">
-                            <i class="fa fa-user-circle" data-help-text="Clone this trip"></i>
-                            {{ request.user|get_display_name }}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="fa fa-user-circle d-inline d-md-none d-lg-inline"></i>
+                            Account
                         </a>
-                        {% if request.user.is_superuser %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    Admin
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'admin:index' %}">DjangoAdmin</a>
-                                    <a class="dropdown-item" href="{% url 'logviewer:index' %}">LogViewer</a>
-                                </div>
-                            </li>
-
-                        {% endif %}
-                    <li class="nav-item {% if request.resolver_match.view_name == "authentication:logout" %} active {% endif %}">
-                        <a class="nav-link" href="{% url 'authentication:logout' %}?next={{ request.path }}">
-                            <i class="fa fa-sign-out"></i> Logout </a>
+                        <div class="dropdown-menu">
+                            <span class="dropdown-item-text">{{ request.user|get_display_name }}</span>
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" href="{% url 'authentication:profile' %}">
+                                <i class="fa fa-user-circle"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="{% url 'authentication:logout' %}?next={{ request.path }}">
+                                <i class="fa fa-sign-out"></i>
+                                Sign out
+                            </a>
+                        </div>
                     </li>
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'admin:index' %}">DjangoAdmin</a>
+                                <a class="dropdown-item" href="{% url 'logviewer:index' %}">LogViewer</a>
+                            </div>
+                        </li>
+
+                    {% endif %}
                 {% else %}
                     <li class="nav-item {% if request.resolver_match.view_name == "authentication:auth" %} active {% endif %}">
                         <a class="nav-link sceneid-a" href="{% url 'authentication:auth' %}">
@@ -165,32 +170,126 @@
 {% block content %}
 {% endblock %}
 
-<div class="footer bg-primary text-center mt-4">
-    <div class="container">
-        <div class="row py-1">
-            <div class="col">
-                <a href="https://www.darklite.org"><i class="fa fa-fw fa-home text-white fa-2x"></i></a>
+<div class="container">
+    <footer>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 mt-5">
+            <div class="col mb-3">
+                <a href="https://www.darklite.org" class="d-flex align-items-center mb-3">
+                    <img class="img-fluid theme-image" src="{% static 'party/images/darklite_inverted.webp' %}"
+                         alt="darklite logo">
+                </a>
+                <p class="text-body-secondary">&copy; 2012-{% now "Y" %} darklite</p>
+                <p class="text-body-secondary">You'll never travel alone. Even if you'd want to.</p>
             </div>
-            <div class="col">
-                <a href="https://www.facebook.com/groups/darklite/"><i
-                        class="fab fa-facebook-square text-white fa-2x"></i></a>
+
+            <div class="col mb-3">
+
             </div>
-            <div class="col">
-                <a href="https://darklitegroupigs.bsky.social"><i class="fa-brands fa-bluesky text-white fa-2x"></i></a>
+
+            {% if not user.is_authenticated %}
+                <div class="col mb-3">
+                </div>
+            {% endif %}
+
+            <div class="col mb-3">
+                <h5>Info</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2">
+                        <a href="{% url 'party:landing_page' %}"
+                           class="nav-link p-0 text-body-secondary">
+                            <i class="fas fa-home me-2"></i>
+                            Home</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="{% url 'party:list' %}"
+                           class="nav-link p-0 text-body-secondary">
+                            <i class="fas fa-list me-2"></i>
+                            Party List</a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="{% url 'party:about' %}"
+                           class="nav-link p-0 text-body-secondary">
+                            <i class="fas fa-info-circle me-2"></i>
+                            About this site</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col">
-                <a href="https://twitter.com/darkliters"><i class="fab fa-twitter text-white fa-2x"></i></a>
+
+            <div class="col mb-3">
+                <h5>Extras</h5>
+                <ul class="nav flex-column">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item mb-2">
+                            <a href="{% url 'party:stats' %}"
+                               class="nav-link p-0 text-body-secondary">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                Statistics</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item mb-2">
+                        <a href="{% url 'feeds' %}"
+                           class="nav-link p-0 text-body-secondary">
+                            <i class="fas fa-rss me-2"></i>
+                            RSS Feeds</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col">
-                <a href="https://www.instagram.com/darklitegroupigs/"><i
-                        class="fab fa-instagram-square text-white fa-2x"></i></a>
-            </div>
-            <div class="col">
-                <a href="https://github.com/T-101/party.darklite.org"><i class="fab fa-github text-white fa-2x"></i></a>
-            </div>
+
+            {% if user.is_authenticated %}
+                <div class="col mb-3">
+                    <h5>Account</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a href="{% url 'authentication:profile' %}"
+                               class="nav-link p-0 text-body-secondary">
+                                <i class="fas fa-user me-2"></i>
+                                Your Account</a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a href="{% url 'authentication:logout' %}?next={{ request.path }}"
+                               class="nav-link p-0 text-body-secondary">
+                                <i class="fa fa-sign-out me-2"></i>
+                                Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+
+
         </div>
-    </div>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-end pb-4 mb-4">
+            <ul class="list-unstyled d-flex">
+                <li class="">
+                    <a href="https://www.darklite.org">
+                        <i class="fa fa-fw fa-home fa-2x"></i></a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://www.facebook.com/groups/darklite/">
+                        <i class="fab fa-facebook-square fa-2x"></i></a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://darklitegroupigs.bsky.social">
+                        <i class="fab fa-bluesky fa-2x"></i></a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://twitter.com/darkliters">
+                        <i class="fab fa-twitter fa-2x"></i></a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://www.instagram.com/darklitegroupigs/">
+                        <i class="fab fa-instagram-square fa-2x"></i></a>
+                </li>
+                <li class="ms-3">
+                    <a href="https://github.com/T-101/party.darklite.org">
+                        <i class="fab fa-github fa-2x"></i></a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
 </div>
+
 </body>
 
 {% block formmedia %}

@@ -1,4 +1,4 @@
-@media (min-width: 879px) {
+@media (min-width: 994px) {
     .navbar-expand-custom {
         flex-direction: row;
         flex-wrap: nowrap;
@@ -36,20 +36,30 @@
     }
 }
 
-@font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: 'Play';
-    font-style: normal;
-    font-weight: 400;
-    src: url('/static/party/fonts/play-v19-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+/* Center navbar logo when hamburger menu is visible */
+@media (max-width: 768px) {
+    .navbar-brand {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 12px;
+    }
 }
 
 @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-display: swap;
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/party/fonts/play-v19-latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
     font-family: 'Play';
     font-style: normal;
     font-weight: 700;
-    src: url('/static/party/fonts/play-v19-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    src: url('/static/party/fonts/play-v19-latin-700.woff2') format('woff2');
 }
 
 body {
@@ -146,4 +156,13 @@ body {
 .themeIcons {
     width: 1.5em;
     text-align: center;
+}
+
+/* Invert darklite logo colors depending on color mode */
+[data-bs-theme="light"] .theme-image {
+    filter: invert(1);
+}
+
+[data-bs-theme="dark"] .theme-image {
+    filter: invert(0);
 }
