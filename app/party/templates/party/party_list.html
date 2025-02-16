@@ -7,22 +7,17 @@
 
 {% block extrahead %}
     <script>
-        const selectedYear = "{{ request.resolver_match.kwargs.year }}"
-        const selectedCountry = "{{ request.resolver_match.kwargs.country }}"
-        document.addEventListener('DOMContentLoaded', function () {
-            const countrySelect = document.getElementById('country_select')
-            const yearSelect = document.getElementById('year_select')
-            countrySelect.addEventListener('change', function () {
-                const country = countrySelect.value ? countrySelect.value + "/" : ""
-                const year = selectedYear ? selectedYear + "/" : ""
-                window.location.href = "{% url 'party:list' %}" + country + year
-            })
-            yearSelect.addEventListener('change', function () {
-                const country = selectedCountry ? selectedCountry + "/" : ""
-                const year = yearSelect.value ? yearSelect.value + "/" : ""
-                window.location.href = "{% url 'party:list' %}" + country + year
-            })
-        })
+        document.addEventListener('DOMContentLoaded', ready)
+
+        function ready() {
+            document.querySelectorAll('#country_select, #year_select').forEach(select =>
+                select.addEventListener('change', function () {
+                    const country = this.id === 'country_select' ? this.value : "{{ request.resolver_match.kwargs.country }}"
+                    const year = this.id === 'year_select' ? this.value : "{{ request.resolver_match.kwargs.year }}"
+                    window.location.href = "{% url 'party:list' %}" + (country && country + "/") + (year && year + "/")
+                }))
+        }
+
     </script>
 {% endblock %}
 
