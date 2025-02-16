@@ -2,39 +2,37 @@
 
 {% block content %}
 
-    <div class="py-2">
-        <div class="container">
-            {% if not request.user.is_authenticated %}
-                <h3>You must be logged in to use search</h3>
-            {% else %}
-                <h3>Search</h3>
-                {% regroup results by date_start.year as yearly_results %}
-                {% for yearly in yearly_results %}
-                    {{ yearly.grouper }}
-                    <ul>
-                        {% for result in yearly.list %}
-                            <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% endfor %}
-            {% endif %}
-        </div>
+
+    <div class="container py-2">
+        {% if not request.user.is_authenticated %}
+            <h3>You must be logged in to use search</h3>
+        {% else %}
+            <h3>{{ results|length }} search results for '{{ query }}'</h3>
+            {% regroup results by date_start.year as yearly_results %}
+            {% for yearly in yearly_results %}
+                {{ yearly.grouper }}
+                <ul>
+                    {% for result in yearly.list %}
+                        <li><a href="{% url "party:detail" result.slug %}">{{ result }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endif %}
     </div>
 
-    <div class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'party:landing_page' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="{% url 'party:list' %}">Parties</a></li>
+                    {% comment %}
                         <li class="breadcrumb-item"><a
-                                href="{% url 'party:list' %}">Parties</a></li>
-                        {% comment %}                        <li class="breadcrumb-item"><a
                                 href="{% url 'party:list' year %}">{{ year }}</a>
                         </li>{% endcomment %}
-                        <li class="breadcrumb-item active">{{ object.name }}</li>
-                    </ul>
-                </div>
+                    <li class="breadcrumb-item active">{{ object.name }}</li>
+                </ul>
             </div>
         </div>
     </div>
