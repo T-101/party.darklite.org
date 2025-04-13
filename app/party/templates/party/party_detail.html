@@ -6,6 +6,20 @@
     <meta property="og:title" content="{{ object }} | Darklite Partywiki"/>
 {% endblock %}
 
+{% block extrahead %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.querySelector('#filter'),
+                items = document.querySelectorAll('.table-data-row')
+
+            input.addEventListener('keyup', function (ev) {
+                const pattern = new RegExp(ev.target.value, 'i')
+                items.forEach(item => item.classList.toggle('d-none', !pattern.test(item.innerText)))
+            })
+        })
+    </script>
+{% endblock %}
+
 {% block content %}
     <div class="py-2">
         <div class="container">
@@ -191,30 +205,5 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
-
-    <script>
-        var input = document.querySelector('#filter');
-        var items = document.getElementsByClassName('table-data-row')
-
-        input.addEventListener('keyup', function (ev) {
-            var text = ev.target.value;
-            var pat = new RegExp(text, 'i');
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                if (pat.test(item.innerText)) {
-                    item.classList.remove("hidden");
-                } else {
-                    item.classList.add("hidden");
-                }
-            }
-        });
-
-    </script>
 
 {% endblock %}
