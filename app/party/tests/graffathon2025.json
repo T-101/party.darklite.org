@@ -1,0 +1,42 @@
+{
+  "@context": "http:\/\/schema.org",
+  "@type": "Event",
+  "name": "Graffathon 2025",
+  "startDate": "2025-06-06",
+  "endDate": "2025-06-08",
+  "url": "https:\/\/graffathon.org",
+  "location": "Finland",
+  "eventStatus": "https:\/\/schema.org\/EventScheduled",
+  "additionalType": "https:\/\/www.wikidata.org\/wiki\/Q2655298",
+  "eventAttendanceMode": "https:\/\/schema.org\/OfflineEventAttendanceMode",
+  "mainEntityOfPage": "https:\/\/www.demoparty.net\/graffathon\/graffathon-2025",
+  "description": "Graffathon is a weekend-long demo hackathon aimed at real beginners who have no previous graphics coding and\/or demoscene experience. However, we also have an advanced compo, so newcomers have chances to meet more experienced sceners as well. Every participant is encouraged to create a non-interactive audiovisual computer program during the weekend. Graffathon provides tools and learning material to help you get kick-started with demo-making.",
+  "superEvent": {
+    "@context": "http:\/\/schema.org",
+    "@type": "EventSeries",
+    "name": "Graffathon",
+    "url": "http:\/\/www.graffathon.fi\/",
+    "mainEntityOfPage": "https:\/\/www.demoparty.net\/graffathon"
+  },
+  "attendee": [
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "waffle",
+      "url": "-",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/waffle",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "FI"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/a178378ded2556ab605d3f8c3af8d031",
+      "affiliation": "aspekt^exhouse^jumalauta^youth uprising",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=9498",
+        "http:\/\/www.slengpung.com\/?userid=3543"
+      ]
+    }
+  ],
+  "sameAs": "https:\/\/demozoo.org\/parties\/5036\/"
+}

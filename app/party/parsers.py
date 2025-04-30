@@ -48,12 +48,14 @@ def get_location(payload: dict) -> str:
 
 def get_country(payload: dict) -> str:
     location = payload.get("location", {})
-    if location and type(location) is not str:
+    if location and type(location) is str:
+        location_str = location.upper()[:2]
+    elif location and type(location) is not str:
         location_str = location.get("address", {}).get("addressCountry", "")
         if type(location_str) is str:
-            location_str = location_str[-2:]
+            location_str = location_str.upper()[:2]
     else:
         location_str = payload.get("locationCountry", "")
         if type(location_str) is str:
-            location_str = location_str[-2:]
+            location_str = location_str.upper()[:2]
     return location_str
