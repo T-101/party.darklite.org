@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import logging
 import os
+import sys
 
 from pathlib import Path
 import environ
@@ -78,11 +79,8 @@ INSTALLED_APPS = [
     'django_simple_user_agents',
 ]
 
-if DEBUG:
-    for i, item in enumerate(INSTALLED_APPS):
-        if item == "django.contrib.staticfiles":
-            INSTALLED_APPS.insert(i + 1, "debug_toolbar")
-            break
+if DEBUG and "test" not in sys.argv:
+    INSTALLED_APPS.append('debug_toolbar')
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -98,11 +96,8 @@ MIDDLEWARE = [
     'common.middleware.UserIPAddressMiddleware',
 ]
 
-if DEBUG:
-    for i, item in enumerate(MIDDLEWARE):
-        if item == "django.middleware.common.CommonMiddleware":
-            MIDDLEWARE.insert(i + 1, "debug_toolbar.middleware.DebugToolbarMiddleware")
-            break
+if DEBUG and "test" not in sys.argv:
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -163,7 +158,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = env('TIME_ZONE')
+TIME_ZONE = env('TZ')
 
 USE_I18N = True
 
