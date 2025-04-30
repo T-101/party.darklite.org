@@ -1,0 +1,229 @@
+{
+  "@context": "http:\/\/schema.org",
+  "@type": "Event",
+  "name": "In\u00e9rcia 2023",
+  "startDate": "2023-12-01",
+  "endDate": "2023-12-03",
+  "url": "https:\/\/inercia.party",
+  "location": {
+    "@context": "http:\/\/schema.org",
+    "@type": "Place",
+    "name": "Incrivel Almadense - Sal\u00e3o de Festas",
+    "address": {
+      "@context": "http:\/\/schema.org",
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Sociedade Filarm\u00f3nica Incr\u00edvel Almadense 8A",
+      "postalCode": "2800-158",
+      "addressLocality": "Almada",
+      "addressRegion": "Set\u00fabal",
+      "addressCountry": "PT"
+    },
+    "latitude": 38.6823818,
+    "longitude": -9.1575816,
+    "sameAs": "http:\/\/incrivelalmadense.pt\/"
+  },
+  "eventStatus": "https:\/\/schema.org\/EventScheduled",
+  "additionalType": "https:\/\/www.wikidata.org\/wiki\/Q2655298",
+  "eventAttendanceMode": "https:\/\/schema.org\/MixedEventAttendanceMode",
+  "mainEntityOfPage": "https:\/\/www.demoparty.net\/inercia\/inercia-2023",
+  "description": "The best (and only) portuguese demoparty!",
+  "image": "https:\/\/img.demoparty.net\/party\/none\/inercia\/inercia-2023-logo-650.png",
+  "superEvent": {
+    "@context": "http:\/\/schema.org",
+    "@type": "EventSeries",
+    "name": "In\u00e9rcia",
+    "url": "https:\/\/inercia.pt",
+    "mainEntityOfPage": "https:\/\/www.demoparty.net\/inercia"
+  },
+  "attendee": [
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "Violet",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/violet",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "GB"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/dbcf3b6a9441a614d486afedc24830b6",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=100647",
+        "https:\/\/demozoo.org\/sceners\/90371\/",
+        "https:\/\/www.twitter.com\/ProcyonViolet"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "jeenio",
+      "url": "http:\/\/nostopping.blogspot.com",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/jeenio",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "PT"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/00e32231ef466f404fbcad7d35bb391c",
+      "affiliation": "accession",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=4031",
+        "http:\/\/www.slengpung.com\/?userid=1861",
+        "https:\/\/demozoo.org\/sceners\/3048\/"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "Jae686",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/jae686",
+      "image": "https:\/\/www.gravatar.com\/avatar\/cb785f5045af5d143b4034ea79905fe3"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "psenough",
+      "url": "http:\/\/tpolm.org\/~ps\/",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/psenough",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "PT"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/5582b16de338b6d12018f7e8553fecf4",
+      "affiliation": "tpolm",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=177",
+        "http:\/\/www.slengpung.com\/?userid=35"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "rc55",
+      "url": "http:\/\/www.rc55.com\/",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/ruairi-rc55",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "GB"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/efc29d484497fab896f5227f2ffca8f0"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "reality404",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/reality404",
+      "image": "https:\/\/www.gravatar.com\/avatar\/7d25d9e6304889392dc835bc1bc19694",
+      "affiliation": "DSS^Poo-Brain^RBBS^RiFT",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=100043",
+        "http:\/\/www.slengpung.com\/?userid=6190",
+        "https:\/\/demozoo.org\/sceners\/67077\/"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "swapchantelman",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/swapchantelman",
+      "image": "https:\/\/www.gravatar.com\/avatar\/306851914109728c82f88f919c1141e7"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "EviL",
+      "url": "http:\/\/www.GLenZ.org",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/evil-1",
+      "image": "https:\/\/www.gravatar.com\/avatar\/43ce96084cf21395f907e60d43fcdb16",
+      "affiliation": "Accession^GLenZ",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=3030",
+        "http:\/\/www.slengpung.com\/?userid=2503"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "aldroid",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/aldroid",
+      "image": "https:\/\/www.gravatar.com\/avatar\/5d726ae78b5274ce650ff4b3ff5d0a17"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "FRaNKy",
+      "url": "http:\/\/www.demoparty.be\/",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/franky",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "BE"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/2ef15c7bb33710931ac3cf4d030c200e",
+      "affiliation": "RBBS \/ Accession \/ Padua \/ Smash Designs",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=5062",
+        "https:\/\/demozoo.org\/sceners\/1140\/"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "PrincessLuna",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/princessluna",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "SE"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/d6ebb9add8e426500d4ddd37c1bea664"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "Enfys",
+      "url": "https:\/\/wavetable.cymru\/",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/tobach",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "GB"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/1bd570a40dcf441d06017a510af25807",
+      "affiliation": "Slipstream, TUHB, Poo-Brain, RiFT, Furry Trash Group",
+      "sameAs": [
+        "https:\/\/www.pouet.net\/user.php?who=102087",
+        "https:\/\/demozoo.org\/sceners\/89891\/",
+        "https:\/\/www.twitter.com\/MSGS_Wavetable"
+      ]
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "Callisto",
+      "url": "https:\/\/callistoarts.com",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/callisto51",
+      "address": {
+        "@context": "http:\/\/schema.org",
+        "@type": "PostalAddress",
+        "addressCountry": "FR"
+      },
+      "image": "https:\/\/www.gravatar.com\/avatar\/293e72ebbbb1011cd7dbc1de71d3b1eb",
+      "sameAs": "https:\/\/demozoo.org\/sceners\/57855\/"
+    },
+    {
+      "@context": "http:\/\/schema.org",
+      "@type": "Person",
+      "name": "noglin",
+      "mainEntityOfPage": "https:\/\/www.demoparty.net\/users\/noglin",
+      "image": "https:\/\/www.gravatar.com\/avatar\/19bd38aaab3d54b9ef607ff8a197c571"
+    }
+  ],
+  "sameAs": [
+    "https:\/\/www.pouet.net\/party.php?which=275\u0026when=2023",
+    "https:\/\/csdb.dk\/event\/?id=3366",
+    "https:\/\/party.darklite.org\/inercia-2023\/"
+  ]
+}
