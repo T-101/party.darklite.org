@@ -1,5 +1,5 @@
 # --- Builder Stage ---
-FROM python:3.13.1-alpine3.21 as builder
+FROM python:3.13.1-alpine3.21 AS builder
 
 COPY app/requirements.txt /code/app/
 
