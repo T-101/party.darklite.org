@@ -1,29 +1,31 @@
-{% extends 'party/base.html' %}{% load partywiki_extras %}
+{% extends 'party/base.html' %}
 
 {% block extrahead %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const parties = localStorage.getItem("partyList") ? JSON.parse(localStorage.getItem("partyList")) : [],
-                partyList = []
-            document.querySelectorAll("tbody tr").forEach(row => {
-                const id = Number(row.dataset.partyId),
-                    partyGoers = Number(row.dataset.partyGoers),
-                    party = parties.find(party => party.id === id)
-                if (!party || partyGoers > party.partyGoers) {
-                    row.querySelector("#marker").classList.remove("d-none")
-                    document.querySelector("#marker-helptext").classList.remove("d-none")
-                }
-                if (!party) row.querySelector("#badge").classList.remove("d-none")
-                partyList.push({id, partyGoers})
+    {% if request.user.is_authenticated %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const parties = localStorage.getItem("partyList") ? JSON.parse(localStorage.getItem("partyList")) : [],
+                    partyList = []
+                document.querySelectorAll("tbody tr").forEach(row => {
+                    const id = Number(row.dataset.partyId),
+                        partyGoers = Number(row.dataset.partyGoers),
+                        party = parties.find(party => party.id === id)
+                    if (!party || partyGoers > party.partyGoers) {
+                        row.querySelector("#marker").classList.remove("d-none")
+                        document.querySelector("#marker-helptext").classList.remove("d-none")
+                    }
+                    if (!party) row.querySelector("#badge").classList.remove("d-none")
+                    partyList.push({id, partyGoers})
+                })
+                localStorage.setItem("partyList", JSON.stringify(partyList))
             })
-            localStorage.setItem("partyList", JSON.stringify(partyList))
-        })
-    </script>
-    <style>
-        #badge {
-            scale: 0.8;
-        }
-    </style>
+        </script>
+        <style>
+            #badge {
+                scale: 0.8;
+            }
+        </style>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -94,11 +96,12 @@
                     {% for party in past_parties|slice:"10" %}
                         <li>
                             {% include 'snippets/flag.html' with country=party.country %}
-                            <a href="{% url 'party:detail' party.slug %}">{{ party|small_year }}</a>
+                            <a href="{% url 'party:detail' party.slug %}">
+                                {{ party }} <small>{{ party.date_start__year }}</small>
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
-                <!-- <p><a href="#">More</a></p> -->
             </div>
         </div>
 
