@@ -11,7 +11,7 @@
         <td class="text-truncate handle-ellipsis" style="max-width: 150px">
             {% include 'snippets/flag.html' with country=trip.departure_country %}
             <span style="font-size: 0">{{ trip.departure_country.name }}</span>
-            <span title="{{ trip.departure_town|get_destination_text }}">{{ trip.departure_town|get_destination_text }}</span>
+            <span title="{{ trip.departure_town }}">{{ trip.departure_town }}</span>
         </td>
     {% endif %}
 
@@ -28,7 +28,7 @@
         <td class="text-truncate handle-ellipsis" style="max-width: 150px">
             {% include 'snippets/flag.html' with country=trip.arrival_country %}
             <span style="font-size: 0">{{ trip.arrival_country.name }}</span>
-            <span title="{{ trip.arrival_town|get_destination_text }}">{{ trip.arrival_town|get_destination_text }}</span>
+            <span title="{{ trip.arrival_town }}">{{ trip.arrival_town }}</span>
         </td>
     {% endif %}
     {% if user.is_authenticated %}

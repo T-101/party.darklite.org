@@ -26,8 +26,8 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col">
-                            <h1 class="">{{ object|small_year }} <a
-                                    href="{% url 'party:update' object.slug %}" title="Modify this party">
+                            <h1 class="">{{ object }} <small>{{ object.party_start.year }}</small>
+                                <a href="{% url 'party:update' object.slug %}" title="Modify this party">
                                 {% if not object.has_ended %}
                                     <span style="font-size: 1rem;">
                                         <i class="far fa-edit"></i>
@@ -179,10 +179,10 @@
     </div>
 
     <div class="container">
-        <small>Added by {{ object.created_by|get_display_name }} on {{ object.created_dt }}</small>
+        <small>Added by {{ object.created_by }} on {{ object.created_dt }}</small>
         {% if object.modified_by %}
             <br/>
-            <small>Modified by {{ object.modified_by|get_display_name }}
+            <small>Modified by {{ object.modified_by }}
                 on {{ object.modified_dt }}</small>
         {% endif %}
     </div>
