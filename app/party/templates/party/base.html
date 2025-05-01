@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load static %}{% load partywiki_extras %}{% load plausible %}
+<!DOCTYPE html>{% load static plausible %}
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
@@ -70,7 +70,7 @@
                             Account
                         </a>
                         <div class="dropdown-menu">
-                            <span class="dropdown-item-text">{{ request.user|get_display_name }}</span>
+                            <span class="dropdown-item-text">{{ request.user.display_name }}</span>
                             <hr class="dropdown-divider">
                             <a class="dropdown-item" href="{% url 'authentication:profile' %}">
                                 <i class="fa fa-user-circle"></i>
