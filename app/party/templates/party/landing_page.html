@@ -1,5 +1,31 @@
 {% extends 'party/base.html' %}{% load partywiki_extras %}
 
+{% block extrahead %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const parties = localStorage.getItem("partyList") ? JSON.parse(localStorage.getItem("partyList")) : [],
+                partyList = []
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const id = Number(row.dataset.partyId),
+                    partyGoers = Number(row.dataset.partyGoers),
+                    party = parties.find(party => party.id === id)
+                if (!party || partyGoers > party.partyGoers) {
+                    row.querySelector("#marker").classList.remove("d-none")
+                    document.querySelector("#marker-helptext").classList.remove("d-none")
+                }
+                if (!party) row.querySelector("#badge").classList.remove("d-none")
+                partyList.push({id, partyGoers})
+            })
+            localStorage.setItem("partyList", JSON.stringify(partyList))
+        })
+    </script>
+    <style>
+        #badge {
+            scale: 0.8;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container py-1">
         <div class="row">
@@ -18,7 +44,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover w-auto">
+                    <table class="table table-hover w-auto mb-1">
                         <thead>
                         <tr>
                             <th></th>
@@ -29,11 +55,12 @@
                             <th class="text-center">
                                 <i class="fas fa-plane-departure" title="From party"></i>
                             </th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for party in upcoming_parties %}
-                            <tr>
+                            <tr data-party-id="{{ party.id }}" data-party-goers="{{ party.towards_party_count }}">
                                 <td>
                                     {% include 'snippets/flag.html' with country=party.country %}
                                 </td>
@@ -44,9 +71,13 @@
                                 </td>
                                 <td class="text-center">
                                     {{ party.towards_party_count }}
+                                    <sup id="marker" class="text-danger d-none">&bull;</sup>
                                 </td>
                                 <td class="text-center">
                                     {{ party.towards_home_count }}
+                                </td>
+                                <td>
+                                    <span id="badge" class="badge rounded-pill text-bg-primary d-none">NEW</span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -54,6 +85,8 @@
                         </tbody>
                     </table>
                 </div>
+                <small id="marker-helptext" class="d-none">
+                    <sup class="text-danger ms-2 me-1">&bull;</sup>New trips added</small>
             </div>
             <div class="col-md-4">
                 <p class="lead bg-info text-center text-white">Recent parties</p>
