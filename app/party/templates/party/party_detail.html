@@ -179,10 +179,10 @@
     </div>
 
     <div class="container">
-        <small>Added by {{ object.created_by }} on {{ object.created_dt }}</small>
+        <small>Added by {{ object.created_by.display_name }} on {{ object.created_dt }}</small>
         {% if object.modified_by %}
             <br/>
-            <small>Modified by {{ object.modified_by }}
+            <small>Modified by {{ object.modified_by.display_name }}
                 on {{ object.modified_dt }}</small>
         {% endif %}
     </div>
