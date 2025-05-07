@@ -16,7 +16,7 @@ services:
     env_file: .env
     image: partywiki
     init: true
-    command: [ "/usr/sbin/crond", "-f" ]
+    command: bash -c "crontab /code/crontab.txt && crond -f"
     volumes:
       - .:/code
     depends_on:

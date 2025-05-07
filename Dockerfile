@@ -22,5 +22,3 @@ COPY --from=builder /install /usr/local
 
 COPY app/config/partywiki_logrotate.conf /etc/logrotate.d/partywiki
 COPY .bashrc /root/
-COPY crontab.txt /crontab.txt
-RUN /usr/bin/crontab /crontab.txt
