@@ -12,7 +12,7 @@ services:
       - "127.0.0.1:${CONTAINER_PORT}:${CONTAINER_PORT}"
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://0.0.0.0:${CONTAINER_PORT}/health-check/" ]
+      test: curl --fail http://0.0.0.0:${CONTAINER_PORT}/health-check/ || exit 1
       interval: 30s
       timeout: 10s
       retries: 3
