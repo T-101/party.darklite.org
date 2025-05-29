@@ -19,7 +19,7 @@ from common.parsers import get_dependency_version
 
 def health_check(request):
     db_ok = all(conn.cursor().execute("SELECT 1") for conn in connections.all())
-    status_code = 503 if db_ok else 503
+    status_code = 200 if db_ok else 503
     return HttpResponse(status=status_code)
 
 
