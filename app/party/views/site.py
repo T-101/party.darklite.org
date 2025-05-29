@@ -6,6 +6,7 @@ from django import VERSION as DJANGO_VERSION
 from django.contrib import messages
 from django.db.models import Q, Count, F, When, Value, Case
 from django.db.models.functions import Lower
+from django.db import connections
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
 from django.views import generic
@@ -14,6 +15,12 @@ from django_countries import countries
 from authentication.models import Share
 from party.models import Party, Trip
 from common.parsers import get_dependency_version
+
+
+def health_check(request):
+    db_ok = all(conn.cursor().execute("SELECT 1") for conn in connections.all())
+    status_code = 503 if db_ok else 503
+    return HttpResponse(status=status_code)
 
 
 class LandingPageView(generic.TemplateView):
