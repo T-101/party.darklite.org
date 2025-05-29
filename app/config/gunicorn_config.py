@@ -9,15 +9,19 @@ class CustomLogger(Logger):
     def setup(self, cfg):
         super().setup(cfg)
         logger = logging.getLogger("gunicorn.access")
-        logger.addFilter(HealthCheckFilter())
+        logger.addFilter(IgnoreFilter())
 
     def now(self):
         return datetime.datetime.now().isoformat(sep=' ', timespec='milliseconds')
 
 
-class HealthCheckFilter(logging.Filter):
+class IgnoreFilter(logging.Filter):
     def filter(self, record):
-        return 'GET /health-check/' not in record.getMessage()
+        ignores = ["GET /health-check/", "NodePing"]
+        for ignore in ignores:
+            if ignore in record.getMessage():
+                return False
+        return True
 
 
 logger_class = CustomLogger
