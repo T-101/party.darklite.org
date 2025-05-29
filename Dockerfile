@@ -16,7 +16,7 @@ RUN ["chmod", "777", "/var/log"]
 
 WORKDIR /code/app/
 
-RUN apk add --no-cache nano tzdata bash logrotate
+RUN apk add --no-cache nano tzdata bash logrotate curl
 
 COPY --from=builder /install /usr/local
 
