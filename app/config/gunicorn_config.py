@@ -17,11 +17,8 @@ class CustomLogger(Logger):
 
 class IgnoreFilter(logging.Filter):
     def filter(self, record):
-        ignores = ["GET /health-check/", "NodePing"]
-        for ignore in ignores:
-            if ignore in record.getMessage():
-                return False
-        return True
+        ignores = ["GET /health-check/", "GET /favicon.ico", "NodePing"]
+        return all(ignore not in record.getMessage() for ignore in ignores)
 
 
 logger_class = CustomLogger
@@ -34,7 +31,7 @@ enable_stdio_inheritance = True  # Django errors from stderr to error log
 errorlog = "logviewer/error.log"
 graceful_timeout = 3600
 keep_alive = 3600
-log_level = "debug"
+log_level = "info"
 pid = "partywiki.pid"
 threads = 2
 timeout = 3600
