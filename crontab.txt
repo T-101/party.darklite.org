@@ -10,12 +10,10 @@
     && echo "$(date -Iseconds) logrotate OK" >> /code/app/logs/cron.log \
     || echo "$(date -Iseconds) ERROR: logrotate FAILED" >> /code/app/logs/cron.log
 
-0 7 * * 3   /code/app/manage.py bsky_stats -w \
-  && echo "$(date -Iseconds) bsky weekly run OK" >> /code/app/logs/cron.log \
-  || echo "$(date -Iseconds) ERROR: bsky weekly run FAILED" >> /code/app/logs/cron.log
+0 7 * * 3   sh -c 'echo "$(date -Iseconds) bsky_stats: $(/code/app/manage.py bsky_stats -w 2>&1)"' >> /code/app/cron.log
 
 0 10 1 * *  /code/app/manage.py bsky_stats -m \
-  && echo "$(date -Iseconds) bsky weekly run OK" >> /code/app/logs/cron.log \
-  || echo "$(date -Iseconds) ERROR: bsky weekly run FAILED" >> /code/app/logs/cron.log
+  && echo "$(date -Iseconds) bsky monthly run OK" >> /code/app/logs/cron.log \
+  || echo "$(date -Iseconds) ERROR: bsky monthly run FAILED" >> /code/app/logs/cron.log
 
 0 12 1 1 *  /code/app/manage.py bsky_stats -y
