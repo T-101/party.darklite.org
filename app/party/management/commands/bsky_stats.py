@@ -104,6 +104,8 @@ class Command(BaseCommand):
                 post = client.send_image(text=msg_bsky, image=img_data.read(), image_aspect_ratio=aspect_ratio,
                                          image_alt='Darklite Piggy announcing stats for TravelWiki')
                 img_data.close()
-
-            text_msg = msg + "Go check it out! https://party.darklite.org"
-            return self.stdout.write(self.style.SUCCESS(text_msg))
+                stats_title = image_title.replace("\n", " ")
+                return self.stdout.write(self.style.SUCCESS(f"Stats for {stats_title} sent to Bluesky: {post.uri}"))
+            else:
+                text_msg = msg + "Go check it out! https://party.darklite.org"
+                return self.stdout.write(self.style.SUCCESS(text_msg))
