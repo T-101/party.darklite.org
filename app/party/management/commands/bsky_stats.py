@@ -109,3 +109,5 @@ class Command(BaseCommand):
             else:
                 text_msg = msg + "Go check it out! https://party.darklite.org"
                 return self.stdout.write(self.style.SUCCESS(text_msg))
+        else:
+            return self.stdout.write(self.style.NOTICE("No stats to send"))
