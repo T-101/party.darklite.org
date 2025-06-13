@@ -53,3 +53,4 @@ class PartyFeedRss09(BasePartyFeed):
 
 class PartyFeedAtom1(BasePartyFeed):
     feed_type = Atom1Feed
+    subtitle = BasePartyFeed.description
