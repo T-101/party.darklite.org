@@ -1,6 +1,6 @@
 atproto==0.0.61
-crispy-bootstrap5==2025.4
-django==5.2.1
+crispy-bootstrap5==2025.6
+django==5.2.3
 django-autocomplete-light==3.12.1
 django-countries==7.6.1
 django-crispy-forms==2.4
@@ -12,10 +12,10 @@ django-object-actions==5.0.0
 django-simple-plausible==0.0.5
 django-tempus-dominus==5.1.2.17
 drf-spectacular==0.28.0
-ipython==9.2.0
+ipython==9.3.0
 gunicorn==23.0.0
 pillow==11.2.1
 # psycopg[binary]==3.2.3
-requests==2.32.3
+requests==2.32.4
 shortuuid==1.0.13
 user-agents==2.2.0
