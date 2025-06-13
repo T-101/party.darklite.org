@@ -1,15 +1,20 @@
 from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.urls import reverse
-from django.utils.feedgenerator import Rss201rev2Feed, RssUserland091Feed, Atom1Feed
+from django.utils import feedgenerator
+from django.utils import timezone
 
 from party.models import Party
 
 
-class BasePartyFeed(Feed):
+class PartyFeedRss2(Feed):
     title = "Darklite Partywiki Parties"
     link = "https://party.darklite.org/"
     description = "You'll never travel alone - Even if you'd want to!"
+
+    @staticmethod
+    def feed_copyright():
+        return f"Copyright (c) {timezone.localtime().strftime('%Y')} Darklite Partywiki"
 
     def get_feed(self, obj, request):
         # Since we are running behind a reverse proxy, we need to tell Django that we are running on HTTPS
@@ -43,14 +48,10 @@ class BasePartyFeed(Feed):
         return reverse('party:detail', args=[item.slug])
 
 
-class PartyFeedRss2(BasePartyFeed):
-    feed_type = Rss201rev2Feed
+class PartyFeedRss09(PartyFeedRss2):
+    feed_type = feedgenerator.RssUserland091Feed
 
 
-class PartyFeedRss09(BasePartyFeed):
-    feed_type = RssUserland091Feed
-
-
-class PartyFeedAtom1(BasePartyFeed):
-    feed_type = Atom1Feed
-    subtitle = BasePartyFeed.description
+class PartyFeedAtom1(PartyFeedRss2):
+    feed_type = feedgenerator.Atom1Feed
+    subtitle = PartyFeedRss2.description
