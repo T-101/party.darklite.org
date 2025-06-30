@@ -58,7 +58,8 @@
                             <i class="fa-regular fa-clipboard me-2"></i>Copy
                         </button>
                     </div>
-                    <div class="form-text mb-4" title="{{ user.share.created }}">Created {{ user.share.created|naturaltime }}</div>
+                    <div class="form-text mb-4" title="{{ user.share.created }}">
+                        Created {{ user.share.created|naturaltime }}</div>
                     <p>
                         You can delete the sharing URL and the link won't work any more.
                         If you create a new one, it will be different.
@@ -67,9 +68,12 @@
                        onclick="return confirm('Are you sure you want delete your share URL?')">
                         Delete URL</a>
                 {% else %}
-
                     <a href="{% url 'authentication:set-profile-share' %}" class="btn btn-primary">Create Share URL</a>
                 {% endif %}
+                <hr/>
+                <p>Date joined: {{ user.date_joined }} ({{ user.date_joined|naturaltime }})</p>
+                <p>Parties created : {{ user_stats.user_count }} / {{ user_stats.total_count }}
+                    ({{ user_stats.percentage|floatformat:2 }}%)</p>
                 <hr class="d-block d-md-none"/>
             </div>
             <div class="col-12 col-md-6">

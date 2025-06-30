@@ -1,4 +1,5 @@
 import requests
+from django.db.models import Q, Count
 from requests.auth import HTTPBasicAuth
 import urllib.parse
 from django.contrib import messages
@@ -40,6 +41,13 @@ class ProfileView(LoginRequiredMixin, generic.UpdateView):
             else:
                 protocol = "https"
             ctx["share_url"] = f"{protocol}://{self.request.get_host()}/shared/{self.request.user.share.short_uuid}/"
+
+        stats = Party.objects.aggregate(
+            user_count=Count('id', filter=Q(created_by=self.request.user)),
+            total_count=Count('id')
+        )
+        stats["percentage"] = (stats["user_count"] / stats["total_count"] * 100) if stats["total_count"] > 0 else 0
+        ctx["user_stats"] = stats
         return ctx
 
 
