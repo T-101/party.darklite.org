@@ -9,6 +9,9 @@
     <meta property="og:description" content="You'll never travel alone - Even if you'd want to"/>
     <meta property="og:image" content="https://party.darklite.org/static/android-chrome-192x192.webp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.01" href="{% url 'feeds-rss2' %}"/>
+    <link rel="alternate" type="application/rss+xml" title="RSS 0.91" href="{% url 'feeds-rss09' %}"/>
+    <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url 'feeds-atom1' %}"/>
     <link rel="icon" sizes="any" type="image/svg+xml" href="{% static 'svg/partywiki_multi_color_smile.svg' %}"/>
     <link rel="alternate icon" type="image/x-icon" href="{% static 'favicon.ico' %}"/>
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-180x180.webp' %}">
